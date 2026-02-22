@@ -17,14 +17,10 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     
     <!-- LIBRERÍAS DE GITHUB (Vía CDN) -->
-    <!-- PapaParse para leer Google Sheets -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <!-- AOS (Animate On Scroll) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Toastify JS (Notificaciones) -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <!-- Canvas Confetti (Gamificación) -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -66,7 +62,7 @@
         #dropdown-menu.show { opacity: 1; transform: scale(1); visibility: visible; }
         .cart-sticky-bottom { box-shadow: 0 -4px 20px rgba(0,0,0,0.08); }
 
-        /* Estilos del Bot Navi (Zelda Style) */
+        /* Estilos del Bot Navi */
         .navi-orb {
             background: radial-gradient(circle at 30% 30%, #ffffff, #8be9fd 40%, #0275d8 100%);
             animation: float-navi 3s ease-in-out infinite, pulse-glow 2s infinite;
@@ -158,17 +154,26 @@
             <p class="text-sm md:text-lg text-textLight max-w-xl mx-auto mb-6 font-light">
                 Agrega perfumes al carrito. El precio bajará automáticamente según tu volumen de compra.
             </p>
+
+            <!-- BOTONES DE ACCIÓN RÁPIDA (NUEVO) -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
+                <a href="#catalogo" class="w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-xl text-sm font-bold hover:bg-gray-800 transition-all shadow-md active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fas fa-list"></i> Ver Catálogo
+                </a>
+                <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Vengo%20de%20su%20página%20web%20y%20necesito%20ayuda%20para%20entender%20cómo%20comprar%20al%20mayor." target="_blank" class="w-full sm:w-auto bg-green-50 text-green-700 border border-green-200 px-8 py-3.5 rounded-xl text-sm font-bold hover:bg-green-100 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-lg text-green-600"></i> ¿Dudas? Asesoría aquí
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- CATÁLOGO CON IMÁGENES Y BUSCADOR -->
+    <!-- CATÁLOGO -->
     <section id="catalogo" class="py-10 bg-surface border-y border-borderSoft scroll-mt-14 min-h-screen">
         <div class="container mx-auto px-4 max-w-5xl">
             <div class="text-center mb-6 flex flex-col items-center" data-aos="fade-up">
                 <span class="bg-black text-white px-3 py-1 rounded-full font-bold text-[9px] tracking-widest uppercase mb-3 shadow-md">Paso 1</span>
                 <h2 class="font-serif text-2xl md:text-3xl font-bold mb-2">Selecciona tus Fragancias</h2>
                 
-                <!-- Indicador de carga de Google Sheets -->
                 <div id="loading-indicator" class="hidden mt-4 bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2">
                     <i class="fas fa-sync fa-spin"></i> Sincronizando Catálogo...
                 </div>
@@ -281,7 +286,6 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // Inicializar Animaciones AOS
         AOS.init({ duration: 800, once: true, offset: 50 });
 
         // --- 1. CONFIGURACIÓN DE GOOGLE SHEETS (MULTI-HOJA) ---
@@ -289,19 +293,18 @@
             "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1oGbEbTM6a72UfVMLK9CipGVh3nHAJNHDk0jyThzzYZ8-VMKXzWowSgw8eJzcDQ/pub?gid=1434393790&single=true&output=csv"
         ]; 
 
-        // --- 2. BASE DE DATOS LOCAL (FALLBACK) ---
+        // --- 2. BASE DE DATOS LOCAL (FALLBACK DE EMERGENCIA) ---
         let catalogData = [];
         const fallbackData = [
             {
-                brand: "Chanel",
+                brand: "Aviso",
                 products: [
-                    { id: "1", name: "Frosted Coco", cap: "7.5ml", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80" },
-                    { id: "10", name: "Bleu de Chanel", cap: "10ml", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=150&q=80" }
+                    { id: "000", name: "Cargando catálogo desde Google Sheets...", cap: "Espera unos segundos", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80" }
                 ]
             }
         ];
 
-        // --- 3. LECTURA DE GOOGLE SHEETS LIMPIA ---
+        // --- 3. LECTURA DE GOOGLE SHEETS POR POSICIÓN DE COLUMNA ---
         function loadCatalog() {
             checkInAppBrowser();
             
@@ -315,7 +318,7 @@
                     return new Promise((resolve, reject) => {
                         Papa.parse(url.trim(), {
                             download: true,
-                            header: true, // Lee exactamente tus columnas SKU | Imagen | Capacidad | Nombre | Marca
+                            header: false, // NO BUSCA TÍTULOS ESPECÍFICOS PARA EVITAR ERRORES DE GOOGLE
                             skipEmptyLines: true,
                             complete: function(results) { resolve(results.data); },
                             error: function(err) { resolve([]); }
@@ -344,25 +347,29 @@
         function processSheetsData(data) {
             let processed = {};
 
-            data.forEach((row) => {
-                // Leer las columnas de tu Excel
-                const sku = (row['SKU'] || '').trim();
-                let img = (row['Imagen'] || '').trim();
-                const cap = (row['Capacidad'] || '').trim();
-                let name = (row['Nombre'] || '').trim();
-                let brand = (row['Marca'] || '').trim();
+            data.forEach((row, index) => {
+                // Saltamos la fila 1 si es obvio que son los títulos
+                if (index === 0 && row.join('').toLowerCase().includes('sku')) return; 
 
-                // FILTRO: Si la fila no tiene SKU o no empieza por número, la ignora (limpia filas basura automáticamente)
+                // Leer por el orden en el que tú armaste las columnas en Sheets:
+                // 0 = SKU, 1 = Imagen, 2 = Capacidad, 3 = Nombre, 4 = Marca
+                const sku = (row[0] || '').trim();
+                let img = (row[1] || '').trim();
+                const cap = (row[2] || '').trim();
+                let name = (row[3] || '').trim();
+                let brand = (row[4] || '').trim();
+
+                // FILTRO: Si la fila no tiene SKU o no empieza por número, la ignora
                 if (!sku || !name || isNaN(parseInt(sku[0]))) return;
 
                 if (!brand) brand = "Otras Marcas";
 
-                // PROTECCIÓN IMÁGENES: Si la celda no tiene un link válido, pone imagen de repuesto sin romper el código
+                // PROTECCIÓN IMÁGENES: Si la celda no tiene un link válido
                 if (!img.startsWith('http')) {
                     img = 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';
                 }
                 
-                // LIMPIEZA DE NOMBRES: Quita los "Enters" escondidos del Excel y espacios dobles
+                // LIMPIEZA DE NOMBRES: Quita los "Enters" escondidos del Excel
                 name = name.replace(/[\n\r]+/g, ' - ').replace(/\s{2,}/g, ' ').trim();
 
                 if(!processed[brand]) processed[brand] = [];
@@ -402,10 +409,10 @@
                     <div class="product-card flex items-center gap-4 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-accent/50 transition-all" data-search="${searchTerms}">
                         <img src="${prod.img}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';" alt="${prod.name}" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-xl bg-gray-50 border border-gray-100 shrink-0">
                         
-                        <div class="flex-1">
+                        <div class="flex-1 overflow-hidden">
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="bg-gray-100 text-gray-500 text-[9px] px-1.5 py-0.5 rounded font-mono font-medium tracking-wide">#${prod.id}</span>
-                                <p class="font-bold text-[13px] md:text-[15px] text-textMain leading-tight truncate w-32 md:w-40">${prod.name}</p>
+                                <p class="font-bold text-[13px] md:text-[15px] text-textMain leading-tight truncate w-full">${prod.name}</p>
                             </div>
                             <p class="text-[10px] md:text-xs text-textLight font-medium mb-3">${prod.cap}</p>
                             
@@ -426,7 +433,6 @@
             });
             container.innerHTML = html;
             
-            // Cargar datos guardados
             loadCartFromStorage();
             setTimeout(() => AOS.refresh(), 500);
         }
