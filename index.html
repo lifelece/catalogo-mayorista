@@ -68,29 +68,25 @@
         /* Estilos del Bot Navi */
         .navi-orb {
             background: radial-gradient(circle at 30% 30%, #ffffff, #8be9fd 40%, #0275d8 100%);
-            animation: float-navi 3s ease-in-out infinite, pulse-glow 2s infinite;
+            animation: pulse-glow 2s infinite; /* Le quitamos el float-navi para que el drag sea preciso */
         }
         .navi-wings::before, .navi-wings::after {
-            content: '';
-            position: absolute;
-            width: 20px; height: 10px;
-            background: rgba(139, 233, 253, 0.4);
-            border-radius: 50%;
-            top: 50%;
-            transform-origin: center;
-            filter: blur(2px);
-            z-index: -1;
+            content: ''; position: absolute; width: 20px; height: 10px;
+            background: rgba(139, 233, 253, 0.4); border-radius: 50%;
+            top: 50%; transform-origin: center; filter: blur(2px); z-index: -1;
         }
         .navi-wings::before { left: -15px; animation: flap-left 0.2s infinite alternate; }
         .navi-wings::after { right: -15px; animation: flap-right 0.2s infinite alternate; }
 
-        @keyframes float-navi { 0%, 100% { transform: translateY(0px) translateX(0px); } 50% { transform: translateY(-10px) translateX(5px); } }
         @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px 5px rgba(139, 233, 253, 0.5); } 50% { box-shadow: 0 0 25px 10px rgba(139, 233, 253, 0.8); } }
         @keyframes flap-left { from { transform: rotate(20deg) translateY(-50%); } to { transform: rotate(-20deg) translateY(-50%); } }
         @keyframes flap-right { from { transform: rotate(-20deg) translateY(-50%); } to { transform: rotate(20deg) translateY(-50%); } }
 
         .speech-bubble { animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-origin: bottom right; }
         @keyframes pop-in { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        
+        /* Evita menú del click derecho al hacer pulsación larga en celulares */
+        .no-select { user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body class="font-sans antialiased pb-32 md:pb-12 relative"> 
@@ -105,8 +101,8 @@
                 <i class="fas fa-bars text-xl"></i>
             </button>
             <div id="dropdown-menu" class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 flex-col overflow-hidden z-50 scale-95 opacity-0 invisible">
-                <a href="#decision-section" onclick="closeMenu()" class="px-5 py-3 text-sm font-medium hover:bg-surface border-b flex items-center gap-3">
-                    <i class="fas fa-box text-gray-400"></i> Armar Pedido
+                <a onclick="openCartModal(); closeMenu();" class="px-5 py-3 text-sm font-medium hover:bg-surface border-b flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-shopping-cart text-gray-400"></i> Mi Carrito
                 </a>
                 <a onclick="clearCart(); closeMenu();" class="px-5 py-3 text-sm font-medium text-red-600 hover:bg-red-50 border-b flex items-center gap-3 cursor-pointer">
                     <i class="fas fa-trash text-red-400"></i> Vaciar Carrito
@@ -133,18 +129,18 @@
 
             <!-- TIER DE PRECIOS FRONTALES -->
             <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6">
-                <div class="bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center">
+                <div onclick="handlePriceClick()" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-transform">
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Emprendedor</div>
                     <div class="text-xl md:text-3xl font-bold text-primary my-1">$6.00</div>
                     <div class="text-[9px] md:text-xs text-gray-500">Desde 20 uds.</div>
                 </div>
-                <div class="bg-white p-3 md:p-5 rounded-2xl border-2 border-primary shadow-md transform scale-105 z-10 text-center relative">
+                <div onclick="handlePriceClick()" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border-2 border-primary shadow-md transform scale-105 z-10 text-center relative active:scale-95 transition-transform">
                     <div class="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[8px] px-2 py-0.5 rounded-full whitespace-nowrap">Más Popular</div>
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-primary">Negocio</div>
                     <div class="text-2xl md:text-4xl font-bold text-primary my-1">$4.50</div>
                     <div class="text-[9px] md:text-xs text-gray-500">Desde 50 uds.</div>
                 </div>
-                <div class="bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center">
+                <div onclick="handlePriceClick()" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-transform">
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Mayorista</div>
                     <div class="text-xl md:text-3xl font-bold text-primary my-1">$3.50</div>
                     <div class="text-[9px] md:text-xs text-gray-500">100+ uds.</div>
@@ -153,7 +149,7 @@
         </div>
     </header>
 
-    <!-- TOP 5 TENDENCIAS (CARGADO DINÁMICAMENTE) -->
+    <!-- TOP 5 TENDENCIAS -->
     <section class="py-6 bg-surface border-y border-gray-200" data-aos="fade-up">
         <div class="container mx-auto px-4 max-w-5xl">
             <div class="flex items-center justify-between mb-4">
@@ -167,7 +163,6 @@
                 <i class="fas fa-sync fa-spin mr-2"></i> Conectando con inventario...
             </div>
 
-            <!-- Contenedor Horizontal para el Top 5 -->
             <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory hidden">
                 <!-- Se inyecta por JS -->
             </div>
@@ -206,7 +201,7 @@
         </div>
     </section>
 
-    <!-- ZONA 1: COMBO MIX (OCULTA POR DEFECTO) -->
+    <!-- ZONA 1: COMBO MIX -->
     <section id="combo-mix-zone" class="hidden py-10 bg-orange-50/50 border-t border-orange-100 scroll-mt-14" data-aos="fade-in">
         <div class="container mx-auto px-4 max-w-3xl text-center">
             <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold text-[9px] tracking-widest uppercase mb-3 inline-block shadow-sm">Opción Rápida</span>
@@ -232,77 +227,33 @@
                 </button>
             </div>
             
-            <p class="text-[10px] text-gray-400 mt-6"><i class="fas fa-info-circle"></i> Al seleccionar una caja, tu carrito actual se reemplazará por el Combo Mix.</p>
+            <p class="text-[10px] text-gray-400 mt-6"><i class="fas fa-info-circle"></i> Al seleccionar una caja, se reemplazará lo que tengas en el carrito.</p>
         </div>
     </section>
 
-    <!-- ZONA 2: CATÁLOGO COMPLETO (OCULTA POR DEFECTO) -->
+    <!-- ZONA 2: CATÁLOGO COMPLETO -->
     <section id="catalog-zone" class="hidden py-10 bg-surface border-t border-gray-200 scroll-mt-14" data-aos="fade-in">
         <div class="container mx-auto px-4 max-w-5xl">
-            <!-- Menú de Filtros por Marca -->
             <div class="mb-6 sticky top-14 z-40 bg-surface/95 backdrop-blur py-3 border-b border-gray-200">
                 <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2" id="brand-filters-container">
-                    <!-- Botones de marca inyectados por JS -->
+                    <!-- Botones inyectados por JS -->
                 </div>
             </div>
 
-            <!-- Buscador -->
             <div class="relative max-w-md mx-auto mb-8 w-full">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <i class="fas fa-search text-gray-400"></i>
                 </div>
-                <input type="text" id="searchInput" onkeyup="filterCatalog()" class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:border-black focus:ring-1 focus:ring-black sm:text-sm transition-all shadow-sm" placeholder="Buscar por aroma o SKU...">
+                <input type="text" id="searchInput" onkeyup="filterCatalog()" class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:border-black sm:text-sm shadow-sm" placeholder="Buscar por aroma o SKU...">
             </div>
+
+            <div class="text-[10px] text-center text-gray-500 mb-4"><i class="fas fa-hand-pointer"></i> Mantén presionada la imagen para verla en grande.</div>
 
             <div id="catalog-container" class="space-y-10">
                 <!-- Productos inyectados por JS -->
             </div>
         </div>
     </section>
-
-    <!-- CALCULADORA (ZONA FINAL) -->
-    <section id="calculadora" class="py-10 md:py-16 bg-white border-t border-gray-100 scroll-mt-14">
-        <div class="container mx-auto px-4 md:px-6 max-w-4xl">
-            <div class="text-center mb-6">
-                <span class="text-success font-bold text-xs tracking-widest uppercase mb-1 block">Facturación</span>
-                <h2 class="font-serif text-2xl md:text-3xl font-bold mb-2">Resumen de tu Inversión</h2>
-            </div>
-
-            <div class="bg-white rounded-[20px] md:rounded-[32px] shadow-[0_0_40px_rgba(0,0,0,0.05)] p-5 md:p-10 border border-gray-100">
-                <div class="grid md:grid-cols-2 gap-6 md:gap-12">
-                    <div class="space-y-5 flex flex-col justify-center">
-                        <div class="text-center p-6 bg-surface rounded-2xl border border-gray-100 relative overflow-hidden">
-                            <div class="absolute -top-10 -right-10 text-6xl opacity-5"><i class="fas fa-shopping-cart"></i></div>
-                            <label class="block text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Total Unidades en Carrito</label>
-                            <div id="total-qty-display" class="text-4xl md:text-5xl font-serif font-bold text-black mb-2 transition-all duration-300">0</div>
-                            <div id="tier-msg" class="text-center text-[10px] md:text-xs text-red-600 font-bold bg-red-50 py-1.5 rounded-md transition-colors">Mínimo 20 uds.</div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-4 md:p-6 flex flex-col justify-between border border-gray-200">
-                        <div class="space-y-2 mb-4">
-                            <div class="flex justify-between text-[11px] md:text-sm">
-                                <span class="text-gray-500">Costo Mercancía</span>
-                                <span id="subtotal-val" class="font-bold">$0.00</span>
-                            </div>
-                            <div class="h-px bg-gray-300 my-2"></div>
-                            <div class="flex justify-between items-end">
-                                <span class="text-[11px] md:text-sm font-bold uppercase">Total a Pagar hoy</span>
-                                <span id="total-final" class="font-serif text-2xl md:text-3xl font-bold text-black transition-all">$0.00</span>
-                            </div>
-                        </div>
-                        <button id="whatsapp-calc-btn" onclick="sendWhatsAppOrder()" class="w-full bg-gray-400 opacity-50 cursor-not-allowed text-white font-bold py-3.5 rounded-xl transition text-center text-xs md:text-sm flex justify-center items-center gap-2 shadow-md">
-                            <i class="fab fa-whatsapp text-lg"></i> Enviar Pedido a WhatsApp
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-primary text-white py-8 text-center pb-32 md:pb-8">
-        <p class="text-[10px] text-gray-500 mt-4">&copy; 2026 Mini Perfumes CBO.</p>
-    </footer>
 
     <!-- STICKY CART MÓVIL Y DESKTOP -->
     <div class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-3 z-[80] cart-sticky-bottom flex items-center justify-between transition-transform transform translate-y-full" id="sticky-cart">
@@ -316,18 +267,76 @@
         <div class="flex flex-col items-end mr-4">
             <span id="sticky-total" class="text-lg font-serif font-bold text-black">$0.00</span>
         </div>
-        <a href="#calculadora" class="bg-black text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-gray-800 active:scale-95 transition-all">
-            Finalizar
-        </a>
+        <button onclick="openCartModal()" class="bg-black text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md hover:bg-gray-800 active:scale-95 transition-all flex items-center gap-2">
+            <i class="fas fa-shopping-cart"></i> Ver Carrito
+        </button>
     </div>
 
-    <!-- BOT NAVI -->
-    <div id="navi-bot" class="fixed z-[90] bottom-24 right-6 md:bottom-10 md:right-10 flex flex-col items-end cursor-pointer" onclick="naviTap()">
-        <div id="navi-speech" class="bg-white text-black text-[11px] md:text-xs font-bold px-4 py-2 rounded-2xl rounded-br-sm shadow-lg mb-2 border border-blue-100 speech-bubble hidden max-w-[200px] text-center">
-            ¡Hola! Elige una opción arriba para armar tu pedido.
+    <!-- MODAL DE CARRITO DESPLEGABLE (SUPER MEJORA) -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex justify-end transition-opacity opacity-0" onclick="closeCartModal(event)">
+        <div id="cart-modal-content" class="bg-white w-full max-w-md h-full transform translate-x-full transition-transform duration-300 flex flex-col" onclick="event.stopPropagation()">
+            <!-- Cabecera -->
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-surface">
+                <h2 class="font-serif text-xl font-bold flex items-center gap-2"><i class="fas fa-shopping-bag"></i> Mi Pedido</h2>
+                <button onclick="closeCartModal()" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <!-- Lista de Productos -->
+            <div class="flex-1 overflow-y-auto p-5 bg-gray-50" id="cart-items-container">
+                <!-- Se inyecta por JS -->
+            </div>
+
+            <!-- Zona de Pagos y Totales -->
+            <div class="p-5 border-t border-gray-200 bg-white shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Método de Pago</h3>
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <label class="border border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:border-black transition-colors" onclick="setPaymentMethod('zelle')">
+                        <input type="radio" name="payment" value="zelle" class="text-black focus:ring-black" id="radio-zelle">
+                        <span class="text-xs font-bold text-primary"><i class="fas fa-money-bill-wave text-green-600"></i> Zelle / USDT</span>
+                    </label>
+                    <label class="border border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:border-black transition-colors" onclick="setPaymentMethod('bs')">
+                        <input type="radio" name="payment" value="bs" class="text-black focus:ring-black" id="radio-bs" checked>
+                        <span class="text-xs font-bold text-primary"><i class="fas fa-exchange-alt text-blue-600"></i> Pago Móvil</span>
+                    </label>
+                </div>
+                
+                <!-- Desglose -->
+                <div class="space-y-2 mb-4 text-sm">
+                    <div class="flex justify-between text-gray-500">
+                        <span>Subtotal (<span id="cart-modal-qty">0</span> uds)</span>
+                        <span id="cart-modal-subtotal">$0.00</span>
+                    </div>
+                    <div id="cart-discount-row" class="flex justify-between text-green-600 font-bold hidden">
+                        <span>Descuento (2% Zelle/USDT)</span>
+                        <span id="cart-modal-discount">-$0.00</span>
+                    </div>
+                    <div class="h-px bg-gray-200 my-2"></div>
+                    <div class="flex justify-between items-end">
+                        <span class="font-bold uppercase text-xs">Total a Pagar</span>
+                        <span id="cart-modal-total" class="font-serif text-2xl font-bold text-black">$0.00</span>
+                    </div>
+                </div>
+
+                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-black text-white font-bold py-4 rounded-xl transition text-sm flex justify-center items-center gap-2 shadow-md active:scale-95">
+                    <i class="fab fa-whatsapp text-lg"></i> Confirmar y Enviar a WhatsApp
+                </button>
+            </div>
         </div>
-        <div class="relative navi-wings">
-            <div class="navi-orb w-10 h-10 md:w-12 md:h-12 rounded-full shadow-navi border-2 border-white"></div>
+    </div>
+
+    <!-- MODAL VISTA PREVIA IMAGEN -->
+    <div id="image-preview-modal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4 transition-opacity opacity-0" onclick="hidePreview()">
+        <button class="absolute top-6 right-6 text-white text-3xl"><i class="fas fa-times"></i></button>
+        <img id="preview-img-element" src="" class="max-w-full max-h-full rounded-2xl shadow-2xl transform scale-95 transition-transform">
+    </div>
+
+    <!-- BOT NAVI ARRASTRABLE -->
+    <div id="navi-bot" class="fixed z-[90] flex flex-col items-end cursor-move touch-none" style="bottom: 24px; right: 24px;" onclick="naviTap(event)">
+        <div id="navi-speech" class="bg-white text-black text-[11px] md:text-xs font-bold px-4 py-2 rounded-2xl rounded-br-sm shadow-lg mb-2 border border-blue-100 speech-bubble hidden max-w-[200px] text-center pointer-events-none">
+            ¡Hola! Arrástrame si te estorbo.
+        </div>
+        <div class="relative navi-wings pointer-events-none">
+            <div class="navi-orb w-12 h-12 rounded-full shadow-navi border-2 border-white pointer-events-auto"></div>
         </div>
     </div>
 
@@ -337,18 +346,18 @@
     <script>
         AOS.init({ duration: 600, once: true, offset: 50 });
 
-        // --- 1. CONFIGURACIÓN DE GOOGLE SHEETS ---
         const GOOGLE_SHEETS_CSV_URLS = [
             "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1oGbEbTM6a72UfVMLK9CipGVh3nHAJNHDk0jyThzzYZ8-VMKXzWowSgw8eJzcDQ/pub?gid=1434393790&single=true&output=csv"
         ]; 
 
         let catalogData = [];
-        let flatProducts = []; // Lista plana para el Top 5 rápido
+        let flatProducts = []; 
         let cart = {}; 
         let isComboMode = false;
+        let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- 2. LECTURA DE GOOGLE SHEETS ---
+        // --- 1. LECTURA DE GOOGLE SHEETS ---
         function loadCatalog() {
             const validUrls = GOOGLE_SHEETS_CSV_URLS.filter(url => url && url.trim() !== "");
 
@@ -357,9 +366,7 @@
                 let promises = validUrls.map(url => {
                     return new Promise((resolve) => {
                         Papa.parse(url.trim(), {
-                            download: true,
-                            header: false, 
-                            skipEmptyLines: true,
+                            download: true, header: false, skipEmptyLines: true,
                             complete: function(results) { resolve(results.data); },
                             error: function() { resolve([]); }
                         });
@@ -370,9 +377,7 @@
                     resultsArray.forEach(hojaData => { allCombinedData = allCombinedData.concat(hojaData); });
                     if (allCombinedData.length > 0) catalogData = processSheetsData(allCombinedData);
                     
-                    document.getElementById('loading-indicator').classList.add('hidden');
-                    
-                    // Cuando cargan los datos, armamos todo
+                    if(document.getElementById('loading-indicator')) document.getElementById('loading-indicator').classList.add('hidden');
                     generateTop5();
                     renderBrandFilters();
                     renderCatalog();
@@ -382,7 +387,7 @@
 
         function processSheetsData(data) {
             let processed = {};
-            flatProducts = []; // Limpiar lista plana
+            flatProducts = []; 
 
             data.forEach((row, index) => {
                 if (index === 0 && row.join('').toLowerCase().includes('sku')) return; 
@@ -395,34 +400,27 @@
 
                 if (!sku || !name || isNaN(parseInt(sku[0]))) return;
                 if (!brand) brand = "Otras Marcas";
-                if (!img.startsWith('http')) {
-                    img = 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';
-                }
+                if (!img.startsWith('http')) img = 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';
                 name = name.replace(/[\n\r]+/g, ' - ').replace(/\s{2,}/g, ' ').trim();
 
                 if(!processed[brand]) processed[brand] = [];
                 if(!processed[brand].some(p => p.id === sku)) {
                     const prodObj = { id: sku, name: name, cap: cap, img: img, brand: brand };
                     processed[brand].push(prodObj);
-                    flatProducts.push(prodObj); // Guardar para top 5
+                    flatProducts.push(prodObj); 
                 }
             });
             
             let finalArray = [];
-            for (let brand in processed) { 
-                if (processed[brand].length > 0) {
-                    finalArray.push({ brand: brand, products: processed[brand] }); 
-                }
-            }
+            for (let brand in processed) { if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); }
             return finalArray;
         }
 
-        // --- 3. GENERADOR DEL TOP 5 ALEATORIO ---
+        // --- 2. GENERADOR TOP 5 ALEATORIO ---
         function generateTop5() {
             const container = document.getElementById('top5-container');
-            if (flatProducts.length < 5) return; // Seguridad
+            if (!container || flatProducts.length < 5) return; 
 
-            // Mezclar aleatoriamente (Fisher-Yates) para que cambie en cada recarga
             let shuffled = [...flatProducts].sort(() => 0.5 - Math.random());
             let top5 = shuffled.slice(0, 5);
 
@@ -430,7 +428,9 @@
             top5.forEach((prod) => {
                 html += `
                 <div class="min-w-[140px] md:min-w-[160px] bg-white p-3 rounded-2xl border border-gray-100 shadow-sm snap-center flex flex-col items-center text-center">
-                    <img src="${prod.img}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2">
+                    <img src="${prod.img}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select" 
+                         onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
+                         ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
                     <p class="font-bold text-[11px] md:text-xs text-textMain leading-tight truncate w-full mb-1">${prod.name}</p>
                     <span class="text-[9px] text-gray-400 font-mono mb-2">#${prod.id}</span>
                     <button onclick="updateCart('${prod.id}', 1, true)" class="w-full bg-black text-white text-[10px] font-bold py-1.5 rounded-lg hover:bg-gray-800 transition active:scale-95">
@@ -443,67 +443,75 @@
             container.classList.remove('hidden');
         }
 
-        // --- 4. CONTROL DE FLUJO (CATÁLOGO VS COMBO) ---
+        // --- 3. VISTA PREVIA DE IMÁGENES (LONG PRESS) ---
+        let pressTimer;
+        function startPress(imgSrc) {
+            pressTimer = setTimeout(() => { showPreview(imgSrc); }, 400); // 400ms para activar
+        }
+        function endPress() {
+            clearTimeout(pressTimer);
+        }
+        function showPreview(imgSrc) {
+            const modal = document.getElementById('image-preview-modal');
+            const imgEl = document.getElementById('preview-img-element');
+            imgEl.src = imgSrc;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                imgEl.classList.remove('scale-95');
+                imgEl.classList.add('scale-100');
+            }, 10);
+            if(window.navigator && window.navigator.vibrate) navigator.vibrate(50); // Vibración leve
+        }
+        function hidePreview() {
+            const modal = document.getElementById('image-preview-modal');
+            const imgEl = document.getElementById('preview-img-element');
+            modal.classList.add('opacity-0');
+            imgEl.classList.remove('scale-100');
+            imgEl.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // --- 4. INTERACCIONES DEL USUARIO Y RAMIFICACIONES ---
+        let priceClicks = 0;
+        function handlePriceClick() {
+            priceClicks++;
+            if (priceClicks === 1) showNaviMessage("Estos son nuestros precios por volumen. ¡Abajo puedes armar tu pedido!");
+            else if (priceClicks === 2) showNaviMessage("Recuerda: Si llevas 100+, te queda en $3.50 cada uno.");
+            else if (priceClicks >= 3) {
+                showNaviMessage("¡Oye! No puedes comprar tocando aquí 😅 Elige una opción más abajo.");
+                priceClicks = 0; // reset
+            }
+        }
+
         function setFlowMode(mode) {
             const catZone = document.getElementById('catalog-zone');
             const comboZone = document.getElementById('combo-mix-zone');
-            const calcZone = document.getElementById('calculadora');
 
             if (mode === 'combo') {
                 catZone.classList.add('hidden');
                 comboZone.classList.remove('hidden');
-                // Scroll a Combo Zone
-                const y = comboZone.getBoundingClientRect().top + window.pageYOffset - 60;
-                window.scrollTo({top: y, behavior: 'smooth'});
-                showNaviMessage("¡Excelente decisión! Toca la caja que se ajuste a tu presupuesto.");
+                window.scrollTo({top: comboZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
+                showNaviMessage("¡Excelente! Toca la caja que se ajuste a tu presupuesto.");
             } else if (mode === 'catalog') {
                 comboZone.classList.add('hidden');
                 catZone.classList.remove('hidden');
-                
-                // Si el carrito estaba en modo combo, lo reseteamos para elegir manual
                 if (isComboMode) {
                     clearCartSilent();
                     isComboMode = false;
                     Toastify({ text: "Modo manual activado. Carrito reseteado.", duration: 2000, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
                 }
-
                 setTimeout(() => AOS.refresh(), 200);
-                const y = catZone.getBoundingClientRect().top + window.pageYOffset - 60;
-                window.scrollTo({top: y, behavior: 'smooth'});
+                window.scrollTo({top: catZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
                 showNaviMessage("¡Perfecto! Usa los botones de arriba para filtrar por marca.");
             }
         }
 
-        // --- 5. LÓGICA DE COMBO MIX ---
-        function addComboToCart(qty, tier) {
-            clearCartSilent(); // Borramos lo que haya
-            isComboMode = true;
-            
-            // Registramos un producto virtual "Combo"
-            cart['combo_mix'] = qty;
-            
-            // Mostramos feedback
-            Toastify({
-                text: `📦 Caja de ${qty} uds seleccionada`,
-                duration: 2500, gravity: "bottom", position: "center",
-                style: { background: "#FF9500", color: "#fff", borderRadius: "10px", fontSize: "13px", fontWeight: "bold" }
-            }).showToast();
-
-            calculateTotals();
-            showNaviMessage("¡Listo! Ya tienes el pedido armado. Baja para enviar a WhatsApp.");
-
-            // Bajar a la calculadora
-            setTimeout(() => {
-                const y = document.getElementById('calculadora').getBoundingClientRect().top + window.pageYOffset - 60;
-                window.scrollTo({top: y, behavior: 'smooth'});
-            }, 600);
-        }
-
-        // --- 6. RENDER DE FILTROS Y CATÁLOGO ---
+        // --- 5. RENDER DEL CATÁLOGO ---
         function renderBrandFilters() {
             const container = document.getElementById('brand-filters-container');
+            if(!container) return;
             let html = `<button onclick="filterByBrand('All')" class="brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold border border-black bg-black text-white transition-all shadow-sm">Todos</button>`;
-            
             catalogData.forEach(cat => {
                 html += `<button onclick="filterByBrand('${cat.brand}')" class="brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold border border-gray-200 bg-white text-gray-600 hover:border-black hover:text-black transition-all shadow-sm">${cat.brand}</button>`;
             });
@@ -511,34 +519,36 @@
         }
 
         function filterByBrand(brandName) {
-            // Estilos de botones
             document.querySelectorAll('.brand-filter-btn').forEach(btn => {
                 if (btn.innerText === brandName || (brandName === 'All' && btn.innerText === 'Todos')) {
-                    btn.classList.replace('bg-white', 'bg-black');
-                    btn.classList.replace('text-gray-600', 'text-white');
-                    btn.classList.replace('border-gray-200', 'border-black');
+                    btn.classList.replace('bg-white', 'bg-black'); btn.classList.replace('text-gray-600', 'text-white'); btn.classList.replace('border-gray-200', 'border-black');
                 } else {
-                    btn.classList.replace('bg-black', 'bg-white');
-                    btn.classList.replace('text-white', 'text-gray-600');
-                    btn.classList.replace('border-black', 'border-gray-200');
+                    btn.classList.replace('bg-black', 'bg-white'); btn.classList.replace('text-white', 'text-gray-600'); btn.classList.replace('border-black', 'border-gray-200');
                 }
             });
-
-            // Mostrar/Ocultar
             document.querySelectorAll('.category-block').forEach(catBlock => {
-                if (brandName === 'All' || catBlock.getAttribute('data-brand') === brandName) {
-                    catBlock.style.display = "block";
-                } else {
-                    catBlock.style.display = "none";
-                }
+                catBlock.style.display = (brandName === 'All' || catBlock.getAttribute('data-brand') === brandName) ? "block" : "none";
             });
             setTimeout(() => AOS.refresh(), 200);
         }
 
+        function filterCatalog() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.category-block').forEach(cat => {
+                let cards = cat.querySelectorAll('.product-card');
+                let hasVisible = false;
+                cards.forEach(card => {
+                    if (card.getAttribute('data-search').indexOf(input) > -1) { card.style.display = "flex"; hasVisible = true; } 
+                    else card.style.display = "none";
+                });
+                cat.style.display = hasVisible ? "block" : "none";
+            });
+        }
+
         function renderCatalog() {
             const container = document.getElementById('catalog-container');
+            if(!container) return;
             let html = '';
-
             catalogData.forEach((category, index) => {
                 html += `
                 <div class="category-block mb-10" data-brand="${category.brand}">
@@ -547,12 +557,13 @@
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 `;
-                
                 category.products.forEach((prod) => {
                     let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
                     html += `
                     <div class="product-card flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm hover:border-black transition-all" data-search="${searchTerms}">
-                        <img src="${prod.img}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0">
+                        <img src="${prod.img}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0 no-select cursor-pointer"
+                             onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
+                             ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
                         
                         <div class="flex-1 overflow-hidden">
                             <div class="flex items-center gap-2 mb-1">
@@ -577,50 +588,51 @@
                 html += `</div></div>`;
             });
             container.innerHTML = html;
-            
             loadCartFromStorage();
         }
 
-        function filterCatalog() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let categories = document.querySelectorAll('.category-block');
+        // --- 6. GESTIÓN DEL CARRITO ---
+        function getProductById(id) { return flatProducts.find(p => p.id === id) || null; }
+
+        function addComboToCart(qty, tier) {
+            clearCartSilent();
+            isComboMode = true;
+            cart['combo_mix'] = qty;
+            saveCartToStorage();
+            Toastify({text: `📦 Caja de ${qty} uds seleccionada`, duration: 2500, style: { background: "#FF9500", borderRadius: "10px", fontSize: "13px", fontWeight: "bold" }}).showToast();
+            calculateTotals();
+            openCartModal(); // Abre el carrito directo para confirmar
+        }
+
+        function updateCart(productId, change, fromTop5 = false) {
+            if (isComboMode) {
+                clearCartSilent();
+                isComboMode = false;
+                Toastify({ text: "Modo manual activado.", duration: 1500, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
+                if(fromTop5) document.getElementById('catalog-zone').classList.remove('hidden');
+            }
+            if (!cart[productId]) cart[productId] = 0;
+            cart[productId] += change;
+            if (cart[productId] < 0) cart[productId] = 0;
             
-            categories.forEach(cat => {
-                let cards = cat.querySelectorAll('.product-card');
-                let hasVisible = false;
-                cards.forEach(card => {
-                    if (card.getAttribute('data-search').indexOf(input) > -1) {
-                        card.style.display = "flex"; hasVisible = true;
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-                // Si estamos filtrando texto, ignoramos el filtro de marca temporalmente
-                cat.style.display = hasVisible ? "block" : "none";
-            });
-            setTimeout(() => AOS.refresh(), 200);
+            const el = document.getElementById(`qty-${productId}`);
+            if(el) el.innerText = cart[productId];
+
+            saveCartToStorage();
+            if (change > 0) Toastify({text: `+1 Añadido`, duration: 800, gravity: "bottom", style: { background: "#1D1D1F", borderRadius: "10px", fontSize: "12px" }}).showToast();
+            
+            calculateTotals();
+            renderCartModalItems(); // Actualizar lista si el modal está abierto
         }
 
-        // --- 7. LÓGICA DE CARRITO Y LOCAL STORAGE ---
-        function saveCartToStorage() {
-            localStorage.setItem('miniperfumes_cart_cbo', JSON.stringify(cart));
-            document.getElementById('sticky-saved-icon').classList.remove('hidden');
-        }
-
-        function loadCartFromStorage() {
-            const saved = localStorage.getItem('miniperfumes_cart_cbo');
-            if (saved) {
-                cart = JSON.parse(saved);
-                if (cart['combo_mix']) isComboMode = true; // Restaurar estado de combo
-
-                for (let id in cart) {
-                    if(id === 'combo_mix') continue; // No existe ID en HTML
-                    const el = document.getElementById(`qty-${id}`);
-                    if (el && cart[id] > 0) el.innerText = cart[id];
-                    else if (!el) delete cart[id];
-                }
-                document.getElementById('sticky-saved-icon').classList.remove('hidden');
+        function removeProduct(productId) {
+            if(cart[productId]) {
+                cart[productId] = 0;
+                const el = document.getElementById(`qty-${productId}`);
+                if(el) el.innerText = 0;
+                saveCartToStorage();
                 calculateTotals();
+                renderCartModalItems();
             }
         }
 
@@ -635,170 +647,244 @@
             isComboMode = false;
             document.getElementById('sticky-saved-icon').classList.add('hidden');
             calculateTotals();
-            Toastify({
-                text: `🗑️ Carrito vaciado`, duration: 2000, gravity: "bottom", position: "center",
-                style: { background: "#EF4444", color: "#fff", borderRadius: "8px", fontSize: "12px", fontWeight: "bold" }
-            }).showToast();
+            renderCartModalItems();
+            closeCartModal();
+            Toastify({ text: `🗑️ Carrito vaciado`, duration: 2000, style: { background: "#EF4444", borderRadius: "8px", fontSize: "12px" } }).showToast();
         }
 
-        function updateCart(productId, change, fromTop5 = false) {
-            // Si el usuario estaba en Combo y agrega un manual, desactivamos combo y limpiamos para no chocar
-            if (isComboMode) {
-                clearCartSilent();
-                isComboMode = false;
-                Toastify({ text: "Modo manual activado.", duration: 1500, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
-                // Si añadió desde el Top 5, abrimos el catálogo manual para que vea lo que hace
-                if(fromTop5) document.getElementById('catalog-zone').classList.remove('hidden');
-            }
+        function saveCartToStorage() {
+            localStorage.setItem('miniperfumes_cart_cbo', JSON.stringify(cart));
+            document.getElementById('sticky-saved-icon').classList.remove('hidden');
+        }
 
-            if (!cart[productId]) cart[productId] = 0;
-            const oldQty = cart[productId];
-            cart[productId] += change;
-            if (cart[productId] < 0) cart[productId] = 0;
+        function loadCartFromStorage() {
+            const saved = localStorage.getItem('miniperfumes_cart_cbo');
+            if (saved) {
+                cart = JSON.parse(saved);
+                if (cart['combo_mix']) isComboMode = true;
+                for (let id in cart) {
+                    if(id === 'combo_mix') continue; 
+                    const el = document.getElementById(`qty-${id}`);
+                    if (el && cart[id] > 0) el.innerText = cart[id];
+                    else if (!el) delete cart[id];
+                }
+                document.getElementById('sticky-saved-icon').classList.remove('hidden');
+                calculateTotals();
+            }
+        }
+
+        // --- 7. MODAL DE CARRITO (VISUALIZACIÓN Y PAGOS) ---
+        function openCartModal() {
+            renderCartModalItems();
+            const modal = document.getElementById('cart-modal');
+            const content = document.getElementById('cart-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+        }
+
+        function closeCartModal(e) {
+            // Si hay un evento, asegurarse de que tocó el fondo oscuro o el botón X
+            if(e && e.target.id !== 'cart-modal') return; 
             
-            // Actualizamos en HTML (El elemento puede estar en el catalogo y en el top 5 pero Top 5 no tiene ID qty-)
-            const el = document.getElementById(`qty-${productId}`);
-            if(el) el.innerText = cart[productId];
+            const modal = document.getElementById('cart-modal');
+            const content = document.getElementById('cart-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('translate-x-full');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+            document.body.style.overflow = 'auto';
+        }
 
-            saveCartToStorage();
-
-            if (change > 0) {
-                Toastify({
-                    text: `+1 Añadido`, duration: 1000, gravity: "bottom", position: "center",
-                    style: { background: "#1D1D1F", color: "#ffffff", borderRadius: "10px", fontSize: "12px", fontWeight: "bold"}
-                }).showToast();
+        function renderCartModalItems() {
+            const container = document.getElementById('cart-items-container');
+            let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+            
+            if (totalQty === 0) {
+                container.innerHTML = `<div class="text-center text-gray-400 mt-10"><i class="fas fa-shopping-basket text-4xl mb-3"></i><p>Tu carrito está vacío.</p></div>`;
+                return;
             }
+
+            let html = '';
+            if (isComboMode && cart['combo_mix']) {
+                html += `
+                <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-orange-200 shadow-sm mb-3">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-500 rounded-lg flex items-center justify-center text-xl"><i class="fas fa-box"></i></div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-gray-900">Combo Mix Seleccionado</p>
+                        <p class="text-xs text-gray-500">Surtido de ${cart['combo_mix']} fragancias</p>
+                    </div>
+                </div>`;
+            } else {
+                for (let id in cart) {
+                    if (cart[id] > 0 && id !== 'combo_mix') {
+                        const prod = getProductById(id);
+                        if(prod) {
+                            html += `
+                            <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm mb-3">
+                                <img src="${prod.img}" class="w-12 h-12 object-cover rounded-md bg-gray-50">
+                                <div class="flex-1">
+                                    <p class="font-bold text-xs text-gray-900 leading-tight">${prod.name}</p>
+                                    <p class="text-[10px] text-gray-500">SKU: #${prod.id} | ${prod.cap}</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-bold bg-gray-100 px-2 py-1 rounded">x${cart[id]}</span>
+                                    <button onclick="removeProduct('${prod.id}')" class="text-red-400 hover:text-red-600 p-1"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>`;
+                        }
+                    }
+                }
+            }
+            container.innerHTML = html;
+        }
+
+        function setPaymentMethod(method) {
+            paymentMethod = method;
             calculateTotals();
         }
 
-        function getProductById(id) {
-            return flatProducts.find(p => p.id === id) || null;
-        }
-
         let confettiFired = false;
-
         function calculateTotals() {
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-            let currentPrice = 0;
-            let tierName = "";
-            let tierEl = document.getElementById('tier-msg');
+            let currentPrice = (totalQty >= 100) ? PRICES.top : ((totalQty >= 50) ? PRICES.mid : PRICES.base);
 
-            if (totalQty >= 100) {
-                currentPrice = PRICES.top; tierName = "Nivel Mayorista ($3.50/u)";
-                tierEl.className = 'text-center text-[10px] md:text-xs text-green-700 font-bold bg-green-50 py-1.5 rounded-md';
-                if (!confettiFired) {
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1D1D1F', '#d48197', '#FF9500'] });
-                    confettiFired = true;
-                    showNaviMessage("¡WOW! Desbloqueaste el precio Mayorista. ¡Increíble!");
-                }
-            } else if (totalQty >= 50) {
-                confettiFired = false;
-                currentPrice = PRICES.mid; tierName = "Nivel Negocio ($4.50/u)";
-                tierEl.className = 'text-center text-[10px] md:text-xs text-green-700 font-bold bg-green-50 py-1.5 rounded-md';
-            } else if (totalQty >= 20) {
-                confettiFired = false;
-                currentPrice = PRICES.base; tierName = "Nivel Emprendedor ($6.00/u)";
-                tierEl.className = 'text-center text-[10px] md:text-xs text-green-700 font-bold bg-green-50 py-1.5 rounded-md';
-            } else {
-                confettiFired = false;
-                tierName = `Faltan ${20 - totalQty} unidades para comprar`;
-                tierEl.className = 'text-center text-[10px] md:text-xs text-red-600 font-bold bg-red-50 py-1.5 rounded-md';
-            }
+            // Confeti si llega a 100
+            if (totalQty >= 100 && !confettiFired) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1D1D1F', '#d48197', '#FF9500'] });
+                confettiFired = true;
+            } else if (totalQty < 100) confettiFired = false;
 
-            tierEl.innerText = tierName;
-            
-            const displayQty = document.getElementById('total-qty-display');
-            displayQty.innerText = totalQty;
-            displayQty.classList.add('scale-110', 'text-accent');
-            setTimeout(() => displayQty.classList.remove('scale-110', 'text-accent'), 200);
-
+            // Actualizar vista barra inferior
             document.getElementById('sticky-qty').innerText = totalQty;
-
-            const subtotal = totalQty * currentPrice;
-            document.getElementById('subtotal-val').innerText = `$${subtotal.toFixed(2)}`;
-            document.getElementById('total-final').innerText = `$${subtotal.toFixed(2)}`;
-            document.getElementById('sticky-total').innerText = `$${subtotal.toFixed(2)}`;
-
-            const btnCalc = document.getElementById('whatsapp-calc-btn');
-
-            if (totalQty >= 20) {
-                btnCalc.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
-                btnCalc.classList.add('bg-black', 'hover:bg-gray-800');
-            } else {
-                btnCalc.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
-                btnCalc.classList.remove('bg-black', 'hover:bg-gray-800');
-            }
-
             const stickyCart = document.getElementById('sticky-cart');
             if (totalQty > 0) stickyCart.classList.remove('translate-y-full');
             else stickyCart.classList.add('translate-y-full');
+
+            // Cálculos financieros
+            const subtotal = totalQty * currentPrice;
+            let discount = 0;
+            const discountRow = document.getElementById('cart-discount-row');
+
+            if (paymentMethod === 'zelle' && totalQty >= 20) {
+                discount = subtotal * 0.02; // 2% de descuento
+                if(discountRow) {
+                    discountRow.classList.remove('hidden');
+                    document.getElementById('cart-modal-discount').innerText = `-$${discount.toFixed(2)}`;
+                }
+            } else {
+                if(discountRow) discountRow.classList.add('hidden');
+            }
+
+            const totalFinal = subtotal - discount;
+
+            // Actualizar UI del Modal
+            if(document.getElementById('cart-modal-qty')) document.getElementById('cart-modal-qty').innerText = totalQty;
+            if(document.getElementById('cart-modal-subtotal')) document.getElementById('cart-modal-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            if(document.getElementById('cart-modal-total')) document.getElementById('cart-modal-total').innerText = `$${totalFinal.toFixed(2)}`;
+            document.getElementById('sticky-total').innerText = `$${totalFinal.toFixed(2)}`;
+
+            // Botones de Enviar
+            const btnModal = document.getElementById('cart-modal-btn');
+            if(btnModal) {
+                if (totalQty >= 20) {
+                    btnModal.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                    btnModal.classList.add('bg-black', 'hover:bg-gray-800');
+                } else {
+                    btnModal.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                    btnModal.classList.remove('bg-black', 'hover:bg-gray-800');
+                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds. (Mínimo 20)`;
+                    else btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Confirmar y Enviar`;
+                }
+            }
         }
 
         function sendWhatsAppOrder() {
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
             if (totalQty < 20) {
-                showNaviMessage("¡Oye! Aún te faltan fragancias para llegar a 20.");
+                showNaviMessage("Aún te faltan fragancias para llegar al mínimo (20).");
                 return;
             }
 
             let currentPrice = totalQty >= 100 ? PRICES.top : (totalQty >= 50 ? PRICES.mid : PRICES.base);
-            let orderDetails = "";
+            let subtotal = totalQty * currentPrice;
+            let discount = (paymentMethod === 'zelle') ? (subtotal * 0.02) : 0;
+            let total = subtotal - discount;
+            let payText = (paymentMethod === 'zelle') ? "Zelle / Binance Pay (Descuento 2% Aplicado ✅)" : "Pago Móvil / Efectivo";
 
+            let orderDetails = "";
             if (isComboMode) {
-                orderDetails = `- 1x CAJA COMBO MIX VARIADO (${cart['combo_mix']} unidades)%0A`;
+                orderDetails = `- 1x CAJA COMBO MIX VARIADO (${cart['combo_mix']} uds)%0A`;
             } else {
                 for (let id in cart) {
                     if (cart[id] > 0 && id !== 'combo_mix') {
                         const prod = getProductById(id);
-                        if (prod) {
-                            orderDetails += `- ${cart[id]}x [SKU: ${prod.id}] ${prod.name} (${prod.cap})%0A`;
-                        }
+                        if (prod) orderDetails += `- ${cart[id]}x [SKU: ${prod.id}] ${prod.name} (${prod.cap})%0A`;
                     }
                 }
             }
 
-            const subtotal = totalQty * currentPrice;
-            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo(a) para mi importación.%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Precio: $${currentPrice.toFixed(2)} c/u%0A- Total a Pagar: *$${subtotal.toFixed(2)}*%0A%0AQuiero proceder con el pago.`;
+            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo(a) para mi importación.%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*%0A%0AQuiero proceder con el pago.`;
             
-            clearCart(); 
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
         }
 
-        // --- 8. LOGICA DEL BOT "NAVI" ---
+        // --- 8. NAVI ARRASTRABLE (DRAG & DROP) ---
+        const navi = document.getElementById('navi-bot');
+        let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+        function dragStart(e) {
+            initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
+            initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
+            if (e.target.closest('.navi-orb')) isDragging = true;
+        }
+
+        function dragEnd(e) { initialX = currentX; initialY = currentY; setTimeout(()=> isDragging = false, 10); }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault(); // Evita scroll de pantalla mientras arrastras
+                currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
+                currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
+                xOffset = currentX; yOffset = currentY;
+                setTranslate(currentX, currentY, navi);
+            }
+        }
+        function setTranslate(xPos, yPos, el) { el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`; }
+
+        // Eventos Drag
+        navi.addEventListener("touchstart", dragStart, {passive: false});
+        navi.addEventListener("touchend", dragEnd, false);
+        navi.addEventListener("touchmove", drag, {passive: false});
+        navi.addEventListener("mousedown", dragStart, false);
+        document.addEventListener("mouseup", dragEnd, false);
+        document.addEventListener("mousemove", drag, false);
+
+        // Navi Mensajes
         const naviSpeech = document.getElementById('navi-speech');
         let naviTimeout;
-        const naviMessages = [
-            "¿Indeciso? Toca 'Quiero un Combo Mix' y lo armamos por ti.",
-            "Recuerda: a mayor volumen, mayor es tu ganancia.",
-            "El pedido mínimo es de 20 unidades.",
-            "Los de arriba son los que más se están vendiendo 🔥"
+        const naviMsgs = [
+            "¿Indeciso? Toca 'Quiero un Combo Mix'.",
+            "Recuerda: Si pagas por Binance/Zelle tienes 2% de Dcto.",
+            "Deja pegado el dedo en una foto para verla grande.",
+            "A mayor volumen, mayor es tu ganancia."
         ];
-
-        function showNaviMessage(text, duration = 4500) {
+        function showNaviMessage(text, duration = 4000) {
             clearTimeout(naviTimeout);
-            naviSpeech.innerText = text;
-            naviSpeech.classList.remove('hidden');
-            
-            naviSpeech.style.animation = 'none';
-            naviSpeech.offsetHeight; 
-            naviSpeech.style.animation = null;
-
+            naviSpeech.innerText = text; naviSpeech.classList.remove('hidden');
+            naviSpeech.style.animation = 'none'; naviSpeech.offsetHeight; naviSpeech.style.animation = null;
             naviTimeout = setTimeout(() => { naviSpeech.classList.add('hidden'); }, duration);
         }
-
-        function naviTap() {
-            const randomMsg = naviMessages[Math.floor(Math.random() * naviMessages.length)];
-            showNaviMessage(randomMsg);
+        function naviTap(e) {
+            if(isDragging) return; // Si arrastró, no cuenta como click
+            showNaviMessage(naviMsgs[Math.floor(Math.random() * naviMsgs.length)]);
         }
-
-        // Navi se activa si no hacen click rápido
-        let idleTimer = setTimeout(() => showNaviMessage("¡Pss! ¿No sabes qué aromas elegir? Usa la opción Combo Mix.", 6000), 5000);
-        document.addEventListener('click', () => { clearTimeout(idleTimer); }, { once: true });
 
         // --- MENU LOGIC ---
         function toggleMenu(e) {
-            e.stopPropagation();
-            const m = document.getElementById('dropdown-menu');
+            e.stopPropagation(); const m = document.getElementById('dropdown-menu');
             if(m.classList.contains('show')) closeMenu();
             else { m.classList.remove('hidden'); setTimeout(() => m.classList.add('show'), 10); }
         }
