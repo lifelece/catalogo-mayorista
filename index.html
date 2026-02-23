@@ -68,7 +68,7 @@
         /* Estilos del Bot Navi */
         .navi-orb {
             background: radial-gradient(circle at 30% 30%, #ffffff, #8be9fd 40%, #0275d8 100%);
-            animation: pulse-glow 2s infinite; /* Le quitamos el float-navi para que el drag sea preciso */
+            animation: pulse-glow 2s infinite; 
         }
         .navi-wings::before, .navi-wings::after {
             content: ''; position: absolute; width: 20px; height: 10px;
@@ -85,11 +85,25 @@
         .speech-bubble { animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-origin: bottom right; }
         @keyframes pop-in { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* Evita menú del click derecho al hacer pulsación larga en celulares */
         .no-select { user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body class="font-sans antialiased pb-32 md:pb-12 relative"> 
+
+    <!-- ALERTA NAVEGADOR IN-APP -->
+    <div id="in-app-warning" class="hidden fixed top-0 w-full z-[100] bg-red-600 text-white px-4 py-3 shadow-xl transition-transform transform -translate-y-full duration-300">
+        <div class="max-w-3xl mx-auto flex items-start justify-between gap-3">
+            <div class="text-left flex-1">
+                <strong class="block text-xs md:text-sm mb-0.5 font-bold"><i class="fas fa-exclamation-triangle mr-1"></i> Mejora tu experiencia</strong>
+                <p class="text-[10px] md:text-xs text-red-50 leading-tight">
+                    Toca los <strong>3 puntitos (•••)</strong> arriba a la derecha y selecciona <strong>"Abrir en el navegador de Internet"</strong> para comprar sin errores.
+                </p>
+            </div>
+            <button onclick="document.getElementById('in-app-warning').classList.add('-translate-y-full'); setTimeout(()=>document.getElementById('in-app-warning').classList.add('hidden'), 300)" class="text-white bg-red-700 hover:bg-red-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 transition">
+                <i class="fas fa-times text-xs"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- NAV CON MENÚ -->
     <nav class="fixed top-0 w-full z-50 glass-nav h-14 md:h-16 flex items-center justify-between px-4 md:px-6">
@@ -127,25 +141,27 @@
                 Comienza tu propio negocio de perfumería. A mayor volumen, más baja tu precio automáticamente.
             </p>
 
-            <!-- TIER DE PRECIOS FRONTALES -->
+            <!-- TIER DE PRECIOS FRONTALES CON ATAJOS MÁGICOS -->
             <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6">
-                <div onclick="handlePriceClick()" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-transform">
+                <!-- Parámetros: (Ctd, Nombre Nivel, Ganancia Neta, Id Caja Destino) -->
+                <div onclick="handlePriceClick(20, 'Emprendedor', 180, 'combo-20')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-all hover:border-black hover:shadow-md">
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Emprendedor</div>
                     <div class="text-xl md:text-3xl font-bold text-primary my-1">$6.00</div>
                     <div class="text-[9px] md:text-xs text-gray-500">Desde 20 uds.</div>
                 </div>
-                <div onclick="handlePriceClick()" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border-2 border-primary shadow-md transform scale-105 z-10 text-center relative active:scale-95 transition-transform">
+                <div onclick="handlePriceClick(50, 'Negocio', 525, 'combo-50')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border-2 border-primary shadow-md transform scale-105 z-10 text-center relative active:scale-95 transition-all hover:shadow-lg">
                     <div class="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[8px] px-2 py-0.5 rounded-full whitespace-nowrap">Más Popular</div>
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-primary">Negocio</div>
                     <div class="text-2xl md:text-4xl font-bold text-primary my-1">$4.50</div>
                     <div class="text-[9px] md:text-xs text-gray-500">Desde 50 uds.</div>
                 </div>
-                <div onclick="handlePriceClick()" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-transform">
+                <div onclick="handlePriceClick(100, 'Mayorista', 1150, 'combo-100')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-all hover:border-black hover:shadow-md">
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Mayorista</div>
                     <div class="text-xl md:text-3xl font-bold text-primary my-1">$3.50</div>
                     <div class="text-[9px] md:text-xs text-gray-500">100+ uds.</div>
                 </div>
             </div>
+            <p class="text-[10px] text-gray-400 mt-2"><i class="fas fa-hand-pointer"></i> Toca un precio para ver cuánto puedes ganar.</p>
         </div>
     </header>
 
@@ -209,18 +225,18 @@
             <p class="text-xs text-gray-500 mb-8 max-w-md mx-auto">Seleccionaremos lo más top en ventas. Solo dinos cuántos perfumes quieres importar.</p>
 
             <div class="grid gap-4 md:grid-cols-3">
-                <button onclick="addComboToCart(20, 'Emprendedor')" class="bg-white p-5 rounded-2xl border-2 border-gray-200 hover:border-black transition-all hover:shadow-md active:scale-95">
+                <button id="combo-20" onclick="addComboToCart(20, 'Emprendedor')" class="bg-white p-5 rounded-2xl border-2 border-gray-200 hover:border-black transition-all hover:shadow-md active:scale-95 duration-300">
                     <div class="text-lg font-bold">Caja de 20 uds</div>
                     <div class="text-sm text-gray-500 mt-1">Surtido Básico</div>
                     <div class="mt-4 text-xl font-serif font-bold text-primary">$120.00 <span class="text-[10px] font-sans text-gray-400 font-normal">($6.00 c/u)</span></div>
                 </button>
-                <button onclick="addComboToCart(50, 'Negocio')" class="bg-white p-5 rounded-2xl border-2 border-orange-400 hover:border-black transition-all hover:shadow-md transform md:-translate-y-2 active:scale-95 relative">
+                <button id="combo-50" onclick="addComboToCart(50, 'Negocio')" class="bg-white p-5 rounded-2xl border-2 border-orange-400 hover:border-black transition-all hover:shadow-md transform md:-translate-y-2 active:scale-95 relative duration-300">
                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white text-[9px] font-bold px-3 py-0.5 rounded-full">Recomendada</div>
                     <div class="text-lg font-bold">Caja de 50 uds</div>
                     <div class="text-sm text-gray-500 mt-1">Surtido Premium</div>
                     <div class="mt-4 text-2xl font-serif font-bold text-primary">$225.00 <span class="text-[10px] font-sans text-gray-400 font-normal">($4.50 c/u)</span></div>
                 </button>
-                <button onclick="addComboToCart(100, 'Mayorista')" class="bg-white p-5 rounded-2xl border-2 border-gray-200 hover:border-black transition-all hover:shadow-md active:scale-95">
+                <button id="combo-100" onclick="addComboToCart(100, 'Mayorista')" class="bg-white p-5 rounded-2xl border-2 border-gray-200 hover:border-black transition-all hover:shadow-md active:scale-95 duration-300">
                     <div class="text-lg font-bold">Caja de 100 uds</div>
                     <div class="text-sm text-gray-500 mt-1">Surtido Total</div>
                     <div class="mt-4 text-xl font-serif font-bold text-primary">$350.00 <span class="text-[10px] font-sans text-gray-400 font-normal">($3.50 c/u)</span></div>
@@ -272,7 +288,7 @@
         </button>
     </div>
 
-    <!-- MODAL DE CARRITO DESPLEGABLE (SUPER MEJORA) -->
+    <!-- MODAL DE CARRITO DESPLEGABLE -->
     <div id="cart-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex justify-end transition-opacity opacity-0" onclick="closeCartModal(event)">
         <div id="cart-modal-content" class="bg-white w-full max-w-md h-full transform translate-x-full transition-transform duration-300 flex flex-col" onclick="event.stopPropagation()">
             <!-- Cabecera -->
@@ -307,7 +323,7 @@
                         <span id="cart-modal-subtotal">$0.00</span>
                     </div>
                     <div id="cart-discount-row" class="flex justify-between text-green-600 font-bold hidden">
-                        <span>Descuento (2% Zelle/USDT)</span>
+                        <span>Descuento (5% Zelle/USDT)</span>
                         <span id="cart-modal-discount">-$0.00</span>
                     </div>
                     <div class="h-px bg-gray-200 my-2"></div>
@@ -400,7 +416,16 @@
 
                 if (!sku || !name || isNaN(parseInt(sku[0]))) return;
                 if (!brand) brand = "Otras Marcas";
-                if (!img.startsWith('http')) img = 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';
+                
+                if (!img.startsWith('http')) {
+                    img = 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';
+                } else if (img.includes('drive.google.com/file/d/')) {
+                    const match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                    if (match && match[1]) {
+                        img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                    }
+                }
+
                 name = name.replace(/[\n\r]+/g, ' - ').replace(/\s{2,}/g, ' ').trim();
 
                 if(!processed[brand]) processed[brand] = [];
@@ -428,7 +453,7 @@
             top5.forEach((prod) => {
                 html += `
                 <div class="min-w-[140px] md:min-w-[160px] bg-white p-3 rounded-2xl border border-gray-100 shadow-sm snap-center flex flex-col items-center text-center">
-                    <img src="${prod.img}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select" 
+                    <img src="${prod.img}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select cursor-pointer" 
                          onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
                          ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
                     <p class="font-bold text-[11px] md:text-xs text-textMain leading-tight truncate w-full mb-1">${prod.name}</p>
@@ -446,7 +471,7 @@
         // --- 3. VISTA PREVIA DE IMÁGENES (LONG PRESS) ---
         let pressTimer;
         function startPress(imgSrc) {
-            pressTimer = setTimeout(() => { showPreview(imgSrc); }, 400); // 400ms para activar
+            pressTimer = setTimeout(() => { showPreview(imgSrc); }, 400); 
         }
         function endPress() {
             clearTimeout(pressTimer);
@@ -461,7 +486,7 @@
                 imgEl.classList.remove('scale-95');
                 imgEl.classList.add('scale-100');
             }, 10);
-            if(window.navigator && window.navigator.vibrate) navigator.vibrate(50); // Vibración leve
+            if(window.navigator && window.navigator.vibrate) navigator.vibrate(50); 
         }
         function hidePreview() {
             const modal = document.getElementById('image-preview-modal');
@@ -472,27 +497,45 @@
             setTimeout(() => modal.classList.add('hidden'), 300);
         }
 
-        // --- 4. INTERACCIONES DEL USUARIO Y RAMIFICACIONES ---
-        let priceClicks = 0;
-        function handlePriceClick() {
-            priceClicks++;
-            if (priceClicks === 1) showNaviMessage("Estos son nuestros precios por volumen. ¡Abajo puedes armar tu pedido!");
-            else if (priceClicks === 2) showNaviMessage("Recuerda: Si llevas 100+, te queda en $3.50 cada uno.");
-            else if (priceClicks >= 3) {
-                showNaviMessage("¡Oye! No puedes comprar tocando aquí 😅 Elige una opción más abajo.");
-                priceClicks = 0; // reset
-            }
+        // --- 4. TRAMPA PSICOLÓGICA DE PRECIOS (NUEVO) ---
+        function handlePriceClick(qty, tierName, profit, boxId) {
+            // 1. Abrimos inmediatamente la zona del Combo Mix
+            setFlowMode('combo', true); // Le pasamos true para indicar que viene del atajo
+
+            // 2. Navi lanza un mensaje de ventas hiper persuasivo
+            showNaviMessage(`¡Excelente! Con el nivel ${tierName} tu ganancia neta estimada es de $${profit}. ¡Toca la caja para confirmar!`, 6000);
+
+            // 3. Hacemos scroll hacia la caja específica y le damos un efecto de latido visual
+            setTimeout(() => {
+                const targetBox = document.getElementById(boxId);
+                if (targetBox) {
+                    const y = targetBox.getBoundingClientRect().top + window.pageYOffset - 150; // -150 para que quede bien centrado
+                    window.scrollTo({top: y, behavior: 'smooth'});
+
+                    // Agregamos clases de Tailwind para hacerla brillar y crecer
+                    targetBox.classList.add('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50');
+                    
+                    // Se lo quitamos después de 1.5 segundos
+                    setTimeout(() => {
+                        targetBox.classList.remove('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50');
+                    }, 1500);
+                }
+            }, 350); // Pequeño retraso para que la sección tenga tiempo de desplegarse
         }
 
-        function setFlowMode(mode) {
+        function setFlowMode(mode, fromShortcut = false) {
             const catZone = document.getElementById('catalog-zone');
             const comboZone = document.getElementById('combo-mix-zone');
 
             if (mode === 'combo') {
                 catZone.classList.add('hidden');
                 comboZone.classList.remove('hidden');
-                window.scrollTo({top: comboZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
-                showNaviMessage("¡Excelente! Toca la caja que se ajuste a tu presupuesto.");
+                
+                // Si NO viene del atajo mágico, mandamos un mensaje normal
+                if(!fromShortcut){
+                    window.scrollTo({top: comboZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
+                    showNaviMessage("¡Excelente! Toca la caja que se ajuste a tu presupuesto.");
+                }
             } else if (mode === 'catalog') {
                 comboZone.classList.add('hidden');
                 catZone.classList.remove('hidden');
@@ -561,7 +604,7 @@
                     let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
                     html += `
                     <div class="product-card flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm hover:border-black transition-all" data-search="${searchTerms}">
-                        <img src="${prod.img}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0 no-select cursor-pointer"
+                        <img src="${prod.img}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0 no-select cursor-pointer"
                              onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
                              ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
                         
@@ -601,7 +644,7 @@
             saveCartToStorage();
             Toastify({text: `📦 Caja de ${qty} uds seleccionada`, duration: 2500, style: { background: "#FF9500", borderRadius: "10px", fontSize: "13px", fontWeight: "bold" }}).showToast();
             calculateTotals();
-            openCartModal(); // Abre el carrito directo para confirmar
+            openCartModal(); 
         }
 
         function updateCart(productId, change, fromTop5 = false) {
@@ -622,7 +665,7 @@
             if (change > 0) Toastify({text: `+1 Añadido`, duration: 800, gravity: "bottom", style: { background: "#1D1D1F", borderRadius: "10px", fontSize: "12px" }}).showToast();
             
             calculateTotals();
-            renderCartModalItems(); // Actualizar lista si el modal está abierto
+            renderCartModalItems(); 
         }
 
         function removeProduct(productId) {
@@ -683,13 +726,11 @@
                 modal.classList.remove('opacity-0');
                 content.classList.remove('translate-x-full');
             }, 10);
-            document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeCartModal(e) {
-            // Si hay un evento, asegurarse de que tocó el fondo oscuro o el botón X
             if(e && e.target.id !== 'cart-modal') return; 
-            
             const modal = document.getElementById('cart-modal');
             const content = document.getElementById('cart-modal-content');
             modal.classList.add('opacity-0');
@@ -751,25 +792,22 @@
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
             let currentPrice = (totalQty >= 100) ? PRICES.top : ((totalQty >= 50) ? PRICES.mid : PRICES.base);
 
-            // Confeti si llega a 100
             if (totalQty >= 100 && !confettiFired) {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1D1D1F', '#d48197', '#FF9500'] });
                 confettiFired = true;
             } else if (totalQty < 100) confettiFired = false;
 
-            // Actualizar vista barra inferior
             document.getElementById('sticky-qty').innerText = totalQty;
             const stickyCart = document.getElementById('sticky-cart');
             if (totalQty > 0) stickyCart.classList.remove('translate-y-full');
             else stickyCart.classList.add('translate-y-full');
 
-            // Cálculos financieros
             const subtotal = totalQty * currentPrice;
             let discount = 0;
             const discountRow = document.getElementById('cart-discount-row');
 
             if (paymentMethod === 'zelle' && totalQty >= 20) {
-                discount = subtotal * 0.02; // 2% de descuento
+                discount = subtotal * 0.05; 
                 if(discountRow) {
                     discountRow.classList.remove('hidden');
                     document.getElementById('cart-modal-discount').innerText = `-$${discount.toFixed(2)}`;
@@ -780,13 +818,11 @@
 
             const totalFinal = subtotal - discount;
 
-            // Actualizar UI del Modal
             if(document.getElementById('cart-modal-qty')) document.getElementById('cart-modal-qty').innerText = totalQty;
             if(document.getElementById('cart-modal-subtotal')) document.getElementById('cart-modal-subtotal').innerText = `$${subtotal.toFixed(2)}`;
             if(document.getElementById('cart-modal-total')) document.getElementById('cart-modal-total').innerText = `$${totalFinal.toFixed(2)}`;
             document.getElementById('sticky-total').innerText = `$${totalFinal.toFixed(2)}`;
 
-            // Botones de Enviar
             const btnModal = document.getElementById('cart-modal-btn');
             if(btnModal) {
                 if (totalQty >= 20) {
@@ -810,9 +846,9 @@
 
             let currentPrice = totalQty >= 100 ? PRICES.top : (totalQty >= 50 ? PRICES.mid : PRICES.base);
             let subtotal = totalQty * currentPrice;
-            let discount = (paymentMethod === 'zelle') ? (subtotal * 0.02) : 0;
+            let discount = (paymentMethod === 'zelle') ? (subtotal * 0.05) : 0;
             let total = subtotal - discount;
-            let payText = (paymentMethod === 'zelle') ? "Zelle / Binance Pay (Descuento 2% Aplicado ✅)" : "Pago Móvil / Efectivo";
+            let payText = (paymentMethod === 'zelle') ? "Zelle / Binance Pay (Descuento 5% Aplicado ✅)" : "Pago Móvil / Efectivo";
 
             let orderDetails = "";
             if (isComboMode) {
@@ -833,7 +869,7 @@
 
         // --- 8. NAVI ARRASTRABLE (DRAG & DROP) ---
         const navi = document.getElementById('navi-bot');
-        let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+        let isDragging = false, currentX = 0, currentY = 0, initialX = 0, initialY = 0, xOffset = 0, yOffset = 0;
 
         function dragStart(e) {
             initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
@@ -841,11 +877,17 @@
             if (e.target.closest('.navi-orb')) isDragging = true;
         }
 
-        function dragEnd(e) { initialX = currentX; initialY = currentY; setTimeout(()=> isDragging = false, 10); }
+        function dragEnd(e) { 
+            if (currentX !== undefined && currentY !== undefined) {
+                initialX = currentX; 
+                initialY = currentY; 
+            }
+            setTimeout(()=> isDragging = false, 10); 
+        }
 
         function drag(e) {
             if (isDragging) {
-                e.preventDefault(); // Evita scroll de pantalla mientras arrastras
+                e.preventDefault(); 
                 currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
                 currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
                 xOffset = currentX; yOffset = currentY;
@@ -854,7 +896,6 @@
         }
         function setTranslate(xPos, yPos, el) { el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`; }
 
-        // Eventos Drag
         navi.addEventListener("touchstart", dragStart, {passive: false});
         navi.addEventListener("touchend", dragEnd, false);
         navi.addEventListener("touchmove", drag, {passive: false});
@@ -867,7 +908,7 @@
         let naviTimeout;
         const naviMsgs = [
             "¿Indeciso? Toca 'Quiero un Combo Mix'.",
-            "Recuerda: Si pagas por Binance/Zelle tienes 2% de Dcto.",
+            "Recuerda: Si pagas por Binance/Zelle tienes 5% de Dcto.",
             "Deja pegado el dedo en una foto para verla grande.",
             "A mayor volumen, mayor es tu ganancia."
         ];
@@ -878,7 +919,7 @@
             naviTimeout = setTimeout(() => { naviSpeech.classList.add('hidden'); }, duration);
         }
         function naviTap(e) {
-            if(isDragging) return; // Si arrastró, no cuenta como click
+            if(isDragging) return; 
             showNaviMessage(naviMsgs[Math.floor(Math.random() * naviMsgs.length)]);
         }
 
