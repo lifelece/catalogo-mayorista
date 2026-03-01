@@ -177,8 +177,11 @@
                 Escanenado Excel y Carpeta de Drive...
             </div>
 
-            <div id="error-indicator" class="hidden text-center py-4 text-xs text-red-500 font-bold">
-                <i class="fas fa-exclamation-triangle mr-2"></i> Error al cargar el catálogo de Drive. Verifica tu conexión.
+            <!-- RASTREADOR DE ERRORES VISUAL (MEJORADO) -->
+            <div id="error-indicator" class="hidden text-center py-4 text-xs font-bold bg-red-50 text-red-600 border border-red-200 rounded-xl p-4 mx-auto max-w-2xl break-words">
+                <i class="fas fa-bug mr-2 text-xl mb-2 block"></i> 
+                <strong class="uppercase text-[10px] tracking-widest text-red-800">Causa exacta del fallo:</strong>
+                <p id="error-text" class="mt-2 font-mono font-normal"></p>
             </div>
 
             <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory hidden">
@@ -365,9 +368,8 @@
         AOS.init({ duration: 600, once: true, offset: 50 });
 
         // ==========================================
-        // CONFIGURACIÓN DEL BACKEND (GOOGLE APPS SCRIPT)
+        // URL EXACTA DE TU APPS SCRIPT (VERSIÓN 3)
         // ==========================================
-        // Esta URL es la que publicaste con éxito en Apps Script.
         const API_URL = "https://script.google.com/macros/s/AKfycbzEvk_VbWIFs4sChKj9IAQcwbS-q1BdyfUM27zDiIEZ_d8Yw40bfyo4CkA8T7bfArl8lQ/exec";
         
         let catalogData = [];
@@ -377,20 +379,27 @@
         let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- 1. LECTURA DESDE EL BACKEND (DRIVE + EXCEL) ---
+        // --- 1. LECTURA DESDE EL BACKEND CON RASTREADOR DE ERRORES ---
         async function loadCatalog() {
             try {
-                // Hacemos la petición a tu script de Google
-                const response = await fetch(API_URL);
-                if (!response.ok) throw new Error('Network error');
+                // Fetch al backend (se le añade redirect "follow" por seguridad de Google)
+                const response = await fetch(API_URL, { redirect: "follow" });
                 
-                const data = await response.json();
+                // Extraemos la respuesta cruda primero
+                const rawText = await response.text();
                 
+                let data;
+                try {
+                    // Intentamos convertir a JSON (lo que debería devolver el backend si funciona)
+                    data = JSON.parse(rawText);
+                } catch (e) {
+                    // Si falla, significa que Google devolvió una página HTML de error o bloqueo
+                    throw new Error("Google Apps Script bloqueó la solicitud (Probablemente falta el permiso 'Cualquier Persona'). Respuesta parcial de Google: " + rawText.substring(0, 100) + "...");
+                }
+                
+                // Si el Script detectó un error dentro del código (ej. ID de Excel incorrecto)
                 if (data.error) {
-                    console.error("Error desde Apps Script:", data.error);
-                    document.getElementById('error-indicator').classList.remove('hidden');
-                    document.getElementById('loading-indicator').classList.add('hidden');
-                    return;
+                    throw new Error("Fallo interno en Drive/Excel: " + data.error);
                 }
 
                 catalogData = processJsonData(data);
@@ -401,13 +410,15 @@
                 renderCatalog();
 
             } catch (error) {
-                console.error("Error de conexión:", error);
+                // IMPRIMIMOS EL ERROR EXACTO EN PANTALLA ROJA
+                console.error("Error capturado por el Rastreador:", error);
                 document.getElementById('loading-indicator').classList.add('hidden');
                 document.getElementById('error-indicator').classList.remove('hidden');
+                document.getElementById('error-text').innerText = error.message;
             }
         }
 
-        // Agrupa el JSON y añade el truco del TEST visual
+        // Agrupa el JSON y añade la lógica visual para saber qué fotos faltan
         function processJsonData(data) {
             let processed = {};
             flatProducts = []; 
@@ -416,12 +427,11 @@
                 let brand = item.brand || "Otras Marcas";
                 if(!processed[brand]) processed[brand] = [];
                 
-                // --- TRUCO PARA EL TEST ---
-                // Si la imagen devuelta por el servidor es el placeholder genérico de "Unsplash",
-                // la cambiamos por un cuadro gris que dice "Sin Foto" para que te des cuenta rápido.
+                // --- TRUCO PARA EL TEST VISUAL ---
                 let finalImg = item.img;
-                if (finalImg.includes('unsplash.com')) {
-                    finalImg = "https://placehold.co/150x150/f5f5f7/a1a1aa?text=Sin+Foto";
+                // Si el backend no encontró la imagen en Drive y devolvió null o un unsplash de relleno:
+                if (!finalImg || finalImg.includes('unsplash.com')) {
+                    finalImg = "https://placehold.co/150x150/f5f5f7/a1a1aa?text=Sin+Foto"; // Cuadro gris indicando que falta
                 }
                 // ---------------------------
 
@@ -910,5 +920,3 @@
     </script>
 </body>
 </html>
-
-
