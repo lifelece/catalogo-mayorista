@@ -17,7 +17,6 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     
     <!-- LIBRERÍAS (Vía CDN) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -141,9 +140,7 @@
                 Comienza tu propio negocio de perfumería. A mayor volumen, más baja tu precio automáticamente.
             </p>
 
-            <!-- TIER DE PRECIOS FRONTALES CON ATAJOS MÁGICOS -->
             <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6">
-                <!-- Parámetros: (Ctd, Nombre Nivel, Ganancia Neta, Id Caja Destino) -->
                 <div onclick="handlePriceClick(20, 'Emprendedor', 180, 'combo-20')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-all hover:border-black hover:shadow-md">
                     <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Emprendedor</div>
                     <div class="text-xl md:text-3xl font-bold text-primary my-1">$6.00</div>
@@ -175,8 +172,13 @@
                 <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">Actualizado Hoy</span>
             </div>
             
-            <div id="loading-indicator" class="text-center py-4 text-xs text-gray-500 font-bold">
-                <i class="fas fa-sync fa-spin mr-2"></i> Conectando con inventario...
+            <div id="loading-indicator" class="text-center py-8 text-sm text-gray-600 font-bold flex flex-col items-center justify-center">
+                <i class="fas fa-circle-notch fa-spin text-3xl mb-3 text-primary"></i>
+                Cargando imágenes y catálogo desde Drive...
+            </div>
+
+            <div id="error-indicator" class="hidden text-center py-4 text-xs text-red-500 font-bold">
+                <i class="fas fa-exclamation-triangle mr-2"></i> Error al cargar el catálogo. Verifica que no haya bloqueos de conexión.
             </div>
 
             <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory hidden">
@@ -362,10 +364,12 @@
     <script>
         AOS.init({ duration: 600, once: true, offset: 50 });
 
-        const GOOGLE_SHEETS_CSV_URLS = [
-            "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1oGbEbTM6a72UfVMLK9CipGVh3nHAJNHDk0jyThzzYZ8-VMKXzWowSgw8eJzcDQ/pub?gid=1434393790&single=true&output=csv"
-        ]; 
-
+        // ==========================================
+        // CONFIGURACIÓN DE TU NUEVO BACKEND
+        // ==========================================
+        // AQUÍ ESTÁ TU URL REAL DE GOOGLE APPS SCRIPT:
+        const API_URL = "https://script.google.com/macros/s/AKfycbzEvk_VbWIFs4sChKj9IAQcwbS-q1BdyfUM27zDiIEZ_d8Yw40bfyo4CkA8T7bfArl8lQ/exec"; 
+        
         let catalogData = [];
         let flatProducts = []; 
         let cart = {}; 
@@ -373,71 +377,66 @@
         let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- 1. LECTURA DE GOOGLE SHEETS ---
-        function loadCatalog() {
-            const validUrls = GOOGLE_SHEETS_CSV_URLS.filter(url => url && url.trim() !== "");
+        // --- 1. LECTURA DESDE EL BACKEND ---
+        async function loadCatalog() {
+            if (!API_URL || API_URL === "URL_DE_TU_APLICACION_WEB_DE_APPS_SCRIPT") {
+                document.getElementById('loading-indicator').innerHTML = "<span class='text-red-500'>⚠️ Falta configurar la API URL del Backend. Revisa el código fuente.</span>";
+                return;
+            }
 
-            if(validUrls.length > 0) {
-                let allCombinedData = [];
-                let promises = validUrls.map(url => {
-                    return new Promise((resolve) => {
-                        Papa.parse(url.trim(), {
-                            download: true, header: false, skipEmptyLines: true,
-                            complete: function(results) { resolve(results.data); },
-                            error: function() { resolve([]); }
-                        });
-                    });
-                });
+            try {
+                // Hacemos la petición a Google Apps Script
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.error("Error desde Apps Script:", data.error);
+                    document.getElementById('error-indicator').classList.remove('hidden');
+                    document.getElementById('loading-indicator').classList.add('hidden');
+                    return;
+                }
 
-                Promise.all(promises).then(resultsArray => {
-                    resultsArray.forEach(hojaData => { allCombinedData = allCombinedData.concat(hojaData); });
-                    if (allCombinedData.length > 0) catalogData = processSheetsData(allCombinedData);
-                    
-                    if(document.getElementById('loading-indicator')) document.getElementById('loading-indicator').classList.add('hidden');
-                    generateTop5();
-                    renderBrandFilters();
-                    renderCatalog();
-                });
+                catalogData = processJsonData(data);
+                
+                document.getElementById('loading-indicator').classList.add('hidden');
+                generateTop5();
+                renderBrandFilters();
+                renderCatalog();
+
+            } catch (error) {
+                console.error("Error al conectar con el backend:", error);
+                document.getElementById('loading-indicator').classList.add('hidden');
+                document.getElementById('error-indicator').classList.remove('hidden');
             }
         }
 
-        function processSheetsData(data) {
+        // Agrupa el JSON recibido del servidor por Marcas
+        function processJsonData(data) {
             let processed = {};
             flatProducts = []; 
 
-            data.forEach((row, index) => {
-                if (index === 0 && row.join('').toLowerCase().includes('sku')) return; 
-
-                const sku = (row[0] || '').trim();
-                let img = (row[1] || '').trim();
-                const cap = (row[2] || '').trim();
-                let name = (row[3] || '').trim();
-                let brand = (row[4] || '').trim();
-
-                if (!sku || !name || isNaN(parseInt(sku[0]))) return;
-                if (!brand) brand = "Otras Marcas";
-                
-                if (!img.startsWith('http')) {
-                    img = 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';
-                } else if (img.includes('drive.google.com/file/d/')) {
-                    const match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (match && match[1]) {
-                        img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                    }
-                }
-
-                name = name.replace(/[\n\r]+/g, ' - ').replace(/\s{2,}/g, ' ').trim();
-
+            data.forEach(item => {
+                let brand = item.brand || "Otras Marcas";
                 if(!processed[brand]) processed[brand] = [];
-                if(!processed[brand].some(p => p.id === sku)) {
-                    const prodObj = { id: sku, name: name, cap: cap, img: img, brand: brand };
-                    processed[brand].push(prodObj);
-                    flatProducts.push(prodObj); 
-                }
+                
+                const prodObj = { 
+                    id: item.sku, 
+                    name: item.name, 
+                    cap: item.cap, 
+                    img: item.img, 
+                    brand: brand 
+                };
+                
+                processed[brand].push(prodObj);
+                flatProducts.push(prodObj); 
             });
             
             let finalArray = [];
-            for (let brand in processed) { if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); }
+            for (let brand in processed) { 
+                if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); 
+            }
             return finalArray;
         }
 
@@ -453,7 +452,7 @@
             top5.forEach((prod) => {
                 html += `
                 <div class="min-w-[140px] md:min-w-[160px] bg-white p-3 rounded-2xl border border-gray-100 shadow-sm snap-center flex flex-col items-center text-center">
-                    <img src="${prod.img}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select cursor-pointer" 
+                    <img src="${prod.img}" onerror="this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80'" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select cursor-pointer" 
                          onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
                          ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
                     <p class="font-bold text-[11px] md:text-xs text-textMain leading-tight truncate w-full mb-1">${prod.name}</p>
@@ -473,9 +472,7 @@
         function startPress(imgSrc) {
             pressTimer = setTimeout(() => { showPreview(imgSrc); }, 400); 
         }
-        function endPress() {
-            clearTimeout(pressTimer);
-        }
+        function endPress() { clearTimeout(pressTimer); }
         function showPreview(imgSrc) {
             const modal = document.getElementById('image-preview-modal');
             const imgEl = document.getElementById('preview-img-element');
@@ -497,30 +494,19 @@
             setTimeout(() => modal.classList.add('hidden'), 300);
         }
 
-        // --- 4. TRAMPA PSICOLÓGICA DE PRECIOS (NUEVO) ---
+        // --- 4. NAVEGACIÓN DE SECCIONES ---
         function handlePriceClick(qty, tierName, profit, boxId) {
-            // 1. Abrimos inmediatamente la zona del Combo Mix
-            setFlowMode('combo', true); // Le pasamos true para indicar que viene del atajo
-
-            // 2. Navi lanza un mensaje de ventas hiper persuasivo
+            setFlowMode('combo', true); 
             showNaviMessage(`¡Excelente! Con el nivel ${tierName} tu ganancia neta estimada es de $${profit}. ¡Toca la caja para confirmar!`, 6000);
-
-            // 3. Hacemos scroll hacia la caja específica y le damos un efecto de latido visual
             setTimeout(() => {
                 const targetBox = document.getElementById(boxId);
                 if (targetBox) {
-                    const y = targetBox.getBoundingClientRect().top + window.pageYOffset - 150; // -150 para que quede bien centrado
+                    const y = targetBox.getBoundingClientRect().top + window.pageYOffset - 150; 
                     window.scrollTo({top: y, behavior: 'smooth'});
-
-                    // Agregamos clases de Tailwind para hacerla brillar y crecer
                     targetBox.classList.add('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50');
-                    
-                    // Se lo quitamos después de 1.5 segundos
-                    setTimeout(() => {
-                        targetBox.classList.remove('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50');
-                    }, 1500);
+                    setTimeout(() => { targetBox.classList.remove('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50'); }, 1500);
                 }
-            }, 350); // Pequeño retraso para que la sección tenga tiempo de desplegarse
+            }, 350); 
         }
 
         function setFlowMode(mode, fromShortcut = false) {
@@ -528,20 +514,15 @@
             const comboZone = document.getElementById('combo-mix-zone');
 
             if (mode === 'combo') {
-                catZone.classList.add('hidden');
-                comboZone.classList.remove('hidden');
-                
-                // Si NO viene del atajo mágico, mandamos un mensaje normal
+                catZone.classList.add('hidden'); comboZone.classList.remove('hidden');
                 if(!fromShortcut){
                     window.scrollTo({top: comboZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
                     showNaviMessage("¡Excelente! Toca la caja que se ajuste a tu presupuesto.");
                 }
             } else if (mode === 'catalog') {
-                comboZone.classList.add('hidden');
-                catZone.classList.remove('hidden');
+                comboZone.classList.add('hidden'); catZone.classList.remove('hidden');
                 if (isComboMode) {
-                    clearCartSilent();
-                    isComboMode = false;
+                    clearCartSilent(); isComboMode = false;
                     Toastify({ text: "Modo manual activado. Carrito reseteado.", duration: 2000, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
                 }
                 setTimeout(() => AOS.refresh(), 200);
@@ -592,7 +573,7 @@
             const container = document.getElementById('catalog-container');
             if(!container) return;
             let html = '';
-            catalogData.forEach((category, index) => {
+            catalogData.forEach((category) => {
                 html += `
                 <div class="category-block mb-10" data-brand="${category.brand}">
                     <h3 class="font-serif text-xl font-bold border-b-2 border-gray-100 pb-2 mb-4 text-primary flex items-center gap-2">
@@ -649,8 +630,7 @@
 
         function updateCart(productId, change, fromTop5 = false) {
             if (isComboMode) {
-                clearCartSilent();
-                isComboMode = false;
+                clearCartSilent(); isComboMode = false;
                 Toastify({ text: "Modo manual activado.", duration: 1500, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
                 if(fromTop5) document.getElementById('catalog-zone').classList.remove('hidden');
             }
@@ -716,16 +696,13 @@
             }
         }
 
-        // --- 7. MODAL DE CARRITO (VISUALIZACIÓN Y PAGOS) ---
+        // --- 7. MODAL DE CARRITO ---
         function openCartModal() {
             renderCartModalItems();
             const modal = document.getElementById('cart-modal');
             const content = document.getElementById('cart-modal-content');
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('translate-x-full');
-            }, 10);
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('translate-x-full'); }, 10);
             document.body.style.overflow = 'hidden'; 
         }
 
@@ -733,8 +710,7 @@
             if(e && e.target.id !== 'cart-modal') return; 
             const modal = document.getElementById('cart-modal');
             const content = document.getElementById('cart-modal-content');
-            modal.classList.add('opacity-0');
-            content.classList.add('translate-x-full');
+            modal.classList.add('opacity-0'); content.classList.add('translate-x-full');
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
             document.body.style.overflow = 'auto';
         }
@@ -782,10 +758,7 @@
             container.innerHTML = html;
         }
 
-        function setPaymentMethod(method) {
-            paymentMethod = method;
-            calculateTotals();
-        }
+        function setPaymentMethod(method) { paymentMethod = method; calculateTotals(); }
 
         let confettiFired = false;
         function calculateTotals() {
@@ -828,6 +801,7 @@
                 if (totalQty >= 20) {
                     btnModal.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
                     btnModal.classList.add('bg-black', 'hover:bg-gray-800');
+                    btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Confirmar y Enviar a WhatsApp`;
                 } else {
                     btnModal.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
                     btnModal.classList.remove('bg-black', 'hover:bg-gray-800');
@@ -839,10 +813,7 @@
 
         function sendWhatsAppOrder() {
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-            if (totalQty < 20) {
-                showNaviMessage("Aún te faltan fragancias para llegar al mínimo (20).");
-                return;
-            }
+            if (totalQty < 20) { showNaviMessage("Aún te faltan fragancias para llegar al mínimo (20)."); return; }
 
             let currentPrice = totalQty >= 100 ? PRICES.top : (totalQty >= 50 ? PRICES.mid : PRICES.base);
             let subtotal = totalQty * currentPrice;
@@ -863,7 +834,6 @@
             }
 
             const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo(a) para mi importación.%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*%0A%0AQuiero proceder con el pago.`;
-            
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
         }
 
@@ -878,10 +848,7 @@
         }
 
         function dragEnd(e) { 
-            if (currentX !== undefined && currentY !== undefined) {
-                initialX = currentX; 
-                initialY = currentY; 
-            }
+            if (currentX !== undefined && currentY !== undefined) { initialX = currentX; initialY = currentY; }
             setTimeout(()=> isDragging = false, 10); 
         }
 
@@ -891,10 +858,9 @@
                 currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
                 currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
                 xOffset = currentX; yOffset = currentY;
-                setTranslate(currentX, currentY, navi);
+                navi.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
             }
         }
-        function setTranslate(xPos, yPos, el) { el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`; }
 
         navi.addEventListener("touchstart", dragStart, {passive: false});
         navi.addEventListener("touchend", dragEnd, false);
@@ -903,7 +869,6 @@
         document.addEventListener("mouseup", dragEnd, false);
         document.addEventListener("mousemove", drag, false);
 
-        // Navi Mensajes
         const naviSpeech = document.getElementById('navi-speech');
         let naviTimeout;
         const naviMsgs = [
@@ -923,7 +888,6 @@
             showNaviMessage(naviMsgs[Math.floor(Math.random() * naviMsgs.length)]);
         }
 
-        // --- MENU LOGIC ---
         function toggleMenu(e) {
             e.stopPropagation(); const m = document.getElementById('dropdown-menu');
             if(m.classList.contains('show')) closeMenu();
