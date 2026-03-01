@@ -2,19 +2,18 @@
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
     <title>Socios CBO - Zona Mayorista</title>
     
-    <!-- Fuentes -->
+    <!-- Fuentes (Inter simula San Francisco de Apple) -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <!-- Iconos -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- LIBRERÍAS (Vía CDN) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -27,23 +26,26 @@
         theme: {
           extend: {
             colors: {
-              primary: "#1D1D1F",
-              accent: "#d48197",
-              surface: "#F5F5F7",
-              textMain: "#1D1D1F",
-              textLight: "#86868B",
-              borderSoft: "#D2D2D7",
-              success: "#34C759",
-              warning: "#FF9500",
+              iosBg: "#F2F2F7", /* Fondo gris base de iOS */
+              iosCard: "#FFFFFF",
+              iosBlue: "#007AFF",
+              iosGreen: "#34C759",
+              iosOrange: "#FF9500",
+              iosRed: "#FF3B30",
+              textMain: "#1C1C1E",
+              textLight: "#8E8E93",
             },
             fontFamily: {
-              sans: ["Inter", "sans-serif"],
-              serif: ["Playfair Display", "serif"], 
+              sans: ["Inter", "-apple-system", "system-ui", "sans-serif"],
             },
             boxShadow: {
-                'card': '0 4px 24px rgba(0, 0, 0, 0.04)', 
-                'gold': '0 10px 40px -10px rgba(212, 129, 151, 0.3)',
-                'navi': '0 0 20px 5px rgba(139, 233, 253, 0.6)'
+                'ios': '0 4px 20px rgba(0,0,0,0.05)',
+                'ios-float': '0 10px 40px rgba(0,0,0,0.12)',
+                'ios-modal': '0 -10px 40px rgba(0,0,0,0.15)'
+            },
+            transitionTimingFunction: {
+                'apple': 'cubic-bezier(0.32, 0.72, 0, 1)',
+                'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
             }
           },
         },
@@ -51,402 +53,372 @@
     </script>
 
     <style>
-        body { background-color: #ffffff; color: #1D1D1F; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        body { background-color: #F2F2F7; color: #1C1C1E; -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+        
+        /* Ocultar scrollbars para look más limpio */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        #dropdown-menu { transform-origin: top right; transition: all 0.2s ease; }
-        #dropdown-menu.show { opacity: 1; transform: scale(1); visibility: visible; }
-        .cart-sticky-bottom { box-shadow: 0 -4px 20px rgba(0,0,0,0.08); }
-
-        /* Carrusel Top 5 Snap */
         .snap-x-mandatory { scroll-snap-type: x mandatory; }
         .snap-center { scroll-snap-align: center; }
 
-        /* Estilos del Bot Navi */
-        .navi-orb {
-            background: radial-gradient(circle at 30% 30%, #ffffff, #8be9fd 40%, #0275d8 100%);
-            animation: pulse-glow 2s infinite; 
-        }
-        .navi-wings::before, .navi-wings::after {
-            content: ''; position: absolute; width: 20px; height: 10px;
-            background: rgba(139, 233, 253, 0.4); border-radius: 50%;
-            top: 50%; transform-origin: center; filter: blur(2px); z-index: -1;
-        }
-        .navi-wings::before { left: -15px; animation: flap-left 0.2s infinite alternate; }
-        .navi-wings::after { right: -15px; animation: flap-right 0.2s infinite alternate; }
+        /* Efecto Glass de Apple */
+        .apple-glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 0.5px solid rgba(0,0,0,0.1); }
+        .apple-glass-dark { background: rgba(28, 28, 30, 0.8); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 0.5px solid rgba(255,255,255,0.1); }
 
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px 5px rgba(139, 233, 253, 0.5); } 50% { box-shadow: 0 0 25px 10px rgba(139, 233, 253, 0.8); } }
-        @keyframes flap-left { from { transform: rotate(20deg) translateY(-50%); } to { transform: rotate(-20deg) translateY(-50%); } }
-        @keyframes flap-right { from { transform: rotate(-20deg) translateY(-50%); } to { transform: rotate(20deg) translateY(-50%); } }
-
-        .speech-bubble { animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-origin: bottom right; }
-        @keyframes pop-in { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        /* Animaciones Pop (Rebote) */
+        .pop-anim { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
         
+        .pulse-light { animation: pulseL 2s infinite; }
+        @keyframes pulseL { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(0.95); } }
+
+        /* No select */
         .no-select { user-select: none; -webkit-touch-callout: none; }
+        .progress-bar-fill { transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1); }
     </style>
 </head>
-<body class="font-sans antialiased pb-32 md:pb-12 relative"> 
+<body class="font-sans antialiased relative"> 
 
-    <!-- ALERTA NAVEGADOR IN-APP -->
-    <div id="in-app-warning" class="hidden fixed top-0 w-full z-[100] bg-red-600 text-white px-4 py-3 shadow-xl transition-transform transform -translate-y-full duration-300">
-        <div class="max-w-3xl mx-auto flex items-start justify-between gap-3">
-            <div class="text-left flex-1">
-                <strong class="block text-xs md:text-sm mb-0.5 font-bold"><i class="fas fa-exclamation-triangle mr-1"></i> Mejora tu experiencia</strong>
-                <p class="text-[10px] md:text-xs text-red-50 leading-tight">
-                    Toca los <strong>3 puntitos (•••)</strong> arriba a la derecha y selecciona <strong>"Abrir en el navegador de Internet"</strong> para comprar sin errores.
-                </p>
+    <!-- NAV ESTILO APPLE (Glassmorphism & Search) -->
+    <nav class="fixed top-0 w-full z-50 apple-glass pt-[env(safe-area-inset-top)] pb-3">
+        <div class="flex items-center justify-between px-4 md:px-6 pt-2 mb-3">
+            <span class="font-bold text-xl tracking-tight text-textMain">MiniPerfumes<span class="text-iosOrange">CBO</span></span>
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20asesoría." target="_blank" class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-iosBlue hover:bg-blue-50 transition active:scale-95">
+                    <i class="fab fa-whatsapp text-lg"></i>
+                </a>
             </div>
-            <button onclick="document.getElementById('in-app-warning').classList.add('-translate-y-full'); setTimeout(()=>document.getElementById('in-app-warning').classList.add('hidden'), 300)" class="text-white bg-red-700 hover:bg-red-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 transition">
-                <i class="fas fa-times text-xs"></i>
-            </button>
         </div>
-    </div>
-
-    <!-- NAV CON MENÚ -->
-    <nav class="fixed top-0 w-full z-50 glass-nav h-14 md:h-16 flex items-center justify-between px-4 md:px-6">
-        <span class="font-serif font-bold text-base md:text-lg">MiniPerfumes<span class="text-accent">CBO</span> <span class="text-[9px] bg-black text-white px-1.5 py-0.5 rounded ml-1 uppercase tracking-wider">Socios</span></span>
-        
-        <div class="relative">
-            <button id="menu-btn" onclick="toggleMenu(event)" class="text-textMain hover:text-accent transition p-2 rounded-lg hover:bg-black/5 flex items-center gap-2">
-                <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest hidden md:block">Menú</span>
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            <div id="dropdown-menu" class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 flex-col overflow-hidden z-50 scale-95 opacity-0 invisible">
-                <a onclick="openCartModal(); closeMenu();" class="px-5 py-3 text-sm font-medium hover:bg-surface border-b flex items-center gap-3 cursor-pointer">
-                    <i class="fas fa-shopping-cart text-gray-400"></i> Mi Carrito
-                </a>
-                <a onclick="clearCart(); closeMenu();" class="px-5 py-3 text-sm font-medium text-red-600 hover:bg-red-50 border-b flex items-center gap-3 cursor-pointer">
-                    <i class="fas fa-trash text-red-400"></i> Vaciar Carrito
-                </a>
-                <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20asesoría." target="_blank" class="px-5 py-3 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 flex items-center gap-3">
-                    <i class="fab fa-whatsapp text-green-600"></i> Chat Soporte
-                </a>
+        <!-- Buscador estilo Spotlight -->
+        <div class="px-4 md:px-6 max-w-4xl mx-auto">
+            <div class="relative w-full bg-[#e3e3e8] rounded-xl flex items-center overflow-hidden transition-all focus-within:ring-2 ring-iosBlue/50">
+                <i class="fas fa-search text-gray-500 pl-3.5 text-sm"></i>
+                <input type="text" id="searchInput" onkeyup="filterCatalog()" class="w-full pl-2 pr-4 py-2 bg-transparent text-[15px] border-none focus:ring-0 outline-none placeholder-gray-500 text-textMain" placeholder="Buscar perfumes, marcas...">
             </div>
         </div>
     </nav>
 
-    <!-- HERO Y ANTESALA DE PRECIOS -->
-    <header class="pt-24 pb-8 md:pt-32 md:pb-12 px-4 md:px-6 text-center">
-        <div class="max-w-4xl mx-auto" data-aos="zoom-in" data-aos-duration="1000">
-            <div class="inline-flex items-center gap-2 bg-red-50 text-red-600 border border-red-100 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider mb-4">
-                <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span> Importación Abierta
+    <!-- BANNER HERO (Estilo App Store Card) -->
+    <header class="pt-32 pb-4 px-4 md:px-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="800">
+        <div class="w-full bg-textMain rounded-[2rem] p-6 md:p-10 relative overflow-hidden shadow-ios-float text-white">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-iosOrange opacity-20 rounded-full blur-3xl"></div>
+            <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-iosBlue opacity-20 rounded-full blur-3xl"></div>
+            
+            <p class="text-[11px] md:text-xs font-bold text-gray-400 tracking-widest mb-1 uppercase">Importación Rápida</p>
+            <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
+                El surtido perfecto,<br>a un toque.
+            </h2>
+            
+            <div class="flex gap-3">
+                <button onclick="openFAQ()" class="bg-white/10 backdrop-blur-md text-white border border-white/20 text-xs font-semibold px-4 py-2 rounded-full hover:bg-white/20 transition active:scale-95 flex items-center gap-2">
+                    <i class="fas fa-robot"></i> Dudas
+                </button>
+                <button onclick="startTour()" class="bg-iosBlue text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-blue-600 transition active:scale-95 flex items-center gap-2">
+                    <i class="fas fa-magic"></i> Tour
+                </button>
             </div>
-            <h1 class="font-serif text-3xl md:text-5xl lg:text-6xl font-bold text-textMain mb-4 leading-tight">
-                El Negocio Más Rentable
-            </h1>
-            <p class="text-sm md:text-lg text-textLight max-w-xl mx-auto mb-8 font-light">
-                Comienza tu propio negocio de perfumería. A mayor volumen, más baja tu precio automáticamente.
-            </p>
-
-            <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6">
-                <div onclick="handlePriceClick(20, 'Emprendedor', 180, 'combo-20')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-all hover:border-black hover:shadow-md">
-                    <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Emprendedor</div>
-                    <div class="text-xl md:text-3xl font-bold text-primary my-1">$6.00</div>
-                    <div class="text-[9px] md:text-xs text-gray-500">Desde 20 uds.</div>
-                </div>
-                <div onclick="handlePriceClick(50, 'Negocio', 525, 'combo-50')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border-2 border-primary shadow-md transform scale-105 z-10 text-center relative active:scale-95 transition-all hover:shadow-lg">
-                    <div class="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[8px] px-2 py-0.5 rounded-full whitespace-nowrap">Más Popular</div>
-                    <div class="text-[9px] md:text-[11px] uppercase font-bold text-primary">Negocio</div>
-                    <div class="text-2xl md:text-4xl font-bold text-primary my-1">$4.50</div>
-                    <div class="text-[9px] md:text-xs text-gray-500">Desde 50 uds.</div>
-                </div>
-                <div onclick="handlePriceClick(100, 'Mayorista', 1150, 'combo-100')" class="cursor-pointer bg-white p-3 md:p-5 rounded-2xl border border-gray-200 shadow-sm text-center active:scale-95 transition-all hover:border-black hover:shadow-md">
-                    <div class="text-[9px] md:text-[11px] uppercase font-bold text-gray-500">Mayorista</div>
-                    <div class="text-xl md:text-3xl font-bold text-primary my-1">$3.50</div>
-                    <div class="text-[9px] md:text-xs text-gray-500">100+ uds.</div>
-                </div>
-            </div>
-            <p class="text-[10px] text-gray-400 mt-2"><i class="fas fa-hand-pointer"></i> Toca un precio para ver cuánto puedes ganar.</p>
         </div>
     </header>
 
+    <!-- COMBOS (Estilo Horizontal Scroll iOS) -->
+    <div class="w-full relative z-20 mb-8" data-aos="fade-up" data-aos-delay="100">
+        <div class="px-4 md:px-6 mb-3 flex items-center justify-between max-w-4xl mx-auto">
+            <h3 class="text-lg font-bold tracking-tight text-textMain">Cajas Inteligentes</h3>
+            <span class="text-xs font-medium text-textLight">1-Click</span>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 pb-2">
+                
+                <!-- Combo 20 -->
+                <div onclick="addComboToCart(20, 'Emprendedor')" class="snap-start shrink-0 w-[140px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
+                    <div class="h-14 w-14 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-2xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-box"></i></div>
+                    <h3 class="font-bold text-sm text-textMain tracking-tight">Caja x20</h3>
+                    <p class="text-xs text-textLight mt-1 font-medium">$6.00 c/u</p>
+                </div>
+
+                <!-- Combo 50 -->
+                <div onclick="addComboToCart(50, 'Negocio')" class="snap-start shrink-0 w-[140px] bg-iosOrange rounded-3xl shadow-ios-float p-5 flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 relative group">
+                    <div class="absolute -top-2 bg-textMain text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">Popular</div>
+                    <div class="h-14 w-14 flex items-center justify-center bg-white/20 rounded-full mb-3 text-2xl text-white"><i class="fas fa-box-open"></i></div>
+                    <h3 class="font-bold text-sm text-white tracking-tight">Caja x50</h3>
+                    <p class="text-xs text-white/80 mt-1 font-medium">$4.50 c/u</p>
+                </div>
+
+                <!-- Combo 100 -->
+                <div onclick="addComboToCart(100, 'Mayorista')" class="snap-start shrink-0 w-[140px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
+                    <div class="h-14 w-14 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-2xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-boxes"></i></div>
+                    <h3 class="font-bold text-sm text-textMain tracking-tight">Caja x100</h3>
+                    <p class="text-xs text-textLight mt-1 font-medium">$3.50 c/u</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- TOP 5 TENDENCIAS -->
-    <section class="py-6 bg-surface border-y border-gray-200" data-aos="fade-up">
-        <div class="container mx-auto px-4 max-w-5xl">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-serif text-lg md:text-xl font-bold text-primary flex items-center gap-2">
-                    <i class="fas fa-fire text-orange-500"></i> Top 5 en Tendencia
-                </h3>
-                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">Actualizado Hoy</span>
-            </div>
-            
-            <div id="loading-indicator" class="text-center py-8 text-sm text-gray-600 font-bold flex flex-col items-center justify-center">
-                <i class="fas fa-circle-notch fa-spin text-3xl mb-3 text-primary"></i>
-                Escanenado Excel y Carpeta de Drive...
-            </div>
-
-            <!-- RASTREADOR DE ERRORES VISUAL (MEJORADO) -->
-            <div id="error-indicator" class="hidden text-center py-4 text-xs font-bold bg-red-50 text-red-600 border border-red-200 rounded-xl p-4 mx-auto max-w-2xl break-words">
-                <i class="fas fa-bug mr-2 text-xl mb-2 block"></i> 
-                <strong class="uppercase text-[10px] tracking-widest text-red-800">Causa exacta del fallo:</strong>
-                <p id="error-text" class="mt-2 font-mono font-normal"></p>
-            </div>
-
-            <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory hidden">
-                <!-- Se inyecta por JS -->
+    <section class="mb-8 hidden" id="top5-section" data-aos="fade-up">
+        <div class="px-4 md:px-6 mb-3 flex items-center justify-between max-w-4xl mx-auto">
+            <h3 class="text-lg font-bold tracking-tight text-textMain">Tendencias Hoy</h3>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory">
+                <!-- Inyectado por JS -->
             </div>
         </div>
     </section>
 
-    <!-- BIFURCACIÓN DE DECISIÓN -->
-    <section id="decision-section" class="py-12 md:py-16 scroll-mt-14">
-        <div class="container mx-auto px-4 max-w-4xl text-center" data-aos="zoom-in">
-            <h2 class="font-serif text-2xl md:text-4xl font-bold mb-3">¿Cómo prefieres armar tu pedido?</h2>
-            <p class="text-sm text-gray-500 mb-8 max-w-md mx-auto">Te damos dos opciones para que compres de la forma que más te convenga y ahorres tiempo.</p>
+    <!-- INDICADORES -->
+    <div id="loading-indicator" class="text-center py-16 text-sm text-textLight font-medium flex flex-col items-center justify-center">
+        <i class="fas fa-circle-notch fa-spin text-3xl mb-4 text-iosBlue"></i>
+        Sincronizando catálogo...
+    </div>
+    <div id="error-indicator" class="hidden text-center py-6 text-sm font-bold bg-red-100 text-iosRed rounded-3xl p-6 mx-4 mb-6 shadow-sm">
+        <i class="fas fa-exclamation-circle text-2xl mb-2"></i> 
+        <p id="error-text" class="mt-2 text-xs opacity-80"></p>
+    </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Tarjeta Combo Mix -->
-                <button onclick="setFlowMode('combo')" class="group text-left bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-[24px] border-2 border-orange-100 hover:border-orange-400 hover:shadow-lg transition-all relative overflow-hidden active:scale-95">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-orange-200 rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xl mb-4 shadow-sm">
-                        <i class="fas fa-box-open"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Quiero un Combo Mix</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed mb-4">Nosotros te armamos una caja con los mejores aromas surtidos, los que más se venden. ¡Ideal para empezar rápido sin estresarte!</p>
-                    <span class="inline-flex items-center text-orange-600 text-[11px] font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">Elegir Caja <i class="fas fa-arrow-right ml-2"></i></span>
-                </button>
-
-                <!-- Tarjeta Catálogo Manual -->
-                <button onclick="setFlowMode('catalog')" class="group text-left bg-gradient-to-br from-white to-gray-50 p-6 md:p-8 rounded-[24px] border-2 border-gray-200 hover:border-black hover:shadow-lg transition-all relative overflow-hidden active:scale-95">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-gray-200 rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-sm">
-                        <i class="fas fa-list-ul"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Elegir cada aroma</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed mb-4">Abre nuestro catálogo completo y selecciona tú mismo las cantidades exactas de cada fragancia que deseas importar.</p>
-                    <span class="inline-flex items-center text-black text-[11px] font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">Abrir Catálogo <i class="fas fa-arrow-right ml-2"></i></span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ZONA 1: COMBO MIX -->
-    <section id="combo-mix-zone" class="hidden py-10 bg-orange-50/50 border-t border-orange-100 scroll-mt-14" data-aos="fade-in">
-        <div class="container mx-auto px-4 max-w-3xl text-center">
-            <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold text-[9px] tracking-widest uppercase mb-3 inline-block shadow-sm">Opción Rápida</span>
-            <h2 class="font-serif text-2xl md:text-3xl font-bold mb-2">Selecciona el tamaño de tu caja</h2>
-            <p class="text-xs text-gray-500 mb-8 max-w-md mx-auto">Seleccionaremos lo más top en ventas. Solo dinos cuántos perfumes quieres importar.</p>
-
-            <div class="grid gap-4 md:grid-cols-3">
-                <button id="combo-20" onclick="addComboToCart(20, 'Emprendedor')" class="bg-white p-5 rounded-2xl border-2 border-gray-200 hover:border-black transition-all hover:shadow-md active:scale-95 duration-300">
-                    <div class="text-lg font-bold">Caja de 20 uds</div>
-                    <div class="text-sm text-gray-500 mt-1">Surtido Básico</div>
-                    <div class="mt-4 text-xl font-serif font-bold text-primary">$120.00 <span class="text-[10px] font-sans text-gray-400 font-normal">($6.00 c/u)</span></div>
-                </button>
-                <button id="combo-50" onclick="addComboToCart(50, 'Negocio')" class="bg-white p-5 rounded-2xl border-2 border-orange-400 hover:border-black transition-all hover:shadow-md transform md:-translate-y-2 active:scale-95 relative duration-300">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white text-[9px] font-bold px-3 py-0.5 rounded-full">Recomendada</div>
-                    <div class="text-lg font-bold">Caja de 50 uds</div>
-                    <div class="text-sm text-gray-500 mt-1">Surtido Premium</div>
-                    <div class="mt-4 text-2xl font-serif font-bold text-primary">$225.00 <span class="text-[10px] font-sans text-gray-400 font-normal">($4.50 c/u)</span></div>
-                </button>
-                <button id="combo-100" onclick="addComboToCart(100, 'Mayorista')" class="bg-white p-5 rounded-2xl border-2 border-gray-200 hover:border-black transition-all hover:shadow-md active:scale-95 duration-300">
-                    <div class="text-lg font-bold">Caja de 100 uds</div>
-                    <div class="text-sm text-gray-500 mt-1">Surtido Total</div>
-                    <div class="mt-4 text-xl font-serif font-bold text-primary">$350.00 <span class="text-[10px] font-sans text-gray-400 font-normal">($3.50 c/u)</span></div>
-                </button>
-            </div>
-            
-            <p class="text-[10px] text-gray-400 mt-6"><i class="fas fa-info-circle"></i> Al seleccionar una caja, se reemplazará lo que tengas en el carrito.</p>
-        </div>
-    </section>
-
-    <!-- ZONA 2: CATÁLOGO COMPLETO -->
-    <section id="catalog-zone" class="hidden py-10 bg-surface border-t border-gray-200 scroll-mt-14" data-aos="fade-in">
-        <div class="container mx-auto px-4 max-w-5xl">
-            <div class="mb-6 sticky top-14 z-40 bg-surface/95 backdrop-blur py-3 border-b border-gray-200">
-                <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2" id="brand-filters-container">
+    <!-- CATÁLOGO -->
+    <section id="catalog-zone" class="hidden pb-10">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <!-- Filtros Píldora iOS -->
+            <div class="mb-6 sticky top-[90px] z-40 bg-[#F2F2F7]/90 backdrop-blur-md py-3 -mx-4 px-4 border-b border-gray-200/50">
+                <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar" id="brand-filters-container">
                     <!-- Botones inyectados por JS -->
                 </div>
             </div>
 
-            <div class="relative max-w-md mx-auto mb-8 w-full">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <i class="fas fa-search text-gray-400"></i>
-                </div>
-                <input type="text" id="searchInput" onkeyup="filterCatalog()" class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:border-black sm:text-sm shadow-sm" placeholder="Buscar por aroma o SKU...">
-            </div>
-
-            <div class="text-[10px] text-center text-gray-500 mb-4"><i class="fas fa-hand-pointer"></i> Mantén presionada la imagen para verla en grande.</div>
-
-            <div id="catalog-container" class="space-y-10">
+            <div id="catalog-container" class="space-y-8">
                 <!-- Productos inyectados por JS -->
             </div>
         </div>
     </section>
 
-    <!-- STICKY CART MÓVIL Y DESKTOP -->
-    <div class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-3 z-[80] cart-sticky-bottom flex items-center justify-between transition-transform transform translate-y-full" id="sticky-cart">
-        <div class="flex flex-col">
-            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Tu Pedido <span id="sticky-saved-icon" class="hidden text-green-500 ml-1" title="Guardado"><i class="fas fa-cloud-upload-alt"></i></span></span>
-            <div class="flex items-baseline gap-2">
-                <span id="sticky-qty" class="text-lg font-bold text-black">0</span>
-                <span class="text-xs text-gray-500">uds.</span>
+    <!-- STICKY CART (Píldora Flotante Apple) -->
+    <div class="fixed bottom-6 left-4 right-4 md:left-auto md:right-6 md:w-80 z-[80] apple-glass-dark rounded-[2rem] p-2 flex items-center justify-between transition-all transform translate-y-32 duration-500 ease-apple shadow-ios-modal border border-white/10" id="sticky-cart">
+        <div class="flex items-center gap-3 pl-3" id="tour-step-3">
+            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white relative">
+                <i class="fas fa-shopping-bag"></i>
+                <span id="sticky-qty" class="absolute -top-1 -right-1 bg-iosRed text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-[#1C1C1E] transition-transform duration-300">0</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-[10px] text-gray-300 font-medium tracking-wide">Total</span>
+                <span id="sticky-total" class="text-base font-bold text-white tracking-tight">$0.00</span>
             </div>
         </div>
-        <div class="flex flex-col items-end mr-4">
-            <span id="sticky-total" class="text-lg font-serif font-bold text-black">$0.00</span>
-        </div>
-        <button onclick="openCartModal()" class="bg-black text-white px-6 py-3 rounded-xl text-sm font-bold shadow-md hover:bg-gray-800 active:scale-95 transition-all flex items-center gap-2">
-            <i class="fas fa-shopping-cart"></i> Ver Carrito
+        
+        <button onclick="openCartModal()" class="bg-white text-textMain px-6 py-3 rounded-full text-sm font-bold hover:bg-gray-100 active:scale-95 transition-all">
+            Ver Pedido
         </button>
     </div>
 
-    <!-- MODAL DE CARRITO DESPLEGABLE -->
-    <div id="cart-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex justify-end transition-opacity opacity-0" onclick="closeCartModal(event)">
-        <div id="cart-modal-content" class="bg-white w-full max-w-md h-full transform translate-x-full transition-transform duration-300 flex flex-col" onclick="event.stopPropagation()">
-            <!-- Cabecera -->
-            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-surface">
-                <h2 class="font-serif text-xl font-bold flex items-center gap-2"><i class="fas fa-shopping-bag"></i> Mi Pedido</h2>
-                <button onclick="closeCartModal()" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"><i class="fas fa-times"></i></button>
-            </div>
+    <!-- MODAL DE CARRITO (Bottom Sheet iOS) -->
+    <div id="cart-modal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/30 backdrop-blur-[4px] opacity-0 transition-opacity duration-500 ease-apple" id="cart-backdrop" onclick="closeCartModal()"></div>
+        
+        <!-- Sheet Content -->
+        <div id="cart-sheet" class="absolute bottom-0 left-0 w-full md:w-[450px] md:left-1/2 md:-translate-x-1/2 h-[85vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
             
-            <!-- Lista de Productos -->
-            <div class="flex-1 overflow-y-auto p-5 bg-gray-50" id="cart-items-container">
-                <!-- Se inyecta por JS -->
+            <!-- Handle iOS -->
+            <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px] cursor-grab active:cursor-grabbing" onclick="closeCartModal()">
+                <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
 
-            <!-- Zona de Pagos y Totales -->
-            <div class="p-5 border-t border-gray-200 bg-white shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
-                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Método de Pago</h3>
-                <div class="grid grid-cols-2 gap-2 mb-4">
-                    <label class="border border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:border-black transition-colors" onclick="setPaymentMethod('zelle')">
-                        <input type="radio" name="payment" value="zelle" class="text-black focus:ring-black" id="radio-zelle">
-                        <span class="text-xs font-bold text-primary"><i class="fas fa-money-bill-wave text-green-600"></i> Zelle / USDT</span>
+            <!-- Cabecera -->
+            <div class="px-6 py-3 bg-iosCard flex justify-between items-center border-b border-gray-100">
+                <h2 class="text-2xl font-bold tracking-tight text-textMain">Tu Pedido</h2>
+                <button onclick="clearCart()" class="text-iosRed bg-red-50 px-3 py-1.5 rounded-full text-xs font-bold active:scale-95 transition-transform">
+                    Vaciar
+                </button>
+            </div>
+
+            <!-- Barra de Progreso -->
+            <div class="bg-iosCard px-6 py-4 shadow-sm mb-2">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-xs font-semibold text-textLight" id="progress-title">Nivel Actual</span>
+                    <span class="text-sm font-bold text-textMain" id="progress-price">$6.00 c/u</span>
+                </div>
+                <div class="w-full bg-[#E5E5EA] rounded-full h-2 mb-2 overflow-hidden">
+                    <div class="bg-iosBlue h-full rounded-full progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <p class="text-[11px] text-textLight font-medium" id="progress-msg">Agrega 20 uds para tu primer descuento.</p>
+            </div>
+            
+            <!-- Items -->
+            <div class="flex-1 overflow-y-auto px-4 py-2" id="cart-items-container">
+                <!-- JS Inyecta -->
+            </div>
+
+            <!-- Sugerencias -->
+            <div id="cart-suggestions-container" class="px-4 pb-2 hidden">
+                <h3 class="text-[11px] font-bold text-textLight uppercase tracking-wider mb-2 pl-2">Sugerencias</h3>
+                <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 snap-x-mandatory" id="cart-suggestions-list">
+                    <!-- JS Inyecta -->
+                </div>
+            </div>
+
+            <!-- Resumen y Pago (Bottom) -->
+            <div class="p-6 bg-iosCard rounded-t-[2rem] shadow-[0_-10px_30px_rgba(0,0,0,0.06)] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+                
+                <!-- Toggle Método Pago iOS Style -->
+                <div class="bg-[#E5E5EA] p-1 rounded-xl flex mb-5 relative">
+                    <label class="flex-1 text-center py-2 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight" onclick="setPaymentMethod('bs')">
+                        <input type="radio" name="payment" value="bs" class="hidden" id="radio-bs" checked>
+                        Bs / Pago Móvil
                     </label>
-                    <label class="border border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:border-black transition-colors" onclick="setPaymentMethod('bs')">
-                        <input type="radio" name="payment" value="bs" class="text-black focus:ring-black" id="radio-bs" checked>
-                        <span class="text-xs font-bold text-primary"><i class="fas fa-exchange-alt text-blue-600"></i> Pago Móvil</span>
+                    <label class="flex-1 text-center py-2 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex justify-center items-center gap-1" onclick="setPaymentMethod('zelle')">
+                        <input type="radio" name="payment" value="zelle" class="hidden" id="radio-zelle">
+                        Zelle <span class="bg-iosGreen text-white text-[8px] px-1.5 py-0.5 rounded">-5%</span>
                     </label>
                 </div>
                 
-                <!-- Desglose -->
-                <div class="space-y-2 mb-4 text-sm">
-                    <div class="flex justify-between text-gray-500">
-                        <span>Subtotal (<span id="cart-modal-qty">0</span> uds)</span>
+                <div class="space-y-2 mb-5">
+                    <div class="flex justify-between text-sm text-textLight font-medium">
+                        <span>Subtotal (<span id="cart-modal-qty">0</span>)</span>
                         <span id="cart-modal-subtotal">$0.00</span>
                     </div>
-                    <div id="cart-discount-row" class="flex justify-between text-green-600 font-bold hidden">
-                        <span>Descuento (5% Zelle/USDT)</span>
+                    <div id="cart-discount-row" class="flex justify-between text-sm text-iosGreen font-medium hidden">
+                        <span>Descuento</span>
                         <span id="cart-modal-discount">-$0.00</span>
                     </div>
-                    <div class="h-px bg-gray-200 my-2"></div>
-                    <div class="flex justify-between items-end">
-                        <span class="font-bold uppercase text-xs">Total a Pagar</span>
-                        <span id="cart-modal-total" class="font-serif text-2xl font-bold text-black">$0.00</span>
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                        <span class="font-bold text-textMain">Total</span>
+                        <span id="cart-modal-total" class="text-2xl font-black text-textMain tracking-tight">$0.00</span>
                     </div>
                 </div>
 
-                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-black text-white font-bold py-4 rounded-xl transition text-sm flex justify-center items-center gap-2 shadow-md active:scale-95">
-                    <i class="fab fa-whatsapp text-lg"></i> Confirmar y Enviar a WhatsApp
+                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-iosBlue text-white font-bold py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 text-[15px] shadow-ios flex justify-center items-center gap-2">
+                    Confirmar Pedido
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL FAQ / CHATBOT (Bottom Sheet iOS) -->
+    <div id="faq-modal" class="fixed inset-0 z-[120] hidden">
+        <div class="absolute inset-0 bg-black/30 backdrop-blur-[4px] opacity-0 transition-opacity duration-500 ease-apple" id="faq-backdrop" onclick="closeFAQ()"></div>
+        <div id="faq-sheet" class="absolute bottom-0 left-0 w-full md:w-[400px] md:left-1/2 md:-translate-x-1/2 h-[75vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
+            <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px]" onclick="closeFAQ()"><div class="w-12 h-1.5 bg-gray-300 rounded-full"></div></div>
+            <div class="px-6 py-3 bg-iosCard border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-textMain">Asistente</h2>
+                <button onclick="closeFAQ()" class="bg-gray-100 w-8 h-8 rounded-full text-textLight text-xs"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-5 overflow-y-auto space-y-3 bg-[#F2F2F7] flex-1 hide-scrollbar">
+                <div class="bg-iosCard p-4 rounded-2xl shadow-sm">
+                    <p class="font-semibold text-sm text-textMain mb-1">¿Cómo elijo?</p>
+                    <p class="text-xs text-textLight leading-relaxed">Usa las cajas inteligentes (Combos) para un surtido rápido, o añade aromas manualmente abajo.</p>
+                </div>
+                <div class="bg-iosCard p-4 rounded-2xl shadow-sm">
+                    <p class="font-semibold text-sm text-textMain mb-1">¿Pagos?</p>
+                    <p class="text-xs text-textLight leading-relaxed">Aceptamos Pago Móvil, Efectivo, y Zelle/USDT <strong class="text-iosGreen">(Con 5% de descuento)</strong>.</p>
+                </div>
+                <div class="bg-iosCard p-4 rounded-2xl shadow-sm">
+                    <p class="font-semibold text-sm text-textMain mb-1">¿Mínimo?</p>
+                    <p class="text-xs text-textLight leading-relaxed">Para precios mayoristas, necesitas <strong>20 unidades</strong>.</p>
+                </div>
+                <div class="mt-6 text-center">
+                    <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20hablar%20con%20un%20asesor." target="_blank" class="inline-flex items-center gap-2 bg-textMain text-white font-semibold px-6 py-3 rounded-full text-sm shadow-ios active:scale-95 transition-transform">
+                        Hablar con Asesor Humano
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL VISTA PREVIA IMAGEN -->
-    <div id="image-preview-modal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4 transition-opacity opacity-0" onclick="hidePreview()">
-        <button class="absolute top-6 right-6 text-white text-3xl"><i class="fas fa-times"></i></button>
-        <img id="preview-img-element" src="" class="max-w-full max-h-full rounded-2xl shadow-2xl transform scale-95 transition-transform">
+    <div id="image-preview-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[130] hidden flex flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-400 ease-apple" onclick="hidePreview()">
+        <button class="absolute top-safe right-6 bg-white/20 w-8 h-8 rounded-full text-white mt-4"><i class="fas fa-times"></i></button>
+        <img id="preview-img-element" src="" class="max-w-full max-h-[70vh] object-contain rounded-3xl transform scale-90 transition-transform duration-500 ease-apple">
     </div>
 
-    <!-- BOT NAVI ARRASTRABLE -->
-    <div id="navi-bot" class="fixed z-[90] flex flex-col items-end cursor-move touch-none" style="bottom: 24px; right: 24px;" onclick="naviTap(event)">
-        <div id="navi-speech" class="bg-white text-black text-[11px] md:text-xs font-bold px-4 py-2 rounded-2xl rounded-br-sm shadow-lg mb-2 border border-blue-100 speech-bubble hidden max-w-[200px] text-center pointer-events-none">
-            ¡Hola! Arrástrame si te estorbo.
+    <!-- ASISTENTE NAVI (MODO TOUR) -->
+    <div id="tour-navi" class="fixed z-[140] flex flex-col items-center pointer-events-none hidden transition-all duration-700 ease-apple" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div id="tour-speech" class="bg-textMain text-white text-sm font-semibold px-5 py-3 rounded-2xl shadow-ios-modal mb-3 speech-bubble text-center max-w-[250px]">
+            ¡Hola! Soy Navi.
         </div>
-        <div class="relative navi-wings pointer-events-none">
-            <div class="navi-orb w-12 h-12 rounded-full shadow-navi border-2 border-white pointer-events-auto"></div>
-        </div>
+        <div class="navi-orb w-14 h-14 rounded-full shadow-navi border-2 border-white"></div>
     </div>
 
-    <!-- AOS Script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <script>
-        AOS.init({ duration: 600, once: true, offset: 50 });
+        AOS.init({ duration: 600, once: true, offset: 30, easing: 'ease-out-cubic' });
 
-        // ==========================================
-        // URL EXACTA DE TU APPS SCRIPT (VERSIÓN 3)
-        // ==========================================
         const API_URL = "https://script.google.com/macros/s/AKfycbzEvk_VbWIFs4sChKj9IAQcwbS-q1BdyfUM27zDiIEZ_d8Yw40bfyo4CkA8T7bfArl8lQ/exec";
         
         let catalogData = [];
         let flatProducts = []; 
         let cart = {}; 
-        let isComboMode = false;
         let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- 1. LECTURA DESDE EL BACKEND CON RASTREADOR DE ERRORES ---
+        // --- Utilidad Haptic (Iphonization) ---
+        function haptic(type = 'light') {
+            if (!navigator.vibrate) return;
+            if (type === 'light') navigator.vibrate(10);
+            if (type === 'success') navigator.vibrate([20, 30, 20]);
+            if (type === 'heavy') navigator.vibrate(40);
+        }
+
+        // --- Utilidad Notificación Estilo Dynamic Island ---
+        function showIOSNotification(text, type = 'success') {
+            const bg = type === 'error' ? 'rgba(255, 59, 48, 0.9)' : 'rgba(28, 28, 30, 0.85)';
+            Toastify({
+                text: text,
+                duration: 2500,
+                gravity: "top",
+                position: "center",
+                style: {
+                    background: bg,
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                    borderRadius: "100px",
+                    padding: "12px 24px",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+                    color: "#fff"
+                }
+            }).showToast();
+        }
+
         async function loadCatalog() {
             try {
-                // Fetch al backend (se le añade redirect "follow" por seguridad de Google)
                 const response = await fetch(API_URL, { redirect: "follow" });
-                
-                // Extraemos la respuesta cruda primero
                 const rawText = await response.text();
-                
                 let data;
-                try {
-                    // Intentamos convertir a JSON (lo que debería devolver el backend si funciona)
-                    data = JSON.parse(rawText);
-                } catch (e) {
-                    // Si falla, significa que Google devolvió una página HTML de error o bloqueo
-                    throw new Error("Google Apps Script bloqueó la solicitud (Probablemente falta el permiso 'Cualquier Persona'). Respuesta parcial de Google: " + rawText.substring(0, 100) + "...");
-                }
-                
-                // Si el Script detectó un error dentro del código (ej. ID de Excel incorrecto)
-                if (data.error) {
-                    throw new Error("Fallo interno en Drive/Excel: " + data.error);
-                }
+                try { data = JSON.parse(rawText); } catch (e) { throw new Error("Google bloqueó la solicitud."); }
+                if (data.error) throw new Error("Fallo en Drive: " + data.error);
 
                 catalogData = processJsonData(data);
                 
                 document.getElementById('loading-indicator').classList.add('hidden');
+                document.getElementById('catalog-zone').classList.remove('hidden');
+                
                 generateTop5();
                 renderBrandFilters();
                 renderCatalog();
-
             } catch (error) {
-                // IMPRIMIMOS EL ERROR EXACTO EN PANTALLA ROJA
-                console.error("Error capturado por el Rastreador:", error);
                 document.getElementById('loading-indicator').classList.add('hidden');
                 document.getElementById('error-indicator').classList.remove('hidden');
                 document.getElementById('error-text').innerText = error.message;
             }
         }
 
-        // Agrupa el JSON y añade la lógica visual para saber qué fotos faltan
         function processJsonData(data) {
             let processed = {};
             flatProducts = []; 
-
             data.forEach(item => {
                 let brand = item.brand || "Otras Marcas";
                 if(!processed[brand]) processed[brand] = [];
-                
-                // --- TRUCO PARA EL TEST VISUAL ---
                 let finalImg = item.img;
-                // Si el backend no encontró la imagen en Drive y devolvió null o un unsplash de relleno:
                 if (!finalImg || finalImg.includes('unsplash.com')) {
-                    finalImg = "https://placehold.co/150x150/f5f5f7/a1a1aa?text=Sin+Foto"; // Cuadro gris indicando que falta
+                    finalImg = "https://placehold.co/400x400/F2F2F7/8E8E93?text=Sin+Foto"; 
                 }
-                // ---------------------------
-
-                const prodObj = { 
-                    id: item.sku, 
-                    name: item.name, 
-                    cap: item.cap, 
-                    img: finalImg, 
-                    brand: brand 
-                };
-                
+                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand };
                 processed[brand].push(prodObj);
                 flatProducts.push(prodObj); 
             });
-            
             let finalArray = [];
             for (let brand in processed) { 
                 if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); 
@@ -454,120 +426,129 @@
             return finalArray;
         }
 
-        // --- 2. GENERADOR TOP 5 ALEATORIO ---
         function generateTop5() {
             const container = document.getElementById('top5-container');
+            const section = document.getElementById('top5-section');
             if (!container || flatProducts.length < 5) return; 
 
             let shuffled = [...flatProducts].sort(() => 0.5 - Math.random());
             let top5 = shuffled.slice(0, 5);
-
             let html = '';
             top5.forEach((prod) => {
                 html += `
-                <div class="min-w-[140px] md:min-w-[160px] bg-white p-3 rounded-2xl border border-gray-100 shadow-sm snap-center flex flex-col items-center text-center">
-                    <img src="${prod.img}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select cursor-pointer" 
-                         onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
-                         ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
-                    <p class="font-bold text-[11px] md:text-xs text-textMain leading-tight truncate w-full mb-1">${prod.name}</p>
-                    <span class="text-[9px] text-gray-400 font-mono mb-2">#${prod.id}</span>
-                    <button onclick="updateCart('${prod.id}', 1, true)" class="w-full bg-black text-white text-[10px] font-bold py-1.5 rounded-lg hover:bg-gray-800 transition active:scale-95">
-                        <i class="fas fa-plus"></i> Añadir
-                    </button>
-                </div>
-                `;
+                <div class="min-w-[130px] bg-iosCard p-3 rounded-3xl shadow-ios snap-center flex flex-col relative group">
+                    <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')">
+                        <img src="${prod.img}" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
+                    </div>
+                    <p class="font-semibold text-xs text-textMain leading-tight line-clamp-2 w-full mb-2 h-[32px]">${prod.name}</p>
+                    <div class="mt-auto w-full">
+                        <button onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95">
+                            Agregar
+                        </button>
+                    </div>
+                </div>`;
             });
             container.innerHTML = html;
-            container.classList.remove('hidden');
+            section.classList.remove('hidden');
         }
 
-        // --- 3. VISTA PREVIA DE IMÁGENES (LONG PRESS) ---
-        let pressTimer;
-        function startPress(imgSrc) {
-            pressTimer = setTimeout(() => { showPreview(imgSrc); }, 400); 
+        // --- Modales Apple Style ---
+        function openCartModal() {
+            haptic('light');
+            const modal = document.getElementById('cart-modal');
+            const backdrop = document.getElementById('cart-backdrop');
+            const sheet = document.getElementById('cart-sheet');
+            
+            modal.classList.remove('hidden');
+            void modal.offsetWidth; // Force reflow
+            
+            backdrop.classList.remove('opacity-0');
+            sheet.classList.remove('translate-y-full');
+            document.body.style.overflow = 'hidden';
+            renderCartModalItems();
         }
-        function endPress() { clearTimeout(pressTimer); }
+
+        function closeCartModal() {
+            const backdrop = document.getElementById('cart-backdrop');
+            const sheet = document.getElementById('cart-sheet');
+            
+            backdrop.classList.add('opacity-0');
+            sheet.classList.add('translate-y-full');
+            
+            setTimeout(() => {
+                document.getElementById('cart-modal').classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 500);
+        }
+
+        function openFAQ() {
+            haptic('light');
+            const modal = document.getElementById('faq-modal');
+            const backdrop = document.getElementById('faq-backdrop');
+            const sheet = document.getElementById('faq-sheet');
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            backdrop.classList.remove('opacity-0');
+            sheet.classList.remove('translate-y-full');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeFAQ() {
+            const backdrop = document.getElementById('faq-backdrop');
+            const sheet = document.getElementById('faq-sheet');
+            backdrop.classList.add('opacity-0');
+            sheet.classList.add('translate-y-full');
+            setTimeout(() => {
+                document.getElementById('faq-modal').classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 500);
+        }
+
         function showPreview(imgSrc) {
+            haptic('light');
             const modal = document.getElementById('image-preview-modal');
             const imgEl = document.getElementById('preview-img-element');
             imgEl.src = imgSrc;
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                imgEl.classList.remove('scale-95');
-                imgEl.classList.add('scale-100');
-            }, 10);
-            if(window.navigator && window.navigator.vibrate) navigator.vibrate(50); 
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            imgEl.classList.remove('scale-90');
+            imgEl.classList.add('scale-100');
         }
+
         function hidePreview() {
             const modal = document.getElementById('image-preview-modal');
             const imgEl = document.getElementById('preview-img-element');
             modal.classList.add('opacity-0');
             imgEl.classList.remove('scale-100');
-            imgEl.classList.add('scale-95');
-            setTimeout(() => modal.classList.add('hidden'), 300);
+            imgEl.classList.add('scale-90');
+            setTimeout(() => modal.classList.add('hidden'), 400);
         }
 
-        // --- 4. NAVEGACIÓN DE SECCIONES ---
-        function handlePriceClick(qty, tierName, profit, boxId) {
-            setFlowMode('combo', true); 
-            showNaviMessage(`¡Excelente! Con el nivel ${tierName} tu ganancia neta estimada es de $${profit}. ¡Toca la caja para confirmar!`, 6000);
-            setTimeout(() => {
-                const targetBox = document.getElementById(boxId);
-                if (targetBox) {
-                    const y = targetBox.getBoundingClientRect().top + window.pageYOffset - 150; 
-                    window.scrollTo({top: y, behavior: 'smooth'});
-                    targetBox.classList.add('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50');
-                    setTimeout(() => { targetBox.classList.remove('ring-4', 'ring-orange-500', 'scale-105', 'bg-orange-50'); }, 1500);
-                }
-            }, 350); 
-        }
-
-        function setFlowMode(mode, fromShortcut = false) {
-            const catZone = document.getElementById('catalog-zone');
-            const comboZone = document.getElementById('combo-mix-zone');
-
-            if (mode === 'combo') {
-                catZone.classList.add('hidden'); comboZone.classList.remove('hidden');
-                if(!fromShortcut){
-                    window.scrollTo({top: comboZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
-                    showNaviMessage("¡Excelente! Toca la caja que se ajuste a tu presupuesto.");
-                }
-            } else if (mode === 'catalog') {
-                comboZone.classList.add('hidden'); catZone.classList.remove('hidden');
-                if (isComboMode) {
-                    clearCartSilent(); isComboMode = false;
-                    Toastify({ text: "Modo manual activado. Carrito reseteado.", duration: 2000, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
-                }
-                setTimeout(() => AOS.refresh(), 200);
-                window.scrollTo({top: catZone.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth'});
-                showNaviMessage("¡Perfecto! Usa los botones de arriba para filtrar por marca.");
-            }
-        }
-
-        // --- 5. RENDER DEL CATÁLOGO ---
+        // --- Catálogo y Filtros ---
         function renderBrandFilters() {
             const container = document.getElementById('brand-filters-container');
             if(!container) return;
-            let html = `<button onclick="filterByBrand('All')" class="brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold border border-black bg-black text-white transition-all shadow-sm">Todos</button>`;
+            let html = `<button onclick="filterByBrand('All')" class="brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors">Todos</button>`;
             catalogData.forEach(cat => {
-                html += `<button onclick="filterByBrand('${cat.brand}')" class="brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold border border-gray-200 bg-white text-gray-600 hover:border-black hover:text-black transition-all shadow-sm">${cat.brand}</button>`;
+                html += `<button onclick="filterByBrand('${cat.brand}')" class="brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-textLight border border-gray-200 hover:text-textMain transition-colors">${cat.brand}</button>`;
             });
             container.innerHTML = html;
         }
 
         function filterByBrand(brandName) {
+            haptic('light');
             document.querySelectorAll('.brand-filter-btn').forEach(btn => {
                 if (btn.innerText === brandName || (brandName === 'All' && btn.innerText === 'Todos')) {
-                    btn.classList.replace('bg-white', 'bg-black'); btn.classList.replace('text-gray-600', 'text-white'); btn.classList.replace('border-gray-200', 'border-black');
+                    btn.className = "brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors";
                 } else {
-                    btn.classList.replace('bg-black', 'bg-white'); btn.classList.replace('text-white', 'text-gray-600'); btn.classList.replace('border-black', 'border-gray-200');
+                    btn.className = "brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-textLight border border-gray-200 hover:text-textMain transition-colors";
                 }
             });
             document.querySelectorAll('.category-block').forEach(catBlock => {
                 catBlock.style.display = (brandName === 'All' || catBlock.getAttribute('data-brand') === brandName) ? "block" : "none";
             });
-            setTimeout(() => AOS.refresh(), 200);
+            window.scrollTo({top: document.getElementById('catalog-zone').offsetTop - 100, behavior: 'smooth'});
         }
 
         function filterCatalog() {
@@ -590,38 +571,31 @@
             catalogData.forEach((category) => {
                 html += `
                 <div class="category-block mb-10" data-brand="${category.brand}">
-                    <h3 class="font-serif text-xl font-bold border-b-2 border-gray-100 pb-2 mb-4 text-primary flex items-center gap-2">
-                        <span class="w-2 h-5 bg-black rounded-full inline-block"></span> ${category.brand}
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                `;
+                    <h3 class="text-xl font-bold tracking-tight mb-4 text-textMain pl-2">${category.brand}</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">`;
                 category.products.forEach((prod) => {
                     let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
                     html += `
-                    <div class="product-card flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm hover:border-black transition-all" data-search="${searchTerms}">
-                        <img src="${prod.img}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0 no-select cursor-pointer"
-                             onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
-                             ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
-                        
-                        <div class="flex-1 overflow-hidden">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-gray-100 text-gray-500 text-[8px] px-1.5 py-0.5 rounded font-mono font-bold tracking-wide">#${prod.id}</span>
-                                <p class="font-bold text-xs md:text-sm text-textMain leading-tight truncate w-full">${prod.name}</p>
-                            </div>
-                            <p class="text-[9px] md:text-[10px] text-textLight font-medium mb-2">${prod.cap}</p>
-                            
-                            <div class="flex items-center gap-3 bg-surface border border-gray-200 rounded-lg px-2 py-1 w-fit">
-                                <button onclick="updateCart('${prod.id}', -1)" class="w-6 h-6 flex items-center justify-center text-gray-600 hover:text-black hover:bg-white rounded transition active:scale-95 shadow-sm">
-                                    <i class="fas fa-minus text-[10px]"></i>
+                    <div class="product-card flex flex-col items-center bg-iosCard p-3 rounded-3xl shadow-ios transition-all relative group" data-search="${searchTerms}">
+                        <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')">
+                            <img src="${prod.img}" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
+                        </div>
+                        <div class="flex-1 w-full flex flex-col px-1">
+                            <p class="font-semibold text-[13px] md:text-sm text-textMain leading-tight mb-1 line-clamp-2 min-h-[36px]">${prod.name}</p>
+                            <p class="text-[10px] font-medium text-textLight mb-3">${prod.cap}</p>
+                            <div class="mt-auto w-full">
+                                <button id="add-btn-${prod.id}" onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95">
+                                    Agregar
                                 </button>
-                                <span id="qty-${prod.id}" class="text-xs font-bold w-5 text-center">0</span>
-                                <button onclick="updateCart('${prod.id}', 1)" class="w-6 h-6 flex items-center justify-center text-gray-600 hover:text-black hover:bg-white rounded transition active:scale-95 shadow-sm">
-                                    <i class="fas fa-plus text-[10px]"></i>
-                                </button>
+                                <!-- Stepper iOS Style -->
+                                <div id="ctrls-${prod.id}" class="hidden flex items-center justify-between bg-[#F2F2F7] rounded-xl p-1 w-full">
+                                    <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-minus text-[10px]"></i></button>
+                                    <span id="qty-${prod.id}" class="text-sm font-bold w-6 text-center text-textMain">0</span>
+                                    <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-plus text-[10px]"></i></button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    `;
+                    </div>`;
                 });
                 html += `</div></div>`;
             });
@@ -629,104 +603,171 @@
             loadCartFromStorage();
         }
 
-        // --- 6. GESTIÓN DEL CARRITO ---
+        // --- Lógica de Carrito ---
         function getProductById(id) { return flatProducts.find(p => p.id === id) || null; }
 
-        function addComboToCart(qty, tier) {
-            clearCartSilent();
-            isComboMode = true;
-            cart['combo_mix'] = qty;
-            saveCartToStorage();
-            Toastify({text: `📦 Caja de ${qty} uds seleccionada`, duration: 2500, style: { background: "#FF9500", borderRadius: "10px", fontSize: "13px", fontWeight: "bold" }}).showToast();
-            calculateTotals();
-            openCartModal(); 
+        function triggerPopAnim(elementId) {
+            const el = document.getElementById(elementId);
+            if(el) {
+                el.classList.remove('pop-anim');
+                void el.offsetWidth; // Reflow
+                el.classList.add('pop-anim');
+            }
         }
 
-        function updateCart(productId, change, fromTop5 = false) {
-            if (isComboMode) {
-                clearCartSilent(); isComboMode = false;
-                Toastify({ text: "Modo manual activado.", duration: 1500, style: { background: "#1D1D1F", fontSize: "12px" } }).showToast();
-                if(fromTop5) document.getElementById('catalog-zone').classList.remove('hidden');
+        function syncProductUI(productId) {
+            const qty = cart[productId] || 0;
+            const btn = document.getElementById(`add-btn-${productId}`);
+            const ctrls = document.getElementById(`ctrls-${productId}`);
+            const qtyLabel = document.getElementById(`qty-${productId}`);
+            
+            if(qtyLabel) {
+                qtyLabel.innerText = qty;
+                triggerPopAnim(`qty-${productId}`);
             }
+            if(btn && ctrls) {
+                if(qty > 0) { btn.classList.add('hidden'); ctrls.classList.remove('hidden'); ctrls.classList.add('flex'); } 
+                else { btn.classList.remove('hidden'); ctrls.classList.add('hidden'); ctrls.classList.remove('flex'); }
+            }
+        }
+
+        function addComboToCart(qty, tier) {
+            if (flatProducts.length === 0) return;
+            clearCartSilent();
+            let shuffled = [...flatProducts].sort(() => 0.5 - Math.random());
+            let numUnique = Math.min(flatProducts.length, Math.ceil(qty / 2)); 
+            if (numUnique === 0) return;
+
+            let selected = shuffled.slice(0, numUnique);
+            let distribution = {};
+            selected.forEach(p => distribution[p.id] = 1);
+            let remaining = qty - numUnique;
+
+            while(remaining > 0) {
+                distribution[selected[Math.floor(Math.random() * selected.length)].id]++;
+                remaining--;
+            }
+
+            for (let id in distribution) {
+                cart[id] = distribution[id];
+                syncProductUI(id);
+            }
+
+            saveCartToStorage();
+            calculateTotals();
+            openCartModal(); 
+            haptic('success');
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            showIOSNotification(`Surtido x${qty} listo. ¡Edítalo!`, 'success');
+        }
+
+        function updateCart(productId, change) {
             if (!cart[productId]) cart[productId] = 0;
             cart[productId] += change;
             if (cart[productId] < 0) cart[productId] = 0;
             
-            const el = document.getElementById(`qty-${productId}`);
-            if(el) el.innerText = cart[productId];
-
+            syncProductUI(productId);
             saveCartToStorage();
-            if (change > 0) Toastify({text: `+1 Añadido`, duration: 800, gravity: "bottom", style: { background: "#1D1D1F", borderRadius: "10px", fontSize: "12px" }}).showToast();
+            
+            if (change > 0) haptic('light');
+            else haptic('heavy');
             
             calculateTotals();
-            renderCartModalItems(); 
+            if(!document.getElementById('cart-modal').classList.contains('hidden')) {
+                renderCartModalItems(); 
+            }
         }
 
         function removeProduct(productId) {
             if(cart[productId]) {
                 cart[productId] = 0;
-                const el = document.getElementById(`qty-${productId}`);
-                if(el) el.innerText = 0;
+                syncProductUI(productId);
                 saveCartToStorage();
                 calculateTotals();
                 renderCartModalItems();
+                haptic('heavy');
             }
         }
 
         function clearCartSilent() {
+            for (let id in cart) { cart[id] = 0; syncProductUI(id); }
             cart = {};
             localStorage.removeItem('miniperfumes_cart_cbo');
-            document.querySelectorAll('[id^="qty-"]').forEach(el => el.innerText = "0");
         }
 
         function clearCart() {
             clearCartSilent();
-            isComboMode = false;
-            document.getElementById('sticky-saved-icon').classList.add('hidden');
             calculateTotals();
             renderCartModalItems();
             closeCartModal();
-            Toastify({ text: `🗑️ Carrito vaciado`, duration: 2000, style: { background: "#EF4444", borderRadius: "8px", fontSize: "12px" } }).showToast();
+            haptic('success');
+            showIOSNotification('Carrito vaciado', 'error');
         }
 
-        function saveCartToStorage() {
-            localStorage.setItem('miniperfumes_cart_cbo', JSON.stringify(cart));
-            document.getElementById('sticky-saved-icon').classList.remove('hidden');
-        }
+        function saveCartToStorage() { localStorage.setItem('miniperfumes_cart_cbo', JSON.stringify(cart)); }
 
         function loadCartFromStorage() {
             const saved = localStorage.getItem('miniperfumes_cart_cbo');
             if (saved) {
                 cart = JSON.parse(saved);
-                if (cart['combo_mix']) isComboMode = true;
-                for (let id in cart) {
-                    if(id === 'combo_mix') continue; 
-                    const el = document.getElementById(`qty-${id}`);
-                    if (el && cart[id] > 0) el.innerText = cart[id];
-                    else if (!el) delete cart[id];
-                }
-                document.getElementById('sticky-saved-icon').classList.remove('hidden');
+                for (let id in cart) syncProductUI(id);
                 calculateTotals();
             }
         }
 
-        // --- 7. MODAL DE CARRITO ---
-        function openCartModal() {
-            renderCartModalItems();
-            const modal = document.getElementById('cart-modal');
-            const content = document.getElementById('cart-modal-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('translate-x-full'); }, 10);
-            document.body.style.overflow = 'hidden'; 
+        function updateProgressBar(totalQty) {
+            const bar = document.getElementById('progress-bar');
+            const msg = document.getElementById('progress-msg');
+            const title = document.getElementById('progress-title');
+            const price = document.getElementById('progress-price');
+
+            if (totalQty < 20) {
+                let p = (totalQty / 20) * 100;
+                bar.style.width = `${p}%`; bar.className = "h-full rounded-full progress-bar-fill bg-textLight";
+                msg.innerHTML = `Agrega <strong>${20 - totalQty} uds más</strong> para alcanzar el mínimo y desbloquear precio de $6.00.`;
+                title.innerText = "Iniciando"; price.innerText = "---";
+            } else if (totalQty >= 20 && totalQty < 50) {
+                let p = ((totalQty - 20) / 30) * 100;
+                bar.style.width = `${p}%`; bar.className = "h-full rounded-full progress-bar-fill bg-iosBlue";
+                msg.innerHTML = `¡Nivel Emprendedor! Agrega <strong class="text-iosBlue">${50 - totalQty} uds más</strong> para bajar a $4.50 c/u.`;
+                title.innerText = "Emprendedor"; price.innerText = "$6.00 c/u";
+            } else if (totalQty >= 50 && totalQty < 100) {
+                let p = ((totalQty - 50) / 50) * 100;
+                bar.style.width = `${p}%`; bar.className = "h-full rounded-full progress-bar-fill bg-iosOrange";
+                msg.innerHTML = `¡Nivel Negocio! Agrega <strong class="text-iosOrange">${100 - totalQty} uds más</strong> para bajar a $3.50 c/u.`;
+                title.innerText = "Negocio"; price.innerText = "$4.50 c/u";
+            } else {
+                bar.style.width = '100%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosGreen";
+                msg.innerHTML = `¡Felicidades! Has alcanzado el <strong class="text-iosGreen">Nivel Mayorista Top</strong>.`;
+                title.innerText = "Mayorista"; price.innerText = "$3.50 c/u";
+            }
         }
 
-        function closeCartModal(e) {
-            if(e && e.target.id !== 'cart-modal') return; 
-            const modal = document.getElementById('cart-modal');
-            const content = document.getElementById('cart-modal-content');
-            modal.classList.add('opacity-0'); content.classList.add('translate-x-full');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
-            document.body.style.overflow = 'auto';
+        function renderCartSuggestions() {
+            const container = document.getElementById('cart-suggestions-container');
+            const list = document.getElementById('cart-suggestions-list');
+            let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+            
+            if(totalQty === 0 || flatProducts.length < 3) { container.classList.add('hidden'); return; }
+
+            let available = flatProducts.filter(p => !cart[p.id] || cart[p.id] === 0);
+            let suggestions = available.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+            if(suggestions.length > 0) {
+                let html = '';
+                suggestions.forEach(prod => {
+                    html += `
+                    <div class="min-w-[100px] bg-iosCard border border-gray-100 p-2 rounded-2xl shadow-sm snap-center flex flex-col items-center text-center">
+                        <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl mb-1 bg-[#F2F2F7]">
+                        <p class="text-[9px] font-semibold text-textMain leading-tight line-clamp-2 w-full mb-1 h-[24px]">${prod.name}</p>
+                        <button onclick="updateCart('${prod.id}', 1); renderCartSuggestions();" class="w-full bg-[#F2F2F7] text-iosBlue text-[10px] font-bold py-1.5 rounded-lg active:scale-95 transition-transform">
+                            Añadir
+                        </button>
+                    </div>`;
+                });
+                list.innerHTML = html;
+                container.classList.remove('hidden');
+            } else { container.classList.add('hidden'); }
         }
 
         function renderCartModalItems() {
@@ -734,45 +775,44 @@
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
             
             if (totalQty === 0) {
-                container.innerHTML = `<div class="text-center text-gray-400 mt-10"><i class="fas fa-shopping-basket text-4xl mb-3"></i><p>Tu carrito está vacío.</p></div>`;
+                container.innerHTML = `<div class="text-center text-textLight mt-12"><i class="fas fa-shopping-bag text-5xl mb-3 opacity-50"></i><p class="text-sm font-medium">Tu pedido está vacío</p></div>`;
+                document.getElementById('cart-suggestions-container').classList.add('hidden');
                 return;
             }
 
             let html = '';
-            if (isComboMode && cart['combo_mix']) {
-                html += `
-                <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-orange-200 shadow-sm mb-3">
-                    <div class="w-12 h-12 bg-orange-100 text-orange-500 rounded-lg flex items-center justify-center text-xl"><i class="fas fa-box"></i></div>
-                    <div class="flex-1">
-                        <p class="font-bold text-sm text-gray-900">Combo Mix Seleccionado</p>
-                        <p class="text-xs text-gray-500">Surtido de ${cart['combo_mix']} fragancias</p>
-                    </div>
-                </div>`;
-            } else {
-                for (let id in cart) {
-                    if (cart[id] > 0 && id !== 'combo_mix') {
-                        const prod = getProductById(id);
-                        if(prod) {
-                            html += `
-                            <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm mb-3">
-                                <img src="${prod.img}" class="w-12 h-12 object-cover rounded-md bg-gray-50">
-                                <div class="flex-1">
-                                    <p class="font-bold text-xs text-gray-900 leading-tight">${prod.name}</p>
-                                    <p class="text-[10px] text-gray-500">SKU: #${prod.id} | ${prod.cap}</p>
+            for (let id in cart) {
+                if (cart[id] > 0) {
+                    const prod = getProductById(id);
+                    if(prod) {
+                        html += `
+                        <div class="flex items-center gap-3 bg-iosCard p-2 rounded-2xl mb-2">
+                            <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl bg-[#F2F2F7]">
+                            <div class="flex-1">
+                                <p class="text-[13px] font-semibold text-textMain leading-tight mb-0.5">${prod.name}</p>
+                                <p class="text-[10px] text-textLight">Cod: #${prod.id}</p>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <div class="flex items-center gap-2 bg-[#F2F2F7] rounded-lg p-1">
+                                    <button onclick="updateCart('${prod.id}', -1)" class="w-6 h-6 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-minus text-[8px]"></i></button>
+                                    <span class="text-xs font-bold w-4 text-center text-textMain">${cart[id]}</span>
+                                    <button onclick="updateCart('${prod.id}', 1)" class="w-6 h-6 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-plus text-[8px]"></i></button>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm font-bold bg-gray-100 px-2 py-1 rounded">x${cart[id]}</span>
-                                    <button onclick="removeProduct('${prod.id}')" class="text-red-400 hover:text-red-600 p-1"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>`;
-                        }
+                            </div>
+                        </div>`;
                     }
                 }
             }
             container.innerHTML = html;
+            renderCartSuggestions();
         }
 
-        function setPaymentMethod(method) { paymentMethod = method; calculateTotals(); }
+        function setPaymentMethod(method) { 
+            paymentMethod = method; 
+            document.getElementById(`radio-${method}`).checked = true;
+            haptic('light');
+            calculateTotals(); 
+        }
 
         let confettiFired = false;
         function calculateTotals() {
@@ -780,14 +820,20 @@
             let currentPrice = (totalQty >= 100) ? PRICES.top : ((totalQty >= 50) ? PRICES.mid : PRICES.base);
 
             if (totalQty >= 100 && !confettiFired) {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1D1D1F', '#d48197', '#FF9500'] });
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1C1C1E', '#007AFF', '#34C759'] });
                 confettiFired = true;
             } else if (totalQty < 100) confettiFired = false;
 
+            updateProgressBar(totalQty);
+
+            // Pop Animation on cart numbers
+            const oldQty = document.getElementById('sticky-qty').innerText;
+            if(oldQty != totalQty && totalQty > 0) triggerPopAnim('sticky-qty');
+
             document.getElementById('sticky-qty').innerText = totalQty;
             const stickyCart = document.getElementById('sticky-cart');
-            if (totalQty > 0) stickyCart.classList.remove('translate-y-full');
-            else stickyCart.classList.add('translate-y-full');
+            if (totalQty > 0) stickyCart.classList.remove('translate-y-32');
+            else stickyCart.classList.add('translate-y-32');
 
             const subtotal = totalQty * currentPrice;
             let discount = 0;
@@ -813,37 +859,32 @@
             const btnModal = document.getElementById('cart-modal-btn');
             if(btnModal) {
                 if (totalQty >= 20) {
-                    btnModal.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
-                    btnModal.classList.add('bg-black', 'hover:bg-gray-800');
-                    btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Confirmar y Enviar a WhatsApp`;
+                    btnModal.disabled = false;
+                    btnModal.innerHTML = `Confirmar Pedido`;
                 } else {
-                    btnModal.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
-                    btnModal.classList.remove('bg-black', 'hover:bg-gray-800');
-                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds. (Mínimo 20)`;
-                    else btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Confirmar y Enviar`;
+                    btnModal.disabled = true;
+                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds`;
+                    else btnModal.innerHTML = `Añade productos`;
                 }
             }
         }
 
         function sendWhatsAppOrder() {
+            haptic('success');
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-            if (totalQty < 20) { showNaviMessage("Aún te faltan fragancias para llegar al mínimo (20)."); return; }
+            if (totalQty < 20) return;
 
             let currentPrice = totalQty >= 100 ? PRICES.top : (totalQty >= 50 ? PRICES.mid : PRICES.base);
             let subtotal = totalQty * currentPrice;
             let discount = (paymentMethod === 'zelle') ? (subtotal * 0.05) : 0;
             let total = subtotal - discount;
-            let payText = (paymentMethod === 'zelle') ? "Zelle / Binance Pay (Descuento 5% Aplicado ✅)" : "Pago Móvil / Efectivo";
+            let payText = (paymentMethod === 'zelle') ? "Zelle / USDT (Dcto Aplicado ✅)" : "Pago Móvil / Efectivo";
 
             let orderDetails = "";
-            if (isComboMode) {
-                orderDetails = `- 1x CAJA COMBO MIX VARIADO (${cart['combo_mix']} uds)%0A`;
-            } else {
-                for (let id in cart) {
-                    if (cart[id] > 0 && id !== 'combo_mix') {
-                        const prod = getProductById(id);
-                        if (prod) orderDetails += `- ${cart[id]}x [SKU: ${prod.id}] ${prod.name} (${prod.cap})%0A`;
-                    }
+            for (let id in cart) {
+                if (cart[id] > 0) {
+                    const prod = getProductById(id);
+                    if (prod) orderDetails += `- ${cart[id]}x [${prod.id}] ${prod.name} (${prod.cap})%0A`;
                 }
             }
 
@@ -851,71 +892,56 @@
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
         }
 
-        // --- 8. NAVI ARRASTRABLE (DRAG & DROP) ---
-        const navi = document.getElementById('navi-bot');
-        let isDragging = false, currentX = 0, currentY = 0, initialX = 0, initialY = 0, xOffset = 0, yOffset = 0;
+        // --- Asistente Tour ---
+        const naviEl = document.getElementById('tour-navi');
+        const naviSpeech = document.getElementById('tour-speech');
 
-        function dragStart(e) {
-            initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
-            initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
-            if (e.target.closest('.navi-orb')) isDragging = true;
+        async function startTour() {
+            closeCartModal(); 
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            naviEl.classList.remove('hidden');
+            
+            await naviMoveToAndSpeak('tour-step-1', "El menú rápido. Toca aquí para pedir combos directos o usar el Bot.");
+            
+            document.getElementById('catalog-zone').classList.remove('hidden'); 
+            window.scrollTo({top: document.getElementById('searchInput').offsetTop - 120, behavior: 'smooth'});
+            await naviMoveToAndSpeak('searchInput', "Usa la barra inteligente para buscar aromas específicos.");
+            
+            if(Object.keys(cart).length === 0 && flatProducts.length > 0) { updateCart(flatProducts[0].id, 1); }
+            
+            await naviMoveToAndSpeak('tour-step-3', "Aquí verás tu pedido actualizado en tiempo real.");
+            
+            naviSpeech.innerText = "¡Listo! Ya puedes empezar.";
+            setTimeout(() => {
+                naviEl.classList.add('opacity-0');
+                setTimeout(() => {
+                    naviEl.classList.add('hidden');
+                    naviEl.classList.remove('opacity-0');
+                    document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight', 'relative', 'z-100'));
+                }, 700);
+            }, 3000);
         }
 
-        function dragEnd(e) { 
-            if (currentX !== undefined && currentY !== undefined) { initialX = currentX; initialY = currentY; }
-            setTimeout(()=> isDragging = false, 10); 
+        function naviMoveToAndSpeak(targetId, text) {
+            return new Promise(resolve => {
+                const target = document.getElementById(targetId);
+                if(!target) { resolve(); return; }
+
+                document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+                target.classList.add('tour-highlight');
+
+                const rect = target.getBoundingClientRect();
+                naviEl.style.top = `${rect.bottom + 60}px`;
+                naviSpeech.innerText = text;
+                
+                naviSpeech.classList.remove('pop-anim');
+                void naviSpeech.offsetWidth; 
+                naviSpeech.classList.add('pop-anim');
+
+                setTimeout(() => { resolve(); }, 3500);
+            });
         }
 
-        function drag(e) {
-            if (isDragging) {
-                e.preventDefault(); 
-                currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
-                currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
-                xOffset = currentX; yOffset = currentY;
-                navi.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-            }
-        }
-
-        navi.addEventListener("touchstart", dragStart, {passive: false});
-        navi.addEventListener("touchend", dragEnd, false);
-        navi.addEventListener("touchmove", drag, {passive: false});
-        navi.addEventListener("mousedown", dragStart, false);
-        document.addEventListener("mouseup", dragEnd, false);
-        document.addEventListener("mousemove", drag, false);
-
-        const naviSpeech = document.getElementById('navi-speech');
-        let naviTimeout;
-        const naviMsgs = [
-            "¿Indeciso? Toca 'Quiero un Combo Mix'.",
-            "Recuerda: Si pagas por Binance/Zelle tienes 5% de Dcto.",
-            "Deja pegado el dedo en una foto para verla grande.",
-            "A mayor volumen, mayor es tu ganancia."
-        ];
-        function showNaviMessage(text, duration = 4000) {
-            clearTimeout(naviTimeout);
-            naviSpeech.innerText = text; naviSpeech.classList.remove('hidden');
-            naviSpeech.style.animation = 'none'; naviSpeech.offsetHeight; naviSpeech.style.animation = null;
-            naviTimeout = setTimeout(() => { naviSpeech.classList.add('hidden'); }, duration);
-        }
-        function naviTap(e) {
-            if(isDragging) return; 
-            showNaviMessage(naviMsgs[Math.floor(Math.random() * naviMsgs.length)]);
-        }
-
-        function toggleMenu(e) {
-            e.stopPropagation(); const m = document.getElementById('dropdown-menu');
-            if(m.classList.contains('show')) closeMenu();
-            else { m.classList.remove('hidden'); setTimeout(() => m.classList.add('show'), 10); }
-        }
-        function closeMenu() {
-            const m = document.getElementById('dropdown-menu');
-            m.classList.remove('show'); setTimeout(() => m.classList.add('hidden'), 200);
-        }
-        document.addEventListener('click', (e) => {
-            if (!document.getElementById('dropdown-menu').contains(e.target) && !document.getElementById('menu-btn').contains(e.target)) closeMenu();
-        });
-
-        // INICIAR
         window.onload = loadCatalog;
     </script>
 </body>
