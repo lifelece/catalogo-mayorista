@@ -17,6 +17,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     
     <!-- LIBRERÍAS (Vía CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -174,11 +175,11 @@
             
             <div id="loading-indicator" class="text-center py-8 text-sm text-gray-600 font-bold flex flex-col items-center justify-center">
                 <i class="fas fa-circle-notch fa-spin text-3xl mb-3 text-primary"></i>
-                Cargando imágenes y catálogo desde Drive...
+                Cargando catálogo...
             </div>
 
             <div id="error-indicator" class="hidden text-center py-4 text-xs text-red-500 font-bold">
-                <i class="fas fa-exclamation-triangle mr-2"></i> Error al cargar el catálogo. Verifica que no haya bloqueos de conexión.
+                <i class="fas fa-exclamation-triangle mr-2"></i> Error al cargar el catálogo de Google Sheets.
             </div>
 
             <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory hidden">
@@ -365,10 +366,10 @@
         AOS.init({ duration: 600, once: true, offset: 50 });
 
         // ==========================================
-        // CONFIGURACIÓN DE TU NUEVO BACKEND
+        // NUEVA CONFIGURACIÓN SIN BACKEND (USANDO GITHUB)
         // ==========================================
-        // AQUÍ ESTÁ TU URL REAL DE GOOGLE APPS SCRIPT:
-        const API_URL = "https://script.google.com/macros/s/AKfycbzEvk_VbWIFs4sChKj9IAQcwbS-q1BdyfUM27zDiIEZ_d8Yw40bfyo4CkA8T7bfArl8lQ/exec"; 
+        // Este enlace usa tu archivo publicado y lo convierte automáticamente a datos legibles.
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vReTTgg-1n3Z-2e-Cb6w6r182rNdXzvQ1EL1nhMSs6Z_YgDaYOAXnEBSs611YTi_HYH8WqE3fzpxjk3/pub?output=csv";
         
         let catalogData = [];
         let flatProducts = []; 
@@ -377,66 +378,64 @@
         let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- 1. LECTURA DESDE EL BACKEND ---
-        async function loadCatalog() {
-            if (!API_URL || API_URL === "URL_DE_TU_APLICACION_WEB_DE_APPS_SCRIPT") {
-                document.getElementById('loading-indicator').innerHTML = "<span class='text-red-500'>⚠️ Falta configurar la API URL del Backend. Revisa el código fuente.</span>";
-                return;
-            }
-
-            try {
-                // Hacemos la petición a Google Apps Script
-                const response = await fetch(API_URL);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    console.error("Error desde Apps Script:", data.error);
-                    document.getElementById('error-indicator').classList.remove('hidden');
-                    document.getElementById('loading-indicator').classList.add('hidden');
-                    return;
-                }
-
-                catalogData = processJsonData(data);
-                
-                document.getElementById('loading-indicator').classList.add('hidden');
-                generateTop5();
-                renderBrandFilters();
-                renderCatalog();
-
-            } catch (error) {
-                console.error("Error al conectar con el backend:", error);
-                document.getElementById('loading-indicator').classList.add('hidden');
-                document.getElementById('error-indicator').classList.remove('hidden');
-            }
+        // --- LÓGICA DE MANEJO DE IMÁGENES AUTOMÁTICO ---
+        // Intenta cargar la foto en .jpg. Si falla, intenta .png. Si falla, pone una de relleno.
+        const fallbackImg = "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80";
+        function getErrorLogic(sku) {
+            return `if(!this.dataset.tried){this.dataset.tried='1'; this.src='fotos/${sku}.png';}else{this.src='${fallbackImg}';}`;
         }
 
-        // Agrupa el JSON recibido del servidor por Marcas
-        function processJsonData(data) {
-            let processed = {};
-            flatProducts = []; 
-
-            data.forEach(item => {
-                let brand = item.brand || "Otras Marcas";
-                if(!processed[brand]) processed[brand] = [];
-                
-                const prodObj = { 
-                    id: item.sku, 
-                    name: item.name, 
-                    cap: item.cap, 
-                    img: item.img, 
-                    brand: brand 
-                };
-                
-                processed[brand].push(prodObj);
-                flatProducts.push(prodObj); 
+        // --- 1. LECTURA DIRECTA DESDE GOOGLE SHEETS (VÍA PAPAPARSE) ---
+        function loadCatalog() {
+            Papa.parse(CSV_URL, {
+                download: true,
+                header: false,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    catalogData = processSheetsData(results.data);
+                    document.getElementById('loading-indicator').classList.add('hidden');
+                    generateTop5();
+                    renderBrandFilters();
+                    renderCatalog();
+                },
+                error: function(err) {
+                    console.error("Error al leer Excel:", err);
+                    document.getElementById('loading-indicator').classList.add('hidden');
+                    document.getElementById('error-indicator').classList.remove('hidden');
+                }
             });
-            
+        }
+
+        // Agrupa el CSV por Marcas
+        function processSheetsData(data) {
+            let processed = {};
+            flatProducts = [];
+
+            data.forEach((row, index) => {
+                // Saltar la primera fila si tiene títulos
+                if (index === 0 && row.join('').toLowerCase().includes('sku')) return;
+
+                const sku = (row[0] || '').trim();
+                const cap = (row[2] || '').trim(); // Capacidad (Columna C)
+                let name = (row[3] || '').trim();  // Nombre (Columna D)
+                let brand = (row[4] || '').trim(); // Marca (Columna E)
+
+                if (!sku || !name || isNaN(parseInt(sku[0]))) return;
+                if (!brand) brand = "Otras Marcas";
+
+                name = name.replace(/[\n\r]+/g, ' - ').replace(/\s{2,}/g, ' ').trim();
+
+                if(!processed[brand]) processed[brand] = [];
+                if(!processed[brand].some(p => p.id === sku)) {
+                    // LA MAGIA: Asumimos que la foto está en la carpeta "fotos" de GitHub
+                    const prodObj = { id: sku, name: name, cap: cap, brand: brand };
+                    processed[brand].push(prodObj);
+                    flatProducts.push(prodObj);
+                }
+            });
+
             let finalArray = [];
-            for (let brand in processed) { 
-                if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); 
-            }
+            for (let brand in processed) { if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); }
             return finalArray;
         }
 
@@ -452,9 +451,9 @@
             top5.forEach((prod) => {
                 html += `
                 <div class="min-w-[140px] md:min-w-[160px] bg-white p-3 rounded-2xl border border-gray-100 shadow-sm snap-center flex flex-col items-center text-center">
-                    <img src="${prod.img}" onerror="this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80'" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select cursor-pointer" 
-                         onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
-                         ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
+                    <img src="fotos/${prod.id}.jpg" onerror="${getErrorLogic(prod.id)}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 mb-2 no-select cursor-pointer" 
+                         onmousedown="startPress(this.src)" onmouseup="endPress()" onmouseleave="endPress()" 
+                         ontouchstart="startPress(this.src)" ontouchend="endPress()">
                     <p class="font-bold text-[11px] md:text-xs text-textMain leading-tight truncate w-full mb-1">${prod.name}</p>
                     <span class="text-[9px] text-gray-400 font-mono mb-2">#${prod.id}</span>
                     <button onclick="updateCart('${prod.id}', 1, true)" class="w-full bg-black text-white text-[10px] font-bold py-1.5 rounded-lg hover:bg-gray-800 transition active:scale-95">
@@ -585,9 +584,9 @@
                     let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
                     html += `
                     <div class="product-card flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm hover:border-black transition-all" data-search="${searchTerms}">
-                        <img src="${prod.img}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80';" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0 no-select cursor-pointer"
-                             onmousedown="startPress('${prod.img}')" onmouseup="endPress()" onmouseleave="endPress()" 
-                             ontouchstart="startPress('${prod.img}')" ontouchend="endPress()">
+                        <img src="fotos/${prod.id}.jpg" onerror="${getErrorLogic(prod.id)}" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded-lg bg-gray-50 border border-gray-100 shrink-0 no-select cursor-pointer"
+                             onmousedown="startPress(this.src)" onmouseup="endPress()" onmouseleave="endPress()" 
+                             ontouchstart="startPress(this.src)" ontouchend="endPress()">
                         
                         <div class="flex-1 overflow-hidden">
                             <div class="flex items-center gap-2 mb-1">
@@ -741,7 +740,7 @@
                         if(prod) {
                             html += `
                             <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm mb-3">
-                                <img src="${prod.img}" class="w-12 h-12 object-cover rounded-md bg-gray-50">
+                                <img src="fotos/${prod.id}.jpg" onerror="${getErrorLogic(prod.id)}" class="w-12 h-12 object-cover rounded-md bg-gray-50">
                                 <div class="flex-1">
                                     <p class="font-bold text-xs text-gray-900 leading-tight">${prod.name}</p>
                                     <p class="text-[10px] text-gray-500">SKU: #${prod.id} | ${prod.cap}</p>
@@ -906,3 +905,5 @@
     </script>
 </body>
 </html>
+
+
