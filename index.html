@@ -175,11 +175,12 @@
             
             <div id="loading-indicator" class="text-center py-8 text-sm text-gray-600 font-bold flex flex-col items-center justify-center">
                 <i class="fas fa-circle-notch fa-spin text-3xl mb-3 text-primary"></i>
-                Cargando catálogo...
+                Conectando con Google Sheets...
             </div>
 
-            <div id="error-indicator" class="hidden text-center py-4 text-xs text-red-500 font-bold">
-                <i class="fas fa-exclamation-triangle mr-2"></i> Error al cargar el catálogo de Google Sheets.
+            <div id="error-indicator" class="hidden text-center py-4 text-xs text-red-500 font-bold bg-red-50 rounded-xl p-4">
+                <i class="fas fa-exclamation-triangle mr-2 text-xl mb-2 block"></i> 
+                <span>Error al cargar el catálogo. Verifica que el archivo de Google Sheets tenga los permisos de "Cualquier persona con el enlace puede leer".</span>
             </div>
 
             <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory hidden">
@@ -366,10 +367,10 @@
         AOS.init({ duration: 600, once: true, offset: 50 });
 
         // ==========================================
-        // NUEVA CONFIGURACIÓN SIN BACKEND (USANDO GITHUB)
+        // ENLACE DIRECTO A TU NUEVO GOOGLE SHEET
         // ==========================================
-        // Este enlace usa tu archivo publicado y lo convierte automáticamente a datos legibles.
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vReTTgg-1n3Z-2e-Cb6w6r182rNdXzvQ1EL1nhMSs6Z_YgDaYOAXnEBSs611YTi_HYH8WqE3fzpxjk3/pub?output=csv";
+        // He construido la URL de exportación CSV usando el ID de tu nuevo documento.
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/1xXFYVwGHkPSIGS_ZtVQOEONh9vvbaB1LCiFB1royXn8/export?format=csv&gid=1434393790";
         
         let catalogData = [];
         let flatProducts = []; 
@@ -378,8 +379,7 @@
         let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- LÓGICA DE MANEJO DE IMÁGENES AUTOMÁTICO ---
-        // Intenta cargar la foto en .jpg. Si falla, intenta .png. Si falla, pone una de relleno.
+        // --- LÓGICA DE IMÁGENES AUTOMÁTICO DESDE GITHUB ---
         const fallbackImg = "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=150&q=80";
         function getErrorLogic(sku) {
             return `if(!this.dataset.tried){this.dataset.tried='1'; this.src='fotos/${sku}.png';}else{this.src='${fallbackImg}';}`;
@@ -392,11 +392,15 @@
                 header: false,
                 skipEmptyLines: true,
                 complete: function(results) {
-                    catalogData = processSheetsData(results.data);
-                    document.getElementById('loading-indicator').classList.add('hidden');
-                    generateTop5();
-                    renderBrandFilters();
-                    renderCatalog();
+                    if (results.data && results.data.length > 0) {
+                        catalogData = processSheetsData(results.data);
+                        document.getElementById('loading-indicator').classList.add('hidden');
+                        generateTop5();
+                        renderBrandFilters();
+                        renderCatalog();
+                    } else {
+                        throw new Error("El Excel devolvió datos vacíos.");
+                    }
                 },
                 error: function(err) {
                     console.error("Error al leer Excel:", err);
@@ -406,28 +410,32 @@
             });
         }
 
-        // Agrupa el CSV por Marcas
+        // Agrupa el CSV por Marcas usando la estructura real de tu Excel
         function processSheetsData(data) {
             let processed = {};
             flatProducts = [];
 
             data.forEach((row, index) => {
-                // Saltar la primera fila si tiene títulos
+                // Saltar la primera fila si tiene títulos (buscando la palabra SKU)
                 if (index === 0 && row.join('').toLowerCase().includes('sku')) return;
 
-                const sku = (row[0] || '').trim();
-                const cap = (row[2] || '').trim(); // Capacidad (Columna C)
-                let name = (row[3] || '').trim();  // Nombre (Columna D)
-                let brand = (row[4] || '').trim(); // Marca (Columna E)
+                // El código está adaptado 100% a las columnas de tu foto:
+                const sku = (row[0] || '').trim();   // Columna A
+                const cap = (row[2] || '').trim();   // Columna C (Capacidad)
+                let name = (row[3] || '').trim();    // Columna D (Nombre)
+                let brand = (row[4] || '').trim();   // Columna E (Marca)
 
+                // Ignoramos la fila si no hay SKU o si el SKU no empieza por un número válido
                 if (!sku || !name || isNaN(parseInt(sku[0]))) return;
+                
+                // Si la casilla de marca está vacía, le asignamos esta por defecto:
                 if (!brand) brand = "Otras Marcas";
 
                 name = name.replace(/[\n\r]+/g, ' - ').replace(/\s{2,}/g, ' ').trim();
 
                 if(!processed[brand]) processed[brand] = [];
                 if(!processed[brand].some(p => p.id === sku)) {
-                    // LA MAGIA: Asumimos que la foto está en la carpeta "fotos" de GitHub
+                    // La foto siempre intentará cargar desde la carpeta "fotos/" de GitHub
                     const prodObj = { id: sku, name: name, cap: cap, brand: brand };
                     processed[brand].push(prodObj);
                     flatProducts.push(prodObj);
