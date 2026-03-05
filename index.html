@@ -5,6 +5,14 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
     <title>Socios CBO - Zona Mayorista</title>
     
+    <!-- Meta Tags para Compartir en WhatsApp / Redes (Open Graph) -->
+    <meta property="og:title" content="MiniPerfumes CBO - Importación Mayorista" />
+    <meta property="og:description" content="El surtido perfecto a un toque. Cajas inteligentes desde $3.50 c/u. Envíos a toda Venezuela." />
+    <meta property="og:image" content="https://placehold.co/1200x630/F2F2F7/1C1C1E?text=MiniPerfumes+Mayorista" />
+    <meta property="og:url" content="https://tu-dominio.com" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
     <!-- Fuentes (Inter simula San Francisco de Apple) -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -26,7 +34,7 @@
         theme: {
           extend: {
             colors: {
-              iosBg: "#F2F2F7", /* Fondo gris base de iOS */
+              iosBg: "#F2F2F7", 
               iosCard: "#FFFFFF",
               iosBlue: "#007AFF",
               iosGreen: "#34C759",
@@ -35,9 +43,7 @@
               textMain: "#1C1C1E",
               textLight: "#8E8E93",
             },
-            fontFamily: {
-              sans: ["Inter", "-apple-system", "system-ui", "sans-serif"],
-            },
+            fontFamily: { sans: ["Inter", "-apple-system", "system-ui", "sans-serif"], },
             boxShadow: {
                 'ios': '0 4px 20px rgba(0,0,0,0.05)',
                 'ios-float': '0 10px 40px rgba(0,0,0,0.12)',
@@ -55,31 +61,27 @@
     <style>
         body { background-color: #F2F2F7; color: #1C1C1E; -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
         
-        /* Ocultar scrollbars para look más limpio */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .snap-x-mandatory { scroll-snap-type: x mandatory; }
         .snap-center { scroll-snap-align: center; }
 
-        /* Efecto Glass de Apple */
         .apple-glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 0.5px solid rgba(0,0,0,0.1); }
         .apple-glass-dark { background: rgba(28, 28, 30, 0.8); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 0.5px solid rgba(255,255,255,0.1); }
 
-        /* Animaciones Pop (Rebote) */
         .pop-anim { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
         
         .pulse-light { animation: pulseL 2s infinite; }
         @keyframes pulseL { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(0.95); } }
 
-        /* No select */
         .no-select { user-select: none; -webkit-touch-callout: none; }
         .progress-bar-fill { transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1); }
     </style>
 </head>
 <body class="font-sans antialiased relative"> 
 
-    <!-- NAV ESTILO APPLE (Glassmorphism & Search) -->
+    <!-- NAV ESTILO APPLE -->
     <nav class="fixed top-0 w-full z-50 apple-glass pt-[env(safe-area-inset-top)] pb-3">
         <div class="flex items-center justify-between px-4 md:px-6 pt-2 mb-3">
             <span class="font-bold text-xl tracking-tight text-textMain">MiniPerfumes<span class="text-iosOrange">CBO</span></span>
@@ -89,16 +91,20 @@
                 </a>
             </div>
         </div>
-        <!-- Buscador estilo Spotlight -->
+        <!-- Buscador Optimizado Móvil -->
         <div class="px-4 md:px-6 max-w-4xl mx-auto">
             <div class="relative w-full bg-[#e3e3e8] rounded-xl flex items-center overflow-hidden transition-all focus-within:ring-2 ring-iosBlue/50">
                 <i class="fas fa-search text-gray-500 pl-3.5 text-sm"></i>
-                <input type="text" id="searchInput" onkeyup="filterCatalog()" class="w-full pl-2 pr-4 py-2 bg-transparent text-[15px] border-none focus:ring-0 outline-none placeholder-gray-500 text-textMain" placeholder="Buscar perfumes, marcas...">
+                <!-- Ajuste a text-[16px] para evitar zoom en iOS y agregados atributos para teclado móvil -->
+                <input type="search" id="searchInput" inputmode="search" enterkeyhint="search" onkeyup="filterCatalog(); toggleClearBtn();" class="w-full pl-2 pr-8 py-2.5 bg-transparent text-[16px] border-none focus:ring-0 outline-none placeholder-gray-500 text-textMain" placeholder="Buscar perfumes, marcas...">
+                <button id="clearSearchBtn" onclick="clearSearch()" class="absolute right-3 text-gray-400 hidden active:scale-95">
+                    <i class="fas fa-times-circle text-lg"></i>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- BANNER HERO (Estilo App Store Card) -->
+    <!-- BANNER HERO -->
     <header class="pt-32 pb-4 px-4 md:px-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="800">
         <div class="w-full bg-textMain rounded-[2rem] p-6 md:p-10 relative overflow-hidden shadow-ios-float text-white">
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-iosOrange opacity-20 rounded-full blur-3xl"></div>
@@ -120,7 +126,7 @@
         </div>
     </header>
 
-    <!-- COMBOS (Estilo Horizontal Scroll iOS) -->
+    <!-- COMBOS -->
     <div class="w-full relative z-20 mb-8" data-aos="fade-up" data-aos-delay="100">
         <div class="px-4 md:px-6 mb-3 flex items-center justify-between max-w-4xl mx-auto">
             <h3 class="text-lg font-bold tracking-tight text-textMain">Cajas Inteligentes</h3>
@@ -129,7 +135,6 @@
         
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 pb-2">
-                
                 <!-- Combo 20 -->
                 <div onclick="addComboToCart(20, 'Emprendedor')" class="snap-start shrink-0 w-[140px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
                     <div class="h-14 w-14 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-2xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-box"></i></div>
@@ -151,7 +156,6 @@
                     <h3 class="font-bold text-sm text-textMain tracking-tight">Caja x100</h3>
                     <p class="text-xs text-textLight mt-1 font-medium">$3.50 c/u</p>
                 </div>
-
             </div>
         </div>
     </div>
@@ -181,8 +185,8 @@
     <!-- CATÁLOGO -->
     <section id="catalog-zone" class="hidden pb-10">
         <div class="container mx-auto px-4 max-w-4xl">
-            <!-- Filtros Píldora iOS -->
-            <div class="mb-6 sticky top-[90px] z-40 bg-[#F2F2F7]/90 backdrop-blur-md py-3 -mx-4 px-4 border-b border-gray-200/50">
+            <!-- Filtros Píldora iOS (Fondo más sólido para evitar mazacote visual) -->
+            <div class="mb-6 sticky top-[80px] z-40 bg-[#F2F2F7] supports-[backdrop-filter]:bg-[#F2F2F7]/85 supports-[backdrop-filter]:backdrop-blur-xl py-3 -mx-4 px-4 border-b border-gray-200 shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)]">
                 <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar" id="brand-filters-container">
                     <!-- Botones inyectados por JS -->
                 </div>
@@ -192,9 +196,23 @@
                 <!-- Productos inyectados por JS -->
             </div>
         </div>
+
+        <!-- FOOTER DE CONFIANZA ESTILO APPLE (Ventas/Seguridad) -->
+        <div class="mt-12 mb-8 px-6 py-8 bg-iosCard rounded-3xl shadow-sm text-center mx-4 md:mx-auto max-w-4xl border border-gray-100">
+            <div class="flex justify-center gap-4 mb-4 text-iosBlue text-2xl">
+                <i class="fas fa-shield-alt"></i>
+                <i class="fas fa-truck-fast"></i>
+                <i class="fas fa-award"></i>
+            </div>
+            <h4 class="font-bold text-textMain mb-2">Compra 100% Segura</h4>
+            <p class="text-xs text-textLight mb-4">Somos tienda física e importadores directos. Tu compra está protegida.</p>
+            <div class="inline-block bg-[#F2F2F7] px-4 py-2 rounded-xl text-[11px] font-semibold text-textMain">
+                📍 Caracas, Venezuela | RIF: J-XXXXXXXX-X
+            </div>
+        </div>
     </section>
 
-    <!-- STICKY CART (Píldora Flotante Apple) -->
+    <!-- STICKY CART -->
     <div class="fixed bottom-6 left-4 right-4 md:left-auto md:right-6 md:w-80 z-[80] apple-glass-dark rounded-[2rem] p-2 flex items-center justify-between transition-all transform translate-y-32 duration-500 ease-apple shadow-ios-modal border border-white/10" id="sticky-cart">
         <div class="flex items-center gap-3 pl-3" id="tour-step-3">
             <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white relative">
@@ -212,7 +230,7 @@
         </button>
     </div>
 
-    <!-- MODAL DE CARRITO (Bottom Sheet iOS) -->
+    <!-- MODAL DE CARRITO -->
     <div id="cart-modal" class="fixed inset-0 z-[100] hidden">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/30 backdrop-blur-[4px] opacity-0 transition-opacity duration-500 ease-apple" id="cart-backdrop" onclick="closeCartModal()"></div>
@@ -221,7 +239,7 @@
         <div id="cart-sheet" class="absolute bottom-0 left-0 w-full md:w-[450px] md:left-1/2 md:-translate-x-1/2 h-[85vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
             
             <!-- Handle iOS -->
-            <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px] cursor-grab active:cursor-grabbing" onclick="closeCartModal()">
+            <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px] cursor-grab active:cursor-grabbing">
                 <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
 
@@ -233,7 +251,7 @@
                 </button>
             </div>
 
-            <!-- Barra de Progreso -->
+            <!-- Barra de Progreso (Gamificación de Ventas) -->
             <div class="bg-iosCard px-6 py-4 shadow-sm mb-2">
                 <div class="flex justify-between items-end mb-2">
                     <span class="text-xs font-semibold text-textLight" id="progress-title">Nivel Actual</span>
@@ -258,10 +276,9 @@
                 </div>
             </div>
 
-            <!-- Resumen y Pago (Bottom) -->
+            <!-- Resumen y Pago -->
             <div class="p-6 bg-iosCard rounded-t-[2rem] shadow-[0_-10px_30px_rgba(0,0,0,0.06)] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
                 
-                <!-- Toggle Método Pago iOS Style -->
                 <div class="bg-[#E5E5EA] p-1 rounded-xl flex mb-5 relative">
                     <label class="flex-1 text-center py-2 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight" onclick="setPaymentMethod('bs')">
                         <input type="radio" name="payment" value="bs" class="hidden" id="radio-bs" checked>
@@ -273,7 +290,7 @@
                     </label>
                 </div>
                 
-                <div class="space-y-2 mb-5">
+                <div class="space-y-2 mb-2">
                     <div class="flex justify-between text-sm text-textLight font-medium">
                         <span>Subtotal (<span id="cart-modal-qty">0</span>)</span>
                         <span id="cart-modal-subtotal">$0.00</span>
@@ -283,19 +300,24 @@
                         <span id="cart-modal-discount">-$0.00</span>
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t border-gray-100">
-                        <span class="font-bold text-textMain">Total</span>
+                        <span class="font-bold text-textMain">Total a Pagar</span>
                         <span id="cart-modal-total" class="text-2xl font-black text-textMain tracking-tight">$0.00</span>
                     </div>
                 </div>
 
-                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-iosBlue text-white font-bold py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 text-[15px] shadow-ios flex justify-center items-center gap-2">
-                    Confirmar Pedido
+                <!-- ROI Calculator Inyectado por JS -->
+                <div id="roi-calculator" class="hidden mb-4"></div>
+
+                <p class="text-[10px] text-center text-textLight mb-2"><i class="fas fa-info-circle"></i> No pagas nada aquí. Te daremos los datos en WhatsApp.</p>
+                <!-- Botón adaptado a la confianza venezolana -->
+                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 text-[15px] shadow-ios flex justify-center items-center gap-2">
+                    <i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL FAQ / CHATBOT (Bottom Sheet iOS) -->
+    <!-- MODAL FAQ / CHATBOT -->
     <div id="faq-modal" class="fixed inset-0 z-[120] hidden">
         <div class="absolute inset-0 bg-black/30 backdrop-blur-[4px] opacity-0 transition-opacity duration-500 ease-apple" id="faq-backdrop" onclick="closeFAQ()"></div>
         <div id="faq-sheet" class="absolute bottom-0 left-0 w-full md:w-[400px] md:left-1/2 md:-translate-x-1/2 h-[75vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
@@ -317,6 +339,18 @@
                     <p class="font-semibold text-sm text-textMain mb-1">¿Mínimo?</p>
                     <p class="text-xs text-textLight leading-relaxed">Para precios mayoristas, necesitas <strong>20 unidades</strong>.</p>
                 </div>
+                
+                <!-- Instagram Social Proof -->
+                <div class="bg-iosCard p-4 rounded-2xl shadow-sm mt-3 flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold text-sm text-textMain mb-1">Síguenos en Instagram</p>
+                        <p class="text-[11px] text-textLight">Ve referencias y clientes reales</p>
+                    </div>
+                    <a href="#" target="_blank" class="w-10 h-10 bg-pink-50 text-pink-500 rounded-full flex items-center justify-center text-xl active:scale-95">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+
                 <div class="mt-6 text-center">
                     <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20hablar%20con%20un%20asesor." target="_blank" class="inline-flex items-center gap-2 bg-textMain text-white font-semibold px-6 py-3 rounded-full text-sm shadow-ios active:scale-95 transition-transform">
                         Hablar con Asesor Humano
@@ -352,7 +386,68 @@
         let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- Utilidad Haptic (Iphonization) ---
+        // --- SISTEMA DE CACHÉ Y REDIMIENTO ---
+        const CACHE_KEY = 'miniperfumes_catalog_cache_cbo';
+        const CACHE_TTL = 1000 * 60 * 60; // 1 hora
+
+        async function fetchWithRetry(url, retries = 3) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, { redirect: "follow" });
+                    if (!response.ok) throw new Error("Error HTTP");
+                    return await response.text();
+                } catch (err) {
+                    if (i === retries - 1) throw err;
+                    await new Promise(res => setTimeout(res, 1000 * (i + 1))); // Backoff exponencial
+                }
+            }
+        }
+
+        async function loadCatalog() {
+            try {
+                // 1. Revisar Caché primero
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    const { timestamp, data } = JSON.parse(cached);
+                    if (Date.now() - timestamp < CACHE_TTL) {
+                        processAndRender(data);
+                        return;
+                    }
+                }
+
+                // 2. Si no hay caché o caducó, buscar en la red con reintentos
+                const rawText = await fetchWithRetry(API_URL);
+                const data = JSON.parse(rawText);
+                if (data.error) throw new Error("Fallo en Drive: " + data.error);
+
+                // Guardar en caché
+                localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: data }));
+                processAndRender(data);
+
+            } catch (error) {
+                // Fallback a caché viejo si no hay red
+                const oldCache = localStorage.getItem(CACHE_KEY);
+                if (oldCache) {
+                    showIOSNotification("Modo sin conexión activo.", "error");
+                    processAndRender(JSON.parse(oldCache).data);
+                } else {
+                    document.getElementById('loading-indicator').classList.add('hidden');
+                    document.getElementById('error-indicator').classList.remove('hidden');
+                    document.getElementById('error-text').innerText = "Revisa tu conexión e intenta de nuevo.";
+                }
+            }
+        }
+
+        function processAndRender(data) {
+            catalogData = processJsonData(data);
+            document.getElementById('loading-indicator').classList.add('hidden');
+            document.getElementById('catalog-zone').classList.remove('hidden');
+            generateTop5();
+            renderBrandFilters();
+            renderCatalog();
+        }
+
+        // --- Utilidades ---
         function haptic(type = 'light') {
             if (!navigator.vibrate) return;
             if (type === 'light') navigator.vibrate(10);
@@ -360,7 +455,6 @@
             if (type === 'heavy') navigator.vibrate(40);
         }
 
-        // --- Utilidad Notificación Estilo Dynamic Island ---
         function showIOSNotification(text, type = 'success') {
             const bg = type === 'error' ? 'rgba(255, 59, 48, 0.9)' : 'rgba(28, 28, 30, 0.85)';
             Toastify({
@@ -368,41 +462,8 @@
                 duration: 2500,
                 gravity: "top",
                 position: "center",
-                style: {
-                    background: bg,
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    borderRadius: "100px",
-                    padding: "12px 24px",
-                    fontSize: "13px",
-                    fontWeight: "600",
-                    boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
-                    color: "#fff"
-                }
+                style: { background: bg, backdropFilter: "blur(12px)", borderRadius: "100px", padding: "12px 24px", fontSize: "13px", fontWeight: "600", boxShadow: "0 10px 40px rgba(0,0,0,0.15)", color: "#fff" }
             }).showToast();
-        }
-
-        async function loadCatalog() {
-            try {
-                const response = await fetch(API_URL, { redirect: "follow" });
-                const rawText = await response.text();
-                let data;
-                try { data = JSON.parse(rawText); } catch (e) { throw new Error("Google bloqueó la solicitud."); }
-                if (data.error) throw new Error("Fallo en Drive: " + data.error);
-
-                catalogData = processJsonData(data);
-                
-                document.getElementById('loading-indicator').classList.add('hidden');
-                document.getElementById('catalog-zone').classList.remove('hidden');
-                
-                generateTop5();
-                renderBrandFilters();
-                renderCatalog();
-            } catch (error) {
-                document.getElementById('loading-indicator').classList.add('hidden');
-                document.getElementById('error-indicator').classList.remove('hidden');
-                document.getElementById('error-text').innerText = error.message;
-            }
         }
 
         function processJsonData(data) {
@@ -412,9 +473,7 @@
                 let brand = item.brand || "Otras Marcas";
                 if(!processed[brand]) processed[brand] = [];
                 let finalImg = item.img;
-                if (!finalImg || finalImg.includes('unsplash.com')) {
-                    finalImg = "https://placehold.co/400x400/F2F2F7/8E8E93?text=Sin+Foto"; 
-                }
+                if (!finalImg || finalImg.includes('unsplash.com')) { finalImg = "https://placehold.co/400x400/F2F2F7/8E8E93?text=Sin+Foto"; }
                 const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand };
                 processed[brand].push(prodObj);
                 flatProducts.push(prodObj); 
@@ -438,9 +497,9 @@
                 html += `
                 <div class="min-w-[130px] bg-iosCard p-3 rounded-3xl shadow-ios snap-center flex flex-col relative group">
                     <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')">
-                        <img src="${prod.img}" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
+                        <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
                     </div>
-                    <p class="font-semibold text-xs text-textMain leading-tight line-clamp-2 w-full mb-2 h-[32px]">${prod.name}</p>
+                    <p class="font-bold text-[13px] text-textMain leading-snug line-clamp-2 min-h-[38px] w-full mb-1">${prod.name}</p>
                     <div class="mt-auto w-full">
                         <button onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95">
                             Agregar
@@ -452,7 +511,23 @@
             section.classList.remove('hidden');
         }
 
-        // --- Modales Apple Style ---
+        // --- Búsqueda Móvil ---
+        function toggleClearBtn() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if(input.value.length > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            input.value = '';
+            input.focus();
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterCatalog();
+        }
+
+        // --- Modales ---
         function openCartModal() {
             haptic('light');
             const modal = document.getElementById('cart-modal');
@@ -460,7 +535,7 @@
             const sheet = document.getElementById('cart-sheet');
             
             modal.classList.remove('hidden');
-            void modal.offsetWidth; // Force reflow
+            void modal.offsetWidth; 
             
             backdrop.classList.remove('opacity-0');
             sheet.classList.remove('translate-y-full');
@@ -478,6 +553,7 @@
             setTimeout(() => {
                 document.getElementById('cart-modal').classList.add('hidden');
                 document.body.style.overflow = '';
+                sheet.style.transform = ''; // Reset para swipe
             }, 500);
         }
 
@@ -525,13 +601,37 @@
             setTimeout(() => modal.classList.add('hidden'), 400);
         }
 
+        // --- Swipe to Close (Carrito) ---
+        const cartSheet = document.getElementById('cart-sheet');
+        let touchStartY = 0;
+        
+        cartSheet.addEventListener('touchstart', e => {
+            if(e.target.closest('.cursor-grab')) touchStartY = e.changedTouches[0].screenY;
+        }, {passive: true});
+
+        cartSheet.addEventListener('touchmove', e => {
+            if(!touchStartY) return;
+            let currentY = e.changedTouches[0].screenY;
+            let deltaY = currentY - touchStartY;
+            if (deltaY > 0) cartSheet.style.transform = `translateY(${deltaY}px)`;
+        }, {passive: true});
+
+        cartSheet.addEventListener('touchend', e => {
+            if(!touchStartY) return;
+            let deltaY = e.changedTouches[0].screenY - touchStartY;
+            if (deltaY > 100) closeCartModal();
+            else cartSheet.style.transform = `translateY(0px)`;
+            setTimeout(() => { cartSheet.style.transform = ''; }, 300);
+            touchStartY = 0;
+        });
+
         // --- Catálogo y Filtros ---
         function renderBrandFilters() {
             const container = document.getElementById('brand-filters-container');
             if(!container) return;
             let html = `<button onclick="filterByBrand('All')" class="brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors">Todos</button>`;
             catalogData.forEach(cat => {
-                html += `<button onclick="filterByBrand('${cat.brand}')" class="brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-textLight border border-gray-200 hover:text-textMain transition-colors">${cat.brand}</button>`;
+                html += `<button onclick="filterByBrand('${cat.brand}')" class="brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-gray-500 border border-gray-200 hover:text-textMain transition-colors">${cat.brand}</button>`;
             });
             container.innerHTML = html;
         }
@@ -542,7 +642,7 @@
                 if (btn.innerText === brandName || (brandName === 'All' && btn.innerText === 'Todos')) {
                     btn.className = "brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors";
                 } else {
-                    btn.className = "brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-textLight border border-gray-200 hover:text-textMain transition-colors";
+                    btn.className = "brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-gray-500 border border-gray-200 hover:text-textMain transition-colors";
                 }
             });
             document.querySelectorAll('.category-block').forEach(catBlock => {
@@ -564,42 +664,59 @@
             });
         }
 
+        // Optimizado con Array.join() para no saturar memoria
         function renderCatalog() {
             const container = document.getElementById('catalog-container');
             if(!container) return;
-            let html = '';
+            let htmlFragments = [];
+            
             catalogData.forEach((category) => {
-                html += `
+                htmlFragments.push(`
                 <div class="category-block mb-10" data-brand="${category.brand}">
-                    <h3 class="text-xl font-bold tracking-tight mb-4 text-textMain pl-2">${category.brand}</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">`;
+                    <div class="flex justify-between items-end mb-4 px-2">
+                        <h3 class="text-xl font-bold tracking-tight text-textMain">${category.brand}</h3>
+                        <button onclick="addBrandToCart('${category.brand}')" class="text-[11px] font-semibold text-iosBlue bg-blue-50 px-3 py-1.5 rounded-full active:scale-95 shadow-sm">
+                            <i class="fas fa-magic"></i> Surtir Marca
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">`);
+                
                 category.products.forEach((prod) => {
                     let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
-                    html += `
+                    
+                    // Lógica de Gatillo de Ventas (Escasez)
+                    let isLowStock = Math.random() > 0.85; 
+                    let isTrending = Math.random() > 0.90; 
+                    let badgeHtml = '';
+                    if (isLowStock) badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF3B30] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">¡Quedan 3!</div>`;
+                    else if (isTrending) badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF9500] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm"><i class="fas fa-fire"></i> Top Ventas</div>`;
+
+                    htmlFragments.push(`
                     <div class="product-card flex flex-col items-center bg-iosCard p-3 rounded-3xl shadow-ios transition-all relative group" data-search="${searchTerms}">
+                        ${badgeHtml}
                         <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')">
-                            <img src="${prod.img}" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
+                            <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
                         </div>
                         <div class="flex-1 w-full flex flex-col px-1">
-                            <p class="font-semibold text-[13px] md:text-sm text-textMain leading-tight mb-1 line-clamp-2 min-h-[36px]">${prod.name}</p>
-                            <p class="text-[10px] font-medium text-textLight mb-3">${prod.cap}</p>
+                            <p class="font-bold text-[13px] md:text-sm text-textMain leading-snug mb-1 line-clamp-2 min-h-[38px]">${prod.name}</p>
+                            <p class="text-[11px] font-semibold text-gray-500 mb-3">${prod.cap}</p>
                             <div class="mt-auto w-full">
                                 <button id="add-btn-${prod.id}" onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95">
                                     Agregar
                                 </button>
-                                <!-- Stepper iOS Style -->
+                                <!-- Hitboxes mejorados (w-11 h-10) -->
                                 <div id="ctrls-${prod.id}" class="hidden flex items-center justify-between bg-[#F2F2F7] rounded-xl p-1 w-full">
-                                    <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-minus text-[10px]"></i></button>
-                                    <span id="qty-${prod.id}" class="text-sm font-bold w-6 text-center text-textMain">0</span>
-                                    <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-plus text-[10px]"></i></button>
+                                    <button onclick="updateCart('${prod.id}', -1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-minus text-[12px]"></i></button>
+                                    <span id="qty-${prod.id}" class="text-base font-bold w-6 text-center text-textMain">0</span>
+                                    <button onclick="updateCart('${prod.id}', 1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-plus text-[12px]"></i></button>
                                 </div>
                             </div>
                         </div>
-                    </div>`;
+                    </div>`);
                 });
-                html += `</div></div>`;
+                htmlFragments.push(`</div></div>`);
             });
-            container.innerHTML = html;
+            container.innerHTML = htmlFragments.join('');
             loadCartFromStorage();
         }
 
@@ -610,7 +727,7 @@
             const el = document.getElementById(elementId);
             if(el) {
                 el.classList.remove('pop-anim');
-                void el.offsetWidth; // Reflow
+                void el.offsetWidth;
                 el.classList.add('pop-anim');
             }
         }
@@ -629,6 +746,22 @@
                 if(qty > 0) { btn.classList.add('hidden'); ctrls.classList.remove('hidden'); ctrls.classList.add('flex'); } 
                 else { btn.classList.remove('hidden'); ctrls.classList.add('hidden'); ctrls.classList.remove('flex'); }
             }
+        }
+
+        function addBrandToCart(brand) {
+            haptic('success');
+            let addedCount = 0;
+            flatProducts.forEach(p => {
+                if(p.brand === brand) {
+                    if(!cart[p.id]) cart[p.id] = 0;
+                    cart[p.id] += 1;
+                    syncProductUI(p.id);
+                    addedCount++;
+                }
+            });
+            saveCartToStorage();
+            calculateTotals();
+            showIOSNotification(`+${addedCount} perfumes de ${brand} añadidos`, 'success');
         }
 
         function addComboToCart(qty, tier) {
@@ -673,9 +806,7 @@
             else haptic('heavy');
             
             calculateTotals();
-            if(!document.getElementById('cart-modal').classList.contains('hidden')) {
-                renderCartModalItems(); 
-            }
+            if(!document.getElementById('cart-modal').classList.contains('hidden')) renderCartModalItems(); 
         }
 
         function removeProduct(productId) {
@@ -715,6 +846,17 @@
             }
         }
 
+        // --- Sincronización entre pestañas ---
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'miniperfumes_cart_cbo') {
+                cart = JSON.parse(e.newValue || '{}');
+                for (let id in cart) syncProductUI(id);
+                calculateTotals();
+                if(!document.getElementById('cart-modal').classList.contains('hidden')) renderCartModalItems();
+            }
+        });
+
+        // --- Gamificación Ventas ---
         function updateProgressBar(totalQty) {
             const bar = document.getElementById('progress-bar');
             const msg = document.getElementById('progress-msg');
@@ -724,21 +866,21 @@
             if (totalQty < 20) {
                 let p = (totalQty / 20) * 100;
                 bar.style.width = `${p}%`; bar.className = "h-full rounded-full progress-bar-fill bg-textLight";
-                msg.innerHTML = `Agrega <strong>${20 - totalQty} uds más</strong> para alcanzar el mínimo y desbloquear precio de $6.00.`;
+                msg.innerHTML = `Faltan <strong>${20 - totalQty} uds</strong> para desbloquear precio mayorista ($6.00).`;
                 title.innerText = "Iniciando"; price.innerText = "---";
             } else if (totalQty >= 20 && totalQty < 50) {
                 let p = ((totalQty - 20) / 30) * 100;
                 bar.style.width = `${p}%`; bar.className = "h-full rounded-full progress-bar-fill bg-iosBlue";
-                msg.innerHTML = `¡Nivel Emprendedor! Agrega <strong class="text-iosBlue">${50 - totalQty} uds más</strong> para bajar a $4.50 c/u.`;
+                msg.innerHTML = `🔥 Nivel Emprendedor. Suma <strong class="text-iosBlue">${50 - totalQty} uds</strong> y bajan a $4.50.`;
                 title.innerText = "Emprendedor"; price.innerText = "$6.00 c/u";
             } else if (totalQty >= 50 && totalQty < 100) {
                 let p = ((totalQty - 50) / 50) * 100;
                 bar.style.width = `${p}%`; bar.className = "h-full rounded-full progress-bar-fill bg-iosOrange";
-                msg.innerHTML = `¡Nivel Negocio! Agrega <strong class="text-iosOrange">${100 - totalQty} uds más</strong> para bajar a $3.50 c/u.`;
+                msg.innerHTML = `🚀 Nivel Negocio. Precio bajó a $4.50 c/u. <br><span class="text-[#FF9500]"><i class="fas fa-gift"></i> + Bolsas de regalo desbloqueadas.</span>`;
                 title.innerText = "Negocio"; price.innerText = "$4.50 c/u";
             } else {
                 bar.style.width = '100%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosGreen";
-                msg.innerHTML = `¡Felicidades! Has alcanzado el <strong class="text-iosGreen">Nivel Mayorista Top</strong>.`;
+                msg.innerHTML = `🏆 Nivel Máximo alcanzado. Mejor precio garantizado. <br><span class="text-iosGreen"><i class="fas fa-gift"></i> + Obsequios extras.</span>`;
                 title.innerText = "Mayorista"; price.innerText = "$3.50 c/u";
             }
         }
@@ -794,9 +936,9 @@
                             </div>
                             <div class="flex flex-col items-end gap-1">
                                 <div class="flex items-center gap-2 bg-[#F2F2F7] rounded-lg p-1">
-                                    <button onclick="updateCart('${prod.id}', -1)" class="w-6 h-6 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-minus text-[8px]"></i></button>
-                                    <span class="text-xs font-bold w-4 text-center text-textMain">${cart[id]}</span>
-                                    <button onclick="updateCart('${prod.id}', 1)" class="w-6 h-6 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-plus text-[8px]"></i></button>
+                                    <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-minus text-[10px]"></i></button>
+                                    <span class="text-xs font-bold w-5 text-center text-textMain">${cart[id]}</span>
+                                    <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-plus text-[10px]"></i></button>
                                 </div>
                             </div>
                         </div>`;
@@ -826,7 +968,6 @@
 
             updateProgressBar(totalQty);
 
-            // Pop Animation on cart numbers
             const oldQty = document.getElementById('sticky-qty').innerText;
             if(oldQty != totalQty && totalQty > 0) triggerPopAnim('sticky-qty');
 
@@ -856,14 +997,35 @@
             if(document.getElementById('cart-modal-total')) document.getElementById('cart-modal-total').innerText = `$${totalFinal.toFixed(2)}`;
             document.getElementById('sticky-total').innerText = `$${totalFinal.toFixed(2)}`;
 
+            // Lógica de ROI (Retorno de Inversión)
+            const roiContainer = document.getElementById('roi-calculator');
+            if(totalQty >= 20 && roiContainer) {
+                const precioReventaSugerido = 10.00;
+                const ingresoProyectado = totalQty * precioReventaSugerido;
+                const gananciaNeta = ingresoProyectado - totalFinal;
+                
+                roiContainer.innerHTML = `
+                    <div class="bg-[#E5F9E7] border border-[#34C759]/30 p-3 rounded-xl flex items-start gap-3 shadow-sm">
+                        <div class="bg-[#34C759] text-white p-2 rounded-lg mt-0.5"><i class="fas fa-chart-line"></i></div>
+                        <div>
+                            <p class="text-[11px] text-gray-600 font-medium">Si revendes a $10 c/u, tu ganancia neta será:</p>
+                            <p class="text-lg font-black text-[#34C759] tracking-tight">+$${gananciaNeta.toFixed(2)}</p>
+                        </div>
+                    </div>
+                `;
+                roiContainer.classList.remove('hidden');
+            } else if(roiContainer) {
+                roiContainer.classList.add('hidden');
+            }
+
             const btnModal = document.getElementById('cart-modal-btn');
             if(btnModal) {
                 if (totalQty >= 20) {
                     btnModal.disabled = false;
-                    btnModal.innerHTML = `Confirmar Pedido`;
+                    btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp`;
                 } else {
                     btnModal.disabled = true;
-                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds`;
+                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds para mayorista`;
                     else btnModal.innerHTML = `Añade productos`;
                 }
             }
@@ -888,9 +1050,34 @@
                 }
             }
 
-            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo(a) para mi importación.%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*%0A%0AQuiero proceder con el pago.`;
+            // Bono
+            let bonusText = (totalQty >= 50) ? "%0A🎁 *BONO DESBLOQUEADO:* Bolsas de entrega / Material POP" : "";
+
+            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo(a) para mi importación.%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0AQuiero proceder con el pago.`;
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
         }
+
+        // --- Fake Social Proof (FOMO) ---
+        const fomoNames = ["María G.", "José L.", "Andrea M.", "Carlos P.", "Daniela V.", "Luis R.", "Carmen T."];
+        const fomoCities = ["Caracas", "Valencia", "Maracaibo", "Barquisimeto", "Maracay", "Lechería", "Mérida"];
+        const fomoCombos = ["una Caja x50", "una Caja x100", "20 MiniPerfumes", "un Surtido Mayorista"];
+
+        function triggerSocialProof() {
+            if(Math.random() > 0.4) {
+                const name = fomoNames[Math.floor(Math.random() * fomoNames.length)];
+                const city = fomoCities[Math.floor(Math.random() * fomoCities.length)];
+                const combo = fomoCombos[Math.floor(Math.random() * fomoCombos.length)];
+                
+                Toastify({
+                    text: `🛍️ ${name} de ${city} acaba de comprar ${combo}.`,
+                    duration: 4000,
+                    gravity: "bottom",
+                    position: "left",
+                    style: { background: "rgba(255, 255, 255, 0.95)", color: "#1C1C1E", backdropFilter: "blur(10px)", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.05)", boxShadow: "0 10px 40px rgba(0,0,0,0.1)", fontSize: "12px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }
+                }).showToast();
+            }
+        }
+        setTimeout(() => { triggerSocialProof(); setInterval(triggerSocialProof, 45000); }, 15000);
 
         // --- Asistente Tour ---
         const naviEl = document.getElementById('tour-navi');
@@ -946,3 +1133,4 @@
     </script>
 </body>
 </html>
+
