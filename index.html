@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="px-4 md:px-6 max-w-4xl mx-auto">
-            <div class="relative w-full bg-[#e3e3e8] rounded-xl flex items-center overflow-hidden transition-all focus-within:ring-2 ring-iosBlue/50">
+            <div id="tour-step-search" class="relative w-full bg-[#e3e3e8] rounded-xl flex items-center overflow-hidden transition-all focus-within:ring-2 ring-iosBlue/50">
                 <i class="fas fa-search text-gray-500 pl-3.5 text-sm"></i>
                 <input type="search" id="searchInput" inputmode="search" enterkeyhint="search" onkeyup="filterCatalog(); toggleClearBtn();" class="w-full pl-2 pr-8 py-2.5 bg-transparent text-[16px] border-none focus:ring-0 outline-none placeholder-gray-500 text-textMain" placeholder="Buscar aromas, marcas...">
                 <button id="clearSearchBtn" onclick="clearSearch()" class="absolute right-3 text-gray-400 hidden active:scale-95">
@@ -98,7 +98,7 @@
             <span class="text-xs font-medium text-textLight">1-Click</span>
         </div>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 pb-2">
+            <div id="tour-step-combos" class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 pb-2 p-1">
                 <div onclick="addComboToCart(20, 'Emprendedor')" class="snap-start shrink-0 w-[140px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
                     <div class="h-14 w-14 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-2xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-box"></i></div>
                     <h3 class="font-bold text-sm text-textMain tracking-tight">Caja x20</h3>
@@ -311,6 +311,31 @@
 
     <!-- MODALES EXTRAS (Preview e imagen) omitidos para brevedad, idénticos al anterior -->
     <div id="image-preview-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[130] hidden flex flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-400 ease-apple" onclick="hidePreview()"><img id="preview-img-element" src="" class="max-w-full max-h-[70vh] object-contain rounded-3xl transform scale-90 transition-transform duration-500 ease-apple"></div>
+
+    <!-- NUEVO TOUR INTERACTIVO (Step-by-Step) -->
+    <div id="tour-overlay" class="fixed inset-0 bg-black/70 z-[150] hidden transition-opacity duration-300 opacity-0 pointer-events-auto backdrop-blur-sm" onclick="endTour()"></div>
+    
+    <div id="tour-tooltip" class="fixed z-[160] w-[90%] max-w-[320px] bg-white rounded-3xl p-6 shadow-2xl hidden transition-all duration-300 transform scale-90 opacity-0 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col items-center text-center">
+        <div id="tour-icon" class="w-16 h-16 bg-blue-50 text-iosBlue rounded-full flex items-center justify-center text-3xl mb-4">
+            <i class="fas fa-magic"></i>
+        </div>
+        <h4 id="tour-title" class="font-black text-textMain mb-2 text-xl tracking-tight">Paso 1</h4>
+        <p id="tour-text" class="text-sm text-textLight mb-6 leading-relaxed">Texto explicativo del paso.</p>
+        
+        <div class="w-full flex justify-between items-center mt-auto">
+            <button onclick="endTour()" class="text-sm font-semibold text-gray-400 active:scale-95 px-4 py-2">Saltar</button>
+            <button onclick="nextTourStep()" id="tour-next-btn" class="bg-iosBlue text-white px-6 py-3 rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform flex items-center gap-2">
+                Siguiente <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        
+        <div class="flex gap-1.5 mt-6" id="tour-dots">
+            <div class="w-4 h-2 rounded-full bg-iosBlue transition-all duration-300"></div>
+            <div class="w-2 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
+            <div class="w-2 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
+            <div class="w-2 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -703,6 +728,117 @@
 
             const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo para mi importación.%0A%0A*ID ORDEN:* ${refCode}%0A*TIER CLIENTE:* ${tier}%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH SEGURIDAD:* ${hashId.substring(0,12)}...%0A%0AQuiero proceder con el pago.`;
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
+        }
+
+        // --- NUEVO SISTEMA DE TOUR PASO A PASO ---
+        const tourData = [
+            { targetId: 'tour-step-combos', icon: 'fa-box-open', title: 'Cajas Inteligentes', text: 'La forma más rápida de emprender. Añade combos prearmados de 20, 50 o 100 unidades con un solo toque.', btn: 'Siguiente' },
+            { targetId: 'tour-step-search', icon: 'fa-search', title: 'Buscador Ágil', text: '¿Buscas una marca o aroma específico? Escríbelo aquí para encontrarlo al instante.', btn: 'Siguiente' },
+            { targetId: 'brand-filters-container', icon: 'fa-filter', title: 'Surtido Manual', text: 'Navega por las marcas, usa el botón mágico para sumar colecciones, o agrega de uno en uno con el botón (+).', btn: 'Siguiente' },
+            { targetId: 'sticky-cart', icon: 'fa-shopping-bag', title: 'Tu Pedido en Vivo', text: 'Revisa tu total y descuentos aquí. ¡Recuerda llegar a 20 unidades para desbloquear el precio mayorista!', btn: '¡Entendido!' }
+        ];
+
+        let currentTourStep = 0;
+        let activeTourTarget = null;
+
+        function startTour() {
+            closeCartModal();
+            currentTourStep = 0;
+            
+            const overlay = document.getElementById('tour-overlay');
+            const tooltip = document.getElementById('tour-tooltip');
+            
+            overlay.classList.remove('hidden');
+            tooltip.classList.remove('hidden');
+            void overlay.offsetWidth; // Reflow para animación
+            overlay.classList.remove('opacity-0');
+            
+            // Garantizamos que el catálogo esté visible
+            document.getElementById('catalog-zone').classList.remove('hidden');
+            
+            renderTourStep();
+        }
+
+        function renderTourStep() {
+            // Limpiar el objetivo anterior
+            if (activeTourTarget) {
+                activeTourTarget.classList.remove('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl', 'bg-white');
+                activeTourTarget.style.pointerEvents = '';
+                if(activeTourTarget.dataset.origPos) activeTourTarget.style.position = activeTourTarget.dataset.origPos;
+                else activeTourTarget.style.position = '';
+            }
+
+            const step = tourData[currentTourStep];
+            activeTourTarget = document.getElementById(step.targetId);
+            
+            if (activeTourTarget) {
+                // Iluminar el objetivo nuevo por encima del overlay oscuro
+                activeTourTarget.dataset.origPos = window.getComputedStyle(activeTourTarget).position;
+                if(activeTourTarget.dataset.origPos === 'static') activeTourTarget.style.position = 'relative';
+                
+                activeTourTarget.classList.add('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl');
+                if(step.targetId !== 'brand-filters-container') activeTourTarget.classList.add('bg-white');
+                activeTourTarget.style.pointerEvents = 'none'; // Evita toques accidentales durante el tour
+                
+                // Centrar en pantalla suavemente
+                const yOffset = -200; 
+                const y = activeTourTarget.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+
+            // Actualizar textos del pop-up
+            document.getElementById('tour-icon').innerHTML = `<i class="fas ${step.icon}"></i>`;
+            document.getElementById('tour-title').innerText = step.title;
+            document.getElementById('tour-text').innerText = step.text;
+            document.getElementById('tour-next-btn').innerHTML = currentTourStep === tourData.length - 1 ? `${step.btn} <i class="fas fa-check"></i>` : `${step.btn} <i class="fas fa-arrow-right"></i>`;
+            
+            // Actualizar indicadores (puntitos azules)
+            const dots = document.getElementById('tour-dots').children;
+            for(let i=0; i<dots.length; i++) {
+                dots[i].className = i === currentTourStep ? "w-4 h-2 rounded-full bg-iosBlue transition-all duration-300" : "w-2 h-2 rounded-full bg-gray-200 transition-all duration-300";
+            }
+
+            const tooltip = document.getElementById('tour-tooltip');
+            tooltip.classList.remove('opacity-0', 'scale-90');
+        }
+
+        function nextTourStep() {
+            haptic('light');
+            const tooltip = document.getElementById('tour-tooltip');
+            tooltip.classList.add('opacity-0', 'scale-90');
+            
+            if (currentTourStep < tourData.length - 1) {
+                setTimeout(() => {
+                    currentTourStep++;
+                    renderTourStep();
+                }, 300);
+            } else {
+                setTimeout(endTour, 300);
+            }
+        }
+
+        function endTour() {
+            haptic('success');
+            const overlay = document.getElementById('tour-overlay');
+            const tooltip = document.getElementById('tour-tooltip');
+            
+            overlay.classList.add('opacity-0');
+            tooltip.classList.add('opacity-0', 'scale-90');
+            
+            if (activeTourTarget) {
+                activeTourTarget.classList.remove('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl', 'bg-white');
+                activeTourTarget.style.pointerEvents = '';
+                if(activeTourTarget.dataset.origPos) activeTourTarget.style.position = activeTourTarget.dataset.origPos;
+                else activeTourTarget.style.position = '';
+                activeTourTarget = null;
+            }
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                tooltip.classList.add('hidden');
+            }, 300);
+            
+            showIOSNotification("¡Ya eres un experto! Arma tu pedido.", "success");
         }
 
         window.onload = loadCatalog;
