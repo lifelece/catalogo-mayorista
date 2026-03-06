@@ -423,8 +423,9 @@
                 // Como ya filtramos los que no tienen un enlace válido, finalImg siempre será item.img
                 let finalImg = item.img; 
                 
-                // NUEVO: Identificador de producto Premium (Ej. Valentino)
-                let isPremium = item.name.toLowerCase().includes('valentino born in roma');
+                // NUEVO: Identificador estricto de producto Premium (Valentino Born in Roma de 15ml)
+                let searchString = `${brand} ${item.name} ${item.cap}`.toLowerCase();
+                let isPremium = searchString.includes('valentino') && searchString.includes('born in roma') && searchString.includes('15ml');
                 
                 const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand, isPremium: isPremium };
                 processed[brand].push(prodObj); flatProducts.push(prodObj); 
