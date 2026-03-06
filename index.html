@@ -194,9 +194,17 @@
                 <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
 
+            <!-- NUEVA CABECERA CON BOTÓN DINÁMICO -->
             <div class="px-6 py-3 bg-iosCard flex justify-between items-center border-b border-gray-100">
-                <h2 class="text-2xl font-bold tracking-tight text-textMain">Tu Pedido</h2>
-                <button onclick="clearCart()" class="text-iosRed bg-red-50 px-3 py-1.5 rounded-full text-xs font-bold active:scale-95 transition-transform">Vaciar</button>
+                <h2 class="text-xl md:text-2xl font-bold tracking-tight text-textMain">Tu Pedido</h2>
+                <div class="flex items-center gap-2">
+                    <!-- Botón Enviar (Oculto por defecto, se activa a las 20 uds) -->
+                    <button id="cart-header-btn" onclick="sendWhatsAppOrder()" class="hidden bg-[#25D366] text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm active:scale-95 transition-transform flex items-center gap-1">
+                        <i class="fab fa-whatsapp text-sm"></i> Enviar
+                    </button>
+                    <!-- Botón Vaciar -->
+                    <button onclick="clearCart()" class="text-iosRed bg-red-50 px-3 py-1.5 rounded-full text-xs font-bold active:scale-95 transition-transform">Vaciar</button>
+                </div>
             </div>
 
             <div class="bg-iosCard px-6 py-4 shadow-sm mb-2">
@@ -721,9 +729,20 @@
             } else if(roiContainer) { roiContainer.classList.add('hidden'); }
 
             const btnModal = document.getElementById('cart-modal-btn');
+            const headerBtn = document.getElementById('cart-header-btn'); // Referencia al nuevo botón superior
+            
             if(btnModal) {
-                if (totalQty >= 20) { btnModal.disabled = false; btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp`; } 
-                else { btnModal.disabled = true; if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds para mayorista`; else btnModal.innerHTML = `Añade productos`; }
+                if (totalQty >= 20) { 
+                    btnModal.disabled = false; 
+                    btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp`; 
+                    if(headerBtn) headerBtn.classList.remove('hidden'); // Muestra el botón de arriba
+                } 
+                else { 
+                    btnModal.disabled = true; 
+                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds para mayorista`; 
+                    else btnModal.innerHTML = `Añade productos`; 
+                    if(headerBtn) headerBtn.classList.add('hidden'); // Oculta el botón de arriba si baja de 20
+                }
             }
         }
 
