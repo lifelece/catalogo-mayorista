@@ -244,6 +244,11 @@
                         <span>Subtotal (<span id="cart-modal-qty">0</span>)</span>
                         <span id="cart-modal-subtotal">$0.00</span>
                     </div>
+                    <!-- NUEVO: Fila para el recargo premium transparente -->
+                    <div id="cart-premium-row" class="flex justify-between text-sm text-[#8A2BE2] font-medium hidden">
+                        <span>Recargo Premium (15ml)</span>
+                        <span id="cart-modal-premium">+$0.00</span>
+                    </div>
                     <div id="cart-discount-row" class="flex justify-between text-sm text-iosGreen font-medium hidden">
                         <span>Descuento Aplicado</span>
                         <span id="cart-modal-discount">-$0.00</span>
@@ -418,7 +423,10 @@
                 // Como ya filtramos los que no tienen un enlace válido, finalImg siempre será item.img
                 let finalImg = item.img; 
                 
-                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand };
+                // NUEVO: Identificador de producto Premium (Ej. Valentino)
+                let isPremium = item.name.toLowerCase().includes('valentino born in roma');
+                
+                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand, isPremium: isPremium };
                 processed[brand].push(prodObj); flatProducts.push(prodObj); 
             });
             let finalArray = [];
@@ -442,11 +450,13 @@
             let top5 = sortedProducts.slice(0, 5);
             let html = '';
             top5.forEach((prod) => {
+                let premiumBadge = prod.isPremium ? `<span class="inline-block bg-[#8A2BE2] text-white text-[8px] px-1.5 py-0.5 rounded shadow-sm mb-1 w-max"><i class="fas fa-gem"></i> +$1.8</span>` : '';
                 html += `
                 <div class="min-w-[130px] bg-iosCard p-3 rounded-3xl shadow-ios snap-center flex flex-col relative group">
                     <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')">
                         <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
                     </div>
+                    ${premiumBadge}
                     <p class="font-bold text-[13px] text-textMain leading-snug line-clamp-2 min-h-[38px] w-full mb-1">${prod.name}</p>
                     <div class="mt-auto w-full">
                         <button onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95">Agregar</button>
@@ -540,7 +550,9 @@
                     if (isLowStock) badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF3B30] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">¡Quedan 3!</div>`;
                     else if (isTrending) badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF9500] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm"><i class="fas fa-fire"></i> Top Ventas</div>`;
 
-                    htmlFragments.push(`<div class="product-card flex flex-col items-center bg-iosCard p-3 rounded-3xl shadow-ios transition-all relative group" data-search="${searchTerms}"> ${badgeHtml} <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')"> <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]"> </div> <div class="flex-1 w-full flex flex-col px-1"> <p class="font-bold text-[13px] md:text-sm text-textMain leading-snug mb-1 line-clamp-2 min-h-[38px]">${prod.name}</p> <p class="text-[11px] font-semibold text-gray-500 mb-3">${prod.cap}</p> <div class="mt-auto w-full"> <button id="add-btn-${prod.id}" onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95"> Agregar </button> <div id="ctrls-${prod.id}" class="hidden flex items-center justify-between bg-[#F2F2F7] rounded-xl p-1 w-full"> <button onclick="updateCart('${prod.id}', -1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-minus text-[12px]"></i></button> <span id="qty-${prod.id}" class="text-base font-bold w-6 text-center text-textMain">0</span> <button onclick="updateCart('${prod.id}', 1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-plus text-[12px]"></i></button> </div> </div> </div> </div>`);
+                    let premiumBadge = prod.isPremium ? `<span class="inline-block bg-[#8A2BE2] text-white text-[8px] px-1.5 py-0.5 rounded shadow-sm mb-1 w-max"><i class="fas fa-gem"></i> 15ml (+$1.8)</span>` : '';
+
+                    htmlFragments.push(`<div class="product-card flex flex-col items-center bg-iosCard p-3 rounded-3xl shadow-ios transition-all relative group" data-search="${searchTerms}"> ${badgeHtml} <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')"> <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]"> </div> <div class="flex-1 w-full flex flex-col px-1"> ${premiumBadge} <p class="font-bold text-[13px] md:text-sm text-textMain leading-snug mb-1 line-clamp-2 min-h-[38px]">${prod.name}</p> <p class="text-[11px] font-semibold text-gray-500 mb-3">${prod.cap}</p> <div class="mt-auto w-full"> <button id="add-btn-${prod.id}" onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95"> Agregar </button> <div id="ctrls-${prod.id}" class="hidden flex items-center justify-between bg-[#F2F2F7] rounded-xl p-1 w-full"> <button onclick="updateCart('${prod.id}', -1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-minus text-[12px]"></i></button> <span id="qty-${prod.id}" class="text-base font-bold w-6 text-center text-textMain">0</span> <button onclick="updateCart('${prod.id}', 1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-plus text-[12px]"></i></button> </div> </div> </div> </div>`);
                 });
                 htmlFragments.push(`</div></div>`);
             });
@@ -566,6 +578,12 @@
             if(change > 0) {
                 userStats.product_adds[productId] = (userStats.product_adds[productId] || 0) + 1;
                 localStorage.setItem(ANALYTICS_KEY, JSON.stringify(userStats));
+                
+                // NUEVO: Notificación Push Exclusiva para Aroma Premium
+                const p = getProductById(productId);
+                if (p && p.isPremium) {
+                    showIOSNotification('Aroma Premium añadido (+$1.80)', 'success');
+                }
             }
             
             syncProductUI(productId); saveCartToStorage();
@@ -633,7 +651,10 @@
             for (let id in cart) {
                 if (cart[id] > 0) {
                     const prod = getProductById(id);
-                    if(prod) { html += `<div class="flex items-center gap-3 bg-iosCard p-2 rounded-2xl mb-2"> <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl bg-[#F2F2F7]"> <div class="flex-1"> <p class="text-[13px] font-semibold text-textMain leading-tight mb-0.5">${prod.name}</p> <p class="text-[10px] text-textLight">Cod: #${prod.id}</p> </div> <div class="flex flex-col items-end gap-1"> <div class="flex items-center gap-2 bg-[#F2F2F7] rounded-lg p-1"> <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-minus text-[10px]"></i></button> <span class="text-xs font-bold w-5 text-center text-textMain">${cart[id]}</span> <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-plus text-[10px]"></i></button> </div> </div> </div>`; }
+                    if(prod) { 
+                        let pBadge = prod.isPremium ? `<span class="bg-[#8A2BE2] text-white text-[8px] px-1 rounded ml-1"><i class="fas fa-gem"></i> +$1.8</span>` : '';
+                        html += `<div class="flex items-center gap-3 bg-iosCard p-2 rounded-2xl mb-2"> <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl bg-[#F2F2F7]"> <div class="flex-1"> <p class="text-[13px] font-semibold text-textMain leading-tight mb-0.5">${prod.name} ${pBadge}</p> <p class="text-[10px] text-textLight">Cod: #${prod.id}</p> </div> <div class="flex flex-col items-end gap-1"> <div class="flex items-center gap-2 bg-[#F2F2F7] rounded-lg p-1"> <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-minus text-[10px]"></i></button> <span class="text-xs font-bold w-5 text-center text-textMain">${cart[id]}</span> <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-plus text-[10px]"></i></button> </div> </div> </div>`; 
+                    }
                 }
             }
             container.innerHTML = html; renderCartSuggestions();
@@ -646,6 +667,15 @@
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
             let currentPrice = (totalQty >= 100) ? PRICES.top : ((totalQty >= 50) ? PRICES.mid : PRICES.base);
 
+            // NUEVO: Sumarizador de recargos premium
+            let premiumSurcharge = 0;
+            for (let id in cart) {
+                if (cart[id] > 0) {
+                    const prod = getProductById(id);
+                    if (prod && prod.isPremium) premiumSurcharge += cart[id] * 1.80;
+                }
+            }
+
             if (totalQty >= 100 && !confettiFired) { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1C1C1E', '#007AFF', '#34C759'] }); confettiFired = true; } 
             else if (totalQty < 100) confettiFired = false;
 
@@ -655,9 +685,21 @@
             const stickyCart = document.getElementById('sticky-cart');
             if (totalQty > 0) stickyCart.classList.remove('translate-y-32'); else stickyCart.classList.add('translate-y-32');
 
-            const subtotal = totalQty * currentPrice; let discount = 0; const discountRow = document.getElementById('cart-discount-row');
+            let subtotalBase = totalQty * currentPrice;
+            let subtotal = subtotalBase + premiumSurcharge;
             
-            // Lógica para Zelle o Crypto (Ambos tienen 5% de dcto)
+            // Control visual del recargo premium en el carrito
+            const premiumRow = document.getElementById('cart-premium-row');
+            if (premiumSurcharge > 0) {
+                premiumRow.classList.remove('hidden');
+                document.getElementById('cart-modal-premium').innerText = `+$${premiumSurcharge.toFixed(2)}`;
+            } else {
+                premiumRow.classList.add('hidden');
+            }
+
+            let discount = 0; const discountRow = document.getElementById('cart-discount-row');
+            
+            // Lógica para Zelle o Crypto (Ambos tienen 5% de dcto aplicado al subtotal total, incluyendo premiums)
             if ((paymentMethod === 'zelle' || paymentMethod === 'crypto') && totalQty >= 20) {
                 discount = subtotal * 0.05; 
                 if(discountRow) { discountRow.classList.remove('hidden'); document.getElementById('cart-modal-discount').innerText = `-$${discount.toFixed(2)}`; }
@@ -666,7 +708,7 @@
             const totalFinal = subtotal - discount;
 
             if(document.getElementById('cart-modal-qty')) document.getElementById('cart-modal-qty').innerText = totalQty;
-            if(document.getElementById('cart-modal-subtotal')) document.getElementById('cart-modal-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            if(document.getElementById('cart-modal-subtotal')) document.getElementById('cart-modal-subtotal').innerText = `$${subtotalBase.toFixed(2)}`;
             if(document.getElementById('cart-modal-total')) document.getElementById('cart-modal-total').innerText = `$${totalFinal.toFixed(2)}`;
             document.getElementById('sticky-total').innerText = `$${totalFinal.toFixed(2)}`;
 
@@ -702,7 +744,23 @@
             if (totalQty < 20) return;
 
             let currentPrice = totalQty >= 100 ? PRICES.top : (totalQty >= 50 ? PRICES.mid : PRICES.base);
-            let subtotal = totalQty * currentPrice;
+            let subtotalBase = totalQty * currentPrice;
+            let premiumSurcharge = 0;
+
+            let orderDetails = "";
+            for (let id in cart) {
+                if (cart[id] > 0) {
+                    const prod = getProductById(id);
+                    if (prod) {
+                        // Calcular extras para WhatsApp
+                        if (prod.isPremium) premiumSurcharge += cart[id] * 1.80;
+                        let pTag = prod.isPremium ? " 💎 (+1.80$)" : "";
+                        orderDetails += `- ${cart[id]}x [${prod.id}] ${prod.name} (${prod.cap})${pTag}%0A`;
+                    }
+                }
+            }
+            
+            let subtotal = subtotalBase + premiumSurcharge;
             let discount = (paymentMethod === 'zelle' || paymentMethod === 'crypto') ? (subtotal * 0.05) : 0;
             let total = subtotal - discount;
             
@@ -710,23 +768,16 @@
             if (paymentMethod === 'zelle') payText = "Zelle (Dcto Aplicado ✅)";
             if (paymentMethod === 'crypto') payText = "USDT / Binance Pay (Dcto Aplicado ✅)";
 
-            let orderDetails = "";
-            for (let id in cart) {
-                if (cart[id] > 0) {
-                    const prod = getProductById(id);
-                    if (prod) orderDetails += `- ${cart[id]}x [${prod.id}] ${prod.name} (${prod.cap})%0A`;
-                }
-            }
-
             // Integración de CRM (Reference Code) y Blockchain Cosmético (Hash)
             let tier = getCustomerTier(totalQty);
             let refCode = "MINI-" + Math.random().toString(36).substring(2, 6).toUpperCase();
             let hashId = generateCryptoHash();
             let bonusText = (totalQty >= 50) ? "%0A🎁 *BONO DESBLOQUEADO:* Bolsas de entrega" : "";
+            let premiumText = premiumSurcharge > 0 ? `%0A- Recargo Aromas Premium: +$${premiumSurcharge.toFixed(2)}` : "";
 
             logEvent('whatsapp_checkout', { ref: refCode, total: total, method: paymentMethod, items: totalQty });
 
-            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo para mi importación.%0A%0A*ID ORDEN:* ${refCode}%0A*TIER CLIENTE:* ${tier}%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH SEGURIDAD:* ${hashId.substring(0,12)}...%0A%0AQuiero proceder con el pago.`;
+            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo para mi importación.%0A%0A*ID ORDEN:* ${refCode}%0A*TIER CLIENTE:* ${tier}%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}${premiumText}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH SEGURIDAD:* ${hashId.substring(0,12)}...%0A%0AQuiero proceder con el pago.`;
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
         }
 
