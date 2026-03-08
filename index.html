@@ -23,6 +23,15 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
+    <!-- MICROSOFT CLARITY - ANALÍTICA VISUAL -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "vsq1ienk8d");
+    </script>
+
     <script>
       tailwind.config = {
         theme: {
@@ -44,11 +53,16 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .snap-x-mandatory { scroll-snap-type: x mandatory; }
         .snap-center { scroll-snap-align: center; }
-        .apple-glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 0.5px solid rgba(0,0,0,0.1); }
+        .apple-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 0.5px solid rgba(0,0,0,0.1); }
         .apple-glass-dark { background: rgba(28, 28, 30, 0.8); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 0.5px solid rgba(255,255,255,0.1); }
         .pop-anim { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
         .progress-bar-fill { transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1); }
+        
+        /* Animación para el banner de prueba social */
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     </style>
 </head>
 <body class="font-sans antialiased relative"> 
@@ -57,9 +71,10 @@
         <div class="flex items-center justify-between px-4 md:px-6 pt-2 mb-3">
             <span class="font-bold text-xl tracking-tight text-textMain">MiniPerfumes<span class="text-iosOrange">CBO</span></span>
             <div class="flex items-center gap-3">
-                <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20asesoría." target="_blank" class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-iosBlue hover:bg-blue-50 transition active:scale-95">
-                    <i class="fab fa-whatsapp text-lg"></i>
-                </a>
+                <!-- BOTÓN MENÚ HUB (Sustituto de Linktree) -->
+                <button onclick="openMenu()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-textMain hover:bg-gray-200 transition active:scale-95 shadow-sm">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
             </div>
         </div>
         <div class="px-4 md:px-6 max-w-4xl mx-auto">
@@ -73,13 +88,76 @@
         </div>
     </nav>
 
+    <!-- MENÚ HUB LATERAL (Reemplazo Linktree) -->
+    <div id="main-menu" class="fixed inset-0 z-[200] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="menu-backdrop" onclick="closeMenu()"></div>
+        <div id="menu-sheet" class="absolute top-0 right-0 w-[85%] max-w-[320px] h-full bg-[#F2F2F7] transform translate-x-full transition-transform duration-500 ease-apple shadow-2xl flex flex-col pt-[env(safe-area-inset-top)]">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                <span class="font-bold text-lg text-textMain">Hub CBO</span>
+                <button onclick="closeMenu()" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 active:scale-95"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto px-4 py-6 space-y-3">
+                <!-- Perfil de Usuario (Fidelización) -->
+                <div class="bg-iosCard p-4 rounded-2xl shadow-sm mb-6 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-iosBlue/10 text-iosBlue rounded-full flex items-center justify-center text-xl font-bold">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-textLight font-medium">Miembro Activo</p>
+                        <p class="font-bold text-textMain" id="menu-user-id">CBO-XXXX</p>
+                    </div>
+                </div>
+
+                <p class="text-xs font-bold text-textLight uppercase tracking-wider pl-2 mb-2">Comunidad & Soporte</p>
+                
+                <a href="https://www.whatsapp.com/channel/0029VbCzpmm9MF98qsSwYa20" target="_blank" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm active:scale-95 transition-transform">
+                    <div class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center text-lg"><i class="fab fa-whatsapp"></i></div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-textMain">Canal Oficial VIP</p>
+                        <p class="text-[11px] text-textLight">Únete para ofertas y llegadas</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                </a>
+
+                <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20asesoría." target="_blank" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm active:scale-95 transition-transform">
+                    <div class="w-10 h-10 rounded-full bg-iosBlue text-white flex items-center justify-center text-lg"><i class="fas fa-headset"></i></div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-textMain">Atención al Cliente</p>
+                        <p class="text-[11px] text-textLight">Habla con un asesor por WhatsApp</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                </a>
+
+                <a href="https://www.instagram.com/miniperfumescbo?igsh=MThlZWJlM2NvOW85cQ%3D%3D" target="_blank" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm active:scale-95 transition-transform">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#FFDC80] via-[#F56040] to-[#C13584] text-white flex items-center justify-center text-lg"><i class="fab fa-instagram"></i></div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-textMain">Instagram</p>
+                        <p class="text-[11px] text-textLight">Síguenos @miniperfumescbo</p>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                </a>
+
+                <p class="text-xs font-bold text-textLight uppercase tracking-wider pl-2 mt-6 mb-2">Pedidos Inteligentes</p>
+                
+                <button onclick="closeMenu(); document.getElementById('tour-step-combos').scrollIntoView({behavior: 'smooth'})" class="w-full flex items-center gap-4 bg-textMain text-white p-4 rounded-2xl shadow-sm active:scale-95 transition-transform text-left">
+                    <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg"><i class="fas fa-boxes"></i></div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm">Ventas al Mayor</p>
+                        <p class="text-[11px] text-white/70">Compra cajas listas desde $3.50</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <header class="pt-32 pb-4 px-4 md:px-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="800">
         <div class="w-full bg-textMain rounded-[2rem] p-6 md:p-10 relative overflow-hidden shadow-ios-float text-white">
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-iosOrange opacity-20 rounded-full blur-3xl"></div>
             <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-iosBlue opacity-20 rounded-full blur-3xl"></div>
             
-            <p class="text-[11px] md:text-xs font-bold text-gray-400 tracking-widest mb-1 uppercase">Importación Rápida</p>
-            <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">El surtido perfecto,<br>a un toque.</h2>
+            <p id="hero-greeting" class="text-[11px] md:text-xs font-bold text-gray-400 tracking-widest mb-1 uppercase">Importación Rápida</p>
+            <h2 id="hero-title" class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">El surtido perfecto,<br>a un toque.</h2>
             
             <div class="flex gap-3">
                 <button onclick="openFAQ()" class="bg-white/10 backdrop-blur-md text-white border border-white/20 text-xs font-semibold px-4 py-2 rounded-full hover:bg-white/20 transition active:scale-95 flex items-center gap-2">
@@ -88,6 +166,20 @@
                 <button onclick="startTour()" class="bg-iosBlue text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-blue-600 transition active:scale-95 flex items-center gap-2">
                     <i class="fas fa-magic"></i> Tour
                 </button>
+            </div>
+        </div>
+        
+        <!-- PRUEBA SOCIAL / SOCIAL PROOF -->
+        <div class="mt-4 bg-[#E5E5EA] rounded-full py-2 px-3 flex items-center gap-2 overflow-hidden shadow-inner border border-gray-200">
+            <div class="flex -space-x-2 shrink-0">
+                <img class="w-6 h-6 rounded-full border border-white object-cover" src="https://i.pravatar.cc/100?img=1" alt="User">
+                <img class="w-6 h-6 rounded-full border border-white object-cover" src="https://i.pravatar.cc/100?img=2" alt="User">
+                <img class="w-6 h-6 rounded-full border border-white object-cover" src="https://i.pravatar.cc/100?img=3" alt="User">
+            </div>
+            <div class="marquee-container flex-1 text-[11px] font-medium text-textMain">
+                <div class="marquee-content">
+                    🔥 <b>+120 emprendedores</b> hicieron su pedido este mes. &nbsp;&nbsp; • &nbsp;&nbsp; ⭐ <b>4.9/5</b> valoración en envíos MRW/Zoom. &nbsp;&nbsp; • &nbsp;&nbsp; 🔥 <b>+120 emprendedores</b> hicieron su pedido este mes.
+                </div>
             </div>
         </div>
     </header>
@@ -122,8 +214,8 @@
     <!-- TENDENCIAS INTELIGENTES (Data-Driven) -->
     <section class="mb-8 hidden" id="top5-section" data-aos="fade-up">
         <div class="px-4 md:px-6 mb-3 flex items-center justify-between max-w-4xl mx-auto">
-            <h3 class="text-lg font-bold tracking-tight text-textMain">Populares de la semana</h3>
-            <span class="text-[10px] bg-iosCard px-2 py-1 rounded-full text-textLight border border-gray-200"><i class="fas fa-chart-line text-iosGreen"></i> Tendencia Real</span>
+            <h3 class="text-lg font-bold tracking-tight text-textMain">Para ti (Basado en tu historial)</h3>
+            <span class="text-[10px] bg-iosCard px-2 py-1 rounded-full text-textLight border border-gray-200"><i class="fas fa-chart-line text-iosGreen"></i> Algoritmo Local</span>
         </div>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory">
@@ -194,15 +286,12 @@
                 <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
 
-            <!-- NUEVA CABECERA CON BOTÓN DINÁMICO -->
             <div class="px-6 py-3 bg-iosCard flex justify-between items-center border-b border-gray-100">
                 <h2 class="text-xl md:text-2xl font-bold tracking-tight text-textMain">Tu Pedido</h2>
                 <div class="flex items-center gap-2">
-                    <!-- Botón Enviar (Oculto por defecto, se activa a las 20 uds) -->
                     <button id="cart-header-btn" onclick="sendWhatsAppOrder()" class="hidden bg-[#25D366] text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm active:scale-95 transition-transform flex items-center gap-1">
                         <i class="fab fa-whatsapp text-sm"></i> Enviar
                     </button>
-                    <!-- Botón Vaciar -->
                     <button onclick="clearCart()" class="text-iosRed bg-red-50 px-3 py-1.5 rounded-full text-xs font-bold active:scale-95 transition-transform">Vaciar</button>
                 </div>
             </div>
@@ -227,7 +316,6 @@
 
             <div class="p-6 bg-iosCard rounded-t-[2rem] shadow-[0_-10px_30px_rgba(0,0,0,0.06)] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
                 
-                <!-- Métodos de pago expandidos (Grid 3 columnas) -->
                 <div class="bg-[#E5E5EA] p-1 rounded-xl grid grid-cols-3 gap-1 mb-5 relative">
                     <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('bs')">
                         <input type="radio" name="payment" value="bs" class="hidden" id="radio-bs" checked>
@@ -239,7 +327,6 @@
                         <span>Zelle <span class="text-[8px] text-iosGreen bg-green-50 px-1 rounded">-5%</span></span>
                         <span class="font-normal opacity-70">Efectivo</span>
                     </label>
-                    <!-- Nueva Opción Web3/Crypto -->
                     <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('crypto')">
                         <input type="radio" name="payment" value="crypto" class="hidden" id="radio-crypto">
                         <span>USDT <span class="text-[8px] text-iosGreen bg-green-50 px-1 rounded">-5%</span></span>
@@ -252,7 +339,6 @@
                         <span>Subtotal (<span id="cart-modal-qty">0</span>)</span>
                         <span id="cart-modal-subtotal">$0.00</span>
                     </div>
-                    <!-- NUEVO: Fila para el recargo premium transparente -->
                     <div id="cart-premium-row" class="flex justify-between text-sm text-[#8A2BE2] font-medium hidden">
                         <span>Recargo Premium (15ml)</span>
                         <span id="cart-modal-premium">+$0.00</span>
@@ -287,7 +373,6 @@
                 <button onclick="closeFAQ()" class="bg-gray-100 w-8 h-8 rounded-full text-textLight text-xs"><i class="fas fa-times"></i></button>
             </div>
             
-            <!-- Buscador IA Ligera en FAQ -->
             <div class="bg-iosCard px-6 pb-4 border-b border-gray-100">
                 <div class="relative w-full bg-[#F2F2F7] rounded-xl flex items-center overflow-hidden">
                     <i class="fas fa-search text-gray-400 pl-3 text-sm"></i>
@@ -296,9 +381,9 @@
             </div>
 
             <div class="p-5 overflow-y-auto space-y-3 bg-[#F2F2F7] flex-1 hide-scrollbar" id="faq-list">
-                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="comprar elegir surtido combos catalogo">
-                    <p class="font-semibold text-sm text-textMain mb-1">¿Cómo elijo o compro?</p>
-                    <p class="text-xs text-textLight leading-relaxed">Usa las cajas inteligentes (Combos) para un surtido rápido, o añade aromas manualmente buscando por marca.</p>
+                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="comprar elegir surtido combos catalogo roi ganancia">
+                    <p class="font-semibold text-sm text-textMain mb-1">¿Cómo recupero mi inversión?</p>
+                    <p class="text-xs text-textLight leading-relaxed">Con la caja x20 (Socio Emprendedor), tu costo es $6. El precio sugerido de venta al detal es $10-$12. Ganancia neta estimada: <strong>+$80 USD</strong> por caja.</p>
                 </div>
                 <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="pagos zelle efectivo bs pagomovil usdt crypto cripto binance">
                     <p class="font-semibold text-sm text-textMain mb-1">¿Cuáles son los métodos de pago?</p>
@@ -322,7 +407,7 @@
         </div>
     </div>
 
-    <!-- MODALES EXTRAS (Preview e imagen) omitidos para brevedad, idénticos al anterior -->
+    <!-- PREVIEW IMAGEN -->
     <div id="image-preview-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[130] hidden flex flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-400 ease-apple" onclick="hidePreview()"><img id="preview-img-element" src="" class="max-w-full max-h-[70vh] object-contain rounded-3xl transform scale-90 transition-transform duration-500 ease-apple"></div>
 
     <!-- NUEVO TOUR INTERACTIVO (Step-by-Step) -->
@@ -359,14 +444,37 @@
         let catalogData = []; let flatProducts = []; let cart = {}; let paymentMethod = 'bs';
         const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
 
-        // --- SISTEMA DE DATA LAYER & ANALYTICS FRONTEND ---
-        // Guarda un registro local del comportamiento de compras
+        // --- SISTEMA DE FIDELIZACIÓN Y DATA LAYER ---
         const ANALYTICS_KEY = 'miniperfumes_user_stats';
+        const PROFILE_KEY = 'miniperfumes_user_profile';
+        
         let userStats = JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '{"product_adds": {}, "searches": []}');
+        
+        // Creación de Perfil de Socio Persistente
+        let userProfile = JSON.parse(localStorage.getItem(PROFILE_KEY));
+        if (!userProfile) {
+            userProfile = {
+                id: 'CBO-' + Math.floor(1000 + Math.random() * 9000), // Ej: CBO-4821
+                visits: 0,
+                createdAt: new Date().toISOString()
+            };
+        }
+        userProfile.visits++;
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
+
+        // Personalización de bienvenida
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('menu-user-id').innerText = userProfile.id;
+            if (userProfile.visits > 1) {
+                document.getElementById('hero-greeting').innerText = `HOLA DE NUEVO, SOCIO ${userProfile.id}`;
+                document.getElementById('hero-title').innerHTML = `Qué bueno verte,<br>aquí está tu surtido.`;
+            }
+        });
 
         function logEvent(eventName, details) {
             console.log(`[ANALYTICS] ${eventName}`, details);
-            // Aquí en el futuro puedes hacer un fetch() a tu Apps Script para guardar logs reales.
+            // Clarity también puede capturar eventos personalizados si lo deseas:
+            if(window.clarity) { clarity("set", eventName, JSON.stringify(details)); }
         }
 
         const CACHE_KEY = 'miniperfumes_catalog_cache_cbo';
@@ -400,7 +508,7 @@
             } catch (error) {
                 const oldCache = localStorage.getItem(CACHE_KEY);
                 if (oldCache) { processAndRender(JSON.parse(oldCache).data); } 
-                else { document.getElementById('loading-indicator').classList.add('hidden'); document.getElementById('error-indicator').classList.remove('hidden'); document.getElementById('error-text').innerText = "Revisa tu conexión e intenta de nuevo."; }
+                else { document.getElementById('loading-indicator').classList.add('hidden'); }
             }
         }
 
@@ -408,7 +516,7 @@
             catalogData = processJsonData(data);
             document.getElementById('loading-indicator').classList.add('hidden');
             document.getElementById('catalog-zone').classList.remove('hidden');
-            generateSmartTop5(); // Cambiado a Smart
+            generateSmartTop5();
             renderBrandFilters();
             renderCatalog();
         }
@@ -419,19 +527,12 @@
         function processJsonData(data) {
             let processed = {}; flatProducts = []; 
             data.forEach(item => {
-                // FILTRO ESTRICTO PARA GOOGLE DRIVE: 
-                // Si la imagen no existe, está vacía, es un texto de error (#N/A) o no es un link válido (http), lo ignoramos.
-                if (!item.img || typeof item.img !== 'string' || item.img.trim() === '' || !item.img.startsWith('http')) {
-                    return; // Ignora el producto y no lo muestra en la tienda
-                }
+                if (!item.img || typeof item.img !== 'string' || item.img.trim() === '' || !item.img.startsWith('http')) return;
 
                 let brand = item.brand || "Otras Marcas";
                 if(!processed[brand]) processed[brand] = [];
                 
-                // Como ya filtramos los que no tienen un enlace válido, finalImg siempre será item.img
                 let finalImg = item.img; 
-                
-                // NUEVO: Identificador estricto de producto Premium (Valentino Born in Roma de 15ml)
                 let searchString = `${brand} ${item.name} ${item.cap}`.toLowerCase();
                 let isPremium = searchString.includes('valentino') && searchString.includes('born in roma') && searchString.includes('15ml');
                 
@@ -443,15 +544,13 @@
             return finalArray;
         }
 
-        // --- TOP 5 INTELIGENTE (Basado en datos locales) ---
         function generateSmartTop5() {
             const container = document.getElementById('top5-container');
             const section = document.getElementById('top5-section');
             if (!container || flatProducts.length < 5) return; 
 
-            // Ordenar productos por los que más veces ha añadido el usuario históricamente
             let sortedProducts = [...flatProducts].sort((a, b) => {
-                let scoreA = userStats.product_adds[a.id] || Math.random(); // Si no hay data, random
+                let scoreA = userStats.product_adds[a.id] || Math.random();
                 let scoreB = userStats.product_adds[b.id] || Math.random();
                 return scoreB - scoreA;
             });
@@ -476,7 +575,34 @@
             section.classList.remove('hidden');
         }
 
-        // --- BUSCADOR CON ESTADO DE FALLO ---
+        // --- SISTEMA DEL MENÚ HUB ---
+        function openMenu() {
+            haptic('light');
+            logEvent('menu_hub_opened', {});
+            const menu = document.getElementById('main-menu');
+            const backdrop = document.getElementById('menu-backdrop');
+            const sheet = document.getElementById('menu-sheet');
+            
+            menu.classList.remove('hidden');
+            void menu.offsetWidth;
+            backdrop.classList.remove('opacity-0');
+            sheet.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            const backdrop = document.getElementById('menu-backdrop');
+            const sheet = document.getElementById('menu-sheet');
+            
+            backdrop.classList.add('opacity-0');
+            sheet.classList.add('translate-x-full');
+            
+            setTimeout(() => {
+                document.getElementById('main-menu').classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
         function toggleClearBtn() {
             const input = document.getElementById('searchInput');
             const clearBtn = document.getElementById('clearSearchBtn');
@@ -516,10 +642,9 @@
         
         function sendWhatsAppInquiry() {
             let input = document.getElementById('searchInput').value;
-            window.open(`https://wa.me/584141087079?text=Hola%20equipo.%20Estuve%20buscando%20el%20aroma%20"${input}"%20y%20no%20lo%20conseguí.%20¿Lo%20tienen%20disponible?`, '_blank');
+            window.open(`https://wa.me/584141087079?text=Hola%20equipo.%20Soy%20el%20socio%20${userProfile.id}.%20Estuve%20buscando%20el%20aroma%20"${input}"%20y%20no%20lo%20conseguí.%20¿Lo%20tienen%20disponible?`, '_blank');
         }
 
-        // --- FAQ Inteligente ---
         function filterFAQ() {
             let input = document.getElementById('faqSearchInput').value.toLowerCase();
             document.querySelectorAll('.faq-item').forEach(item => {
@@ -530,7 +655,6 @@
             });
         }
 
-        // Renderizado del Catálogo, Modales, Carrito (Reducido para brevedad visual, mantiene lógica previa)
         function renderBrandFilters() {
             const container = document.getElementById('brand-filters-container');
             let html = `<button onclick="filterByBrand('All')" class="brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors">Todos</button>`;
@@ -583,12 +707,10 @@
             cart[productId] += change;
             if (cart[productId] < 0) cart[productId] = 0;
             
-            // Analytics Logic
             if(change > 0) {
                 userStats.product_adds[productId] = (userStats.product_adds[productId] || 0) + 1;
                 localStorage.setItem(ANALYTICS_KEY, JSON.stringify(userStats));
                 
-                // NUEVO: Notificación Push Exclusiva para Aroma Premium
                 const p = getProductById(productId);
                 if (p && p.isPremium) {
                     showIOSNotification('Aroma Premium añadido (+$1.80)', 'success');
@@ -607,24 +729,26 @@
         function closeFAQ() { const backdrop = document.getElementById('faq-backdrop'); const sheet = document.getElementById('faq-sheet'); backdrop.classList.add('opacity-0'); sheet.classList.add('translate-y-full'); setTimeout(() => { document.getElementById('faq-modal').classList.add('hidden'); document.body.style.overflow = ''; }, 500); }
         function showPreview(img) { haptic('light'); const modal = document.getElementById('image-preview-modal'); const imgEl = document.getElementById('preview-img-element'); imgEl.src = img; modal.classList.remove('hidden'); void modal.offsetWidth; modal.classList.remove('opacity-0'); imgEl.classList.remove('scale-90'); imgEl.classList.add('scale-100'); }
         function hidePreview() { const modal = document.getElementById('image-preview-modal'); const imgEl = document.getElementById('preview-img-element'); modal.classList.add('opacity-0'); imgEl.classList.remove('scale-100'); imgEl.classList.add('scale-90'); setTimeout(() => modal.classList.add('hidden'), 400); }
+        
         function addBrandToCart(brand) { haptic('success'); let addedCount = 0; flatProducts.forEach(p => { if(p.brand === brand) { if(!cart[p.id]) cart[p.id] = 0; cart[p.id] += 1; syncProductUI(p.id); addedCount++; } }); saveCartToStorage(); calculateTotals(); showIOSNotification(`+${addedCount} perfumes de ${brand} añadidos`, 'success'); }
-        function addComboToCart(qty, tier) { if (flatProducts.length === 0) return; clearCartSilent(); let shuffled = [...flatProducts].sort(() => 0.5 - Math.random()); let numUnique = Math.min(flatProducts.length, Math.ceil(qty / 2)); if (numUnique === 0) return; let selected = shuffled.slice(0, numUnique); let distribution = {}; selected.forEach(p => distribution[p.id] = 1); let remaining = qty - numUnique; while(remaining > 0) { distribution[selected[Math.floor(Math.random() * selected.length)].id]++; remaining--; } for (let id in distribution) { cart[id] = distribution[id]; syncProductUI(id); } saveCartToStorage(); calculateTotals(); openCartModal(); haptic('success'); confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); showIOSNotification(`Surtido x${qty} listo. ¡Edítalo!`, 'success'); }
+        function addComboToCart(qty, tier) { if (flatProducts.length === 0) return; clearCartSilent(); let shuffled = [...flatProducts].sort(() => 0.5 - Math.random()); let numUnique = Math.min(flatProducts.length, Math.ceil(qty / 2)); if (numUnique === 0) return; let selected = shuffled.slice(0, numUnique); let distribution = {}; selected.forEach(p => distribution[p.id] = 1); let remaining = qty - numUnique; while(remaining > 0) { distribution[selected[Math.floor(Math.random() * selected.length)].id]++; remaining--; } for (let id in distribution) { cart[id] = distribution[id]; syncProductUI(id); } saveCartToStorage(); calculateTotals(); openCartModal(); haptic('success'); confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); showIOSNotification(`Surtido x${qty} listo. ¡Edítalo!`, 'success'); logEvent('combo_selected', { qty: qty, tier: tier });}
+        
         function clearCartSilent() { for (let id in cart) { cart[id] = 0; syncProductUI(id); } cart = {}; localStorage.removeItem('miniperfumes_cart_cbo'); }
         function clearCart() { clearCartSilent(); calculateTotals(); renderCartModalItems(); closeCartModal(); haptic('success'); showIOSNotification('Carrito vaciado', 'error'); }
         function saveCartToStorage() { localStorage.setItem('miniperfumes_cart_cbo', JSON.stringify(cart)); }
+        
         function loadCartFromStorage() { 
             const saved = localStorage.getItem('miniperfumes_cart_cbo'); 
             if (saved) { 
                 let tempCart = JSON.parse(saved); 
-                cart = {}; // Reiniciamos el carrito
-                // Solo cargamos los productos que TODAVÍA existen y tienen foto
+                cart = {}; 
                 for (let id in tempCart) { 
                     if(getProductById(id)) {
                         cart[id] = tempCart[id];
                         syncProductUI(id); 
                     }
                 }
-                saveCartToStorage(); // Guardamos el carrito limpio
+                saveCartToStorage(); 
                 calculateTotals(); 
             } 
         }
@@ -643,7 +767,6 @@
             if(totalQty === 0 || flatProducts.length < 3) { container.classList.add('hidden'); return; }
             let available = flatProducts.filter(p => !cart[p.id] || cart[p.id] === 0);
             
-            // Sugerencias Inteligentes basadas en items populares
             let suggestions = available.sort((a,b) => (userStats.product_adds[b.id]||0) - (userStats.product_adds[a.id]||0)).slice(0, 3);
 
             if(suggestions.length > 0) {
@@ -676,7 +799,6 @@
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
             let currentPrice = (totalQty >= 100) ? PRICES.top : ((totalQty >= 50) ? PRICES.mid : PRICES.base);
 
-            // NUEVO: Sumarizador de recargos premium
             let premiumSurcharge = 0;
             for (let id in cart) {
                 if (cart[id] > 0) {
@@ -697,7 +819,6 @@
             let subtotalBase = totalQty * currentPrice;
             let subtotal = subtotalBase + premiumSurcharge;
             
-            // Control visual del recargo premium en el carrito
             const premiumRow = document.getElementById('cart-premium-row');
             if (premiumSurcharge > 0) {
                 premiumRow.classList.remove('hidden');
@@ -708,7 +829,6 @@
 
             let discount = 0; const discountRow = document.getElementById('cart-discount-row');
             
-            // Lógica para Zelle o Crypto (Ambos tienen 5% de dcto aplicado al subtotal total, incluyendo premiums)
             if ((paymentMethod === 'zelle' || paymentMethod === 'crypto') && totalQty >= 20) {
                 discount = subtotal * 0.05; 
                 if(discountRow) { discountRow.classList.remove('hidden'); document.getElementById('cart-modal-discount').innerText = `-$${discount.toFixed(2)}`; }
@@ -729,26 +849,24 @@
             } else if(roiContainer) { roiContainer.classList.add('hidden'); }
 
             const btnModal = document.getElementById('cart-modal-btn');
-            const headerBtn = document.getElementById('cart-header-btn'); // Referencia al nuevo botón superior
+            const headerBtn = document.getElementById('cart-header-btn'); 
             
             if(btnModal) {
                 if (totalQty >= 20) { 
                     btnModal.disabled = false; 
                     btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp`; 
-                    if(headerBtn) headerBtn.classList.remove('hidden'); // Muestra el botón de arriba
+                    if(headerBtn) headerBtn.classList.remove('hidden'); 
                 } 
                 else { 
                     btnModal.disabled = true; 
                     if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds para mayorista`; 
                     else btnModal.innerHTML = `Añade productos`; 
-                    if(headerBtn) headerBtn.classList.add('hidden'); // Oculta el botón de arriba si baja de 20
+                    if(headerBtn) headerBtn.classList.add('hidden'); 
                 }
             }
         }
 
-        // --- SISTEMA DE TRAZABILIDAD Y HASH COSMÉTICO ---
         function generateCryptoHash() {
-            // Genera una cadena alfanumérica pseudo-criptográfica de 32 caracteres para dar confianza visual
             return "0x" + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
@@ -772,7 +890,6 @@
                 if (cart[id] > 0) {
                     const prod = getProductById(id);
                     if (prod) {
-                        // Calcular extras para WhatsApp
                         if (prod.isPremium) premiumSurcharge += cart[id] * 1.80;
                         let pTag = prod.isPremium ? " 💎 (+1.80$)" : "";
                         orderDetails += `- ${cart[id]}x [${prod.id}] ${prod.name} (${prod.cap})${pTag}%0A`;
@@ -788,20 +905,23 @@
             if (paymentMethod === 'zelle') payText = "Zelle (Dcto Aplicado ✅)";
             if (paymentMethod === 'crypto') payText = "USDT / Binance Pay (Dcto Aplicado ✅)";
 
-            // Integración de CRM (Reference Code) y Blockchain Cosmético (Hash)
             let tier = getCustomerTier(totalQty);
-            let refCode = "MINI-" + Math.random().toString(36).substring(2, 6).toUpperCase();
             let hashId = generateCryptoHash();
             let bonusText = (totalQty >= 50) ? "%0A🎁 *BONO DESBLOQUEADO:* Bolsas de entrega" : "";
             let premiumText = premiumSurcharge > 0 ? `%0A- Recargo Aromas Premium: +$${premiumSurcharge.toFixed(2)}` : "";
 
-            logEvent('whatsapp_checkout', { ref: refCode, total: total, method: paymentMethod, items: totalQty });
+            logEvent('whatsapp_checkout', { user_id: userProfile.id, total: total, method: paymentMethod, items: totalQty });
 
-            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo para mi importación.%0A%0A*ID ORDEN:* ${refCode}%0A*TIER CLIENTE:* ${tier}%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}${premiumText}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH SEGURIDAD:* ${hashId.substring(0,12)}...%0A%0AQuiero proceder con el pago.`;
+            // Mensaje omnicanal y fidelizado (Incluye ID y origen)
+            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo para mi importación.%0A%0A👤 *ID SOCIO:* ${userProfile.id}%0A🌐 *ORIGEN:* Web App CBO%0A*NIVEL:* ${tier}%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}${premiumText}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH SEGURIDAD:* ${hashId.substring(0,12)}...%0A%0AQuiero proceder con el pago.`;
+            
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
+
+            // Después de 2 segundos de enviar al whatsapp vacía el carrito
+            setTimeout(clearCartSilent, 2000);
         }
 
-        // --- NUEVO SISTEMA DE TOUR PASO A PASO ---
+        // --- SISTEMA DE TOUR ---
         const tourData = [
             { targetId: 'tour-step-combos', icon: 'fa-box-open', title: 'Cajas Inteligentes', text: 'La forma más rápida de emprender. Añade combos prearmados de 20, 50 o 100 unidades con un solo toque.', btn: 'Siguiente' },
             { targetId: 'tour-step-search', icon: 'fa-search', title: 'Buscador Ágil', text: '¿Buscas una marca o aroma específico? Escríbelo aquí para encontrarlo al instante.', btn: 'Siguiente' },
@@ -813,25 +933,16 @@
         let activeTourTarget = null;
 
         function startTour() {
-            closeCartModal();
-            currentTourStep = 0;
-            
+            closeCartModal(); currentTourStep = 0;
             const overlay = document.getElementById('tour-overlay');
             const tooltip = document.getElementById('tour-tooltip');
-            
-            overlay.classList.remove('hidden');
-            tooltip.classList.remove('hidden');
-            void overlay.offsetWidth; // Reflow para animación
-            overlay.classList.remove('opacity-0');
-            
-            // Garantizamos que el catálogo esté visible
+            overlay.classList.remove('hidden'); tooltip.classList.remove('hidden');
+            void overlay.offsetWidth; overlay.classList.remove('opacity-0');
             document.getElementById('catalog-zone').classList.remove('hidden');
-            
             renderTourStep();
         }
 
         function renderTourStep() {
-            // Limpiar el objetivo anterior
             if (activeTourTarget) {
                 activeTourTarget.classList.remove('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl', 'bg-white');
                 activeTourTarget.style.pointerEvents = '';
@@ -843,27 +954,21 @@
             activeTourTarget = document.getElementById(step.targetId);
             
             if (activeTourTarget) {
-                // Iluminar el objetivo nuevo por encima del overlay oscuro
                 activeTourTarget.dataset.origPos = window.getComputedStyle(activeTourTarget).position;
                 if(activeTourTarget.dataset.origPos === 'static') activeTourTarget.style.position = 'relative';
-                
                 activeTourTarget.classList.add('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl');
                 if(step.targetId !== 'brand-filters-container') activeTourTarget.classList.add('bg-white');
-                activeTourTarget.style.pointerEvents = 'none'; // Evita toques accidentales durante el tour
-                
-                // Centrar en pantalla suavemente
+                activeTourTarget.style.pointerEvents = 'none';
                 const yOffset = -200; 
                 const y = activeTourTarget.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({top: y, behavior: 'smooth'});
             }
 
-            // Actualizar textos del pop-up
             document.getElementById('tour-icon').innerHTML = `<i class="fas ${step.icon}"></i>`;
             document.getElementById('tour-title').innerText = step.title;
             document.getElementById('tour-text').innerText = step.text;
             document.getElementById('tour-next-btn').innerHTML = currentTourStep === tourData.length - 1 ? `${step.btn} <i class="fas fa-check"></i>` : `${step.btn} <i class="fas fa-arrow-right"></i>`;
             
-            // Actualizar indicadores (puntitos azules)
             const dots = document.getElementById('tour-dots').children;
             for(let i=0; i<dots.length; i++) {
                 dots[i].className = i === currentTourStep ? "w-4 h-2 rounded-full bg-iosBlue transition-all duration-300" : "w-2 h-2 rounded-full bg-gray-200 transition-all duration-300";
@@ -877,25 +982,15 @@
             haptic('light');
             const tooltip = document.getElementById('tour-tooltip');
             tooltip.classList.add('opacity-0', 'scale-90');
-            
-            if (currentTourStep < tourData.length - 1) {
-                setTimeout(() => {
-                    currentTourStep++;
-                    renderTourStep();
-                }, 300);
-            } else {
-                setTimeout(endTour, 300);
-            }
+            if (currentTourStep < tourData.length - 1) { setTimeout(() => { currentTourStep++; renderTourStep(); }, 300); } 
+            else { setTimeout(endTour, 300); }
         }
 
         function endTour() {
             haptic('success');
             const overlay = document.getElementById('tour-overlay');
             const tooltip = document.getElementById('tour-tooltip');
-            
-            overlay.classList.add('opacity-0');
-            tooltip.classList.add('opacity-0', 'scale-90');
-            
+            overlay.classList.add('opacity-0'); tooltip.classList.add('opacity-0', 'scale-90');
             if (activeTourTarget) {
                 activeTourTarget.classList.remove('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl', 'bg-white');
                 activeTourTarget.style.pointerEvents = '';
@@ -903,12 +998,7 @@
                 else activeTourTarget.style.position = '';
                 activeTourTarget = null;
             }
-            
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                tooltip.classList.add('hidden');
-            }, 300);
-            
+            setTimeout(() => { overlay.classList.add('hidden'); tooltip.classList.add('hidden'); }, 300);
             showIOSNotification("¡Ya eres un experto! Arma tu pedido.", "success");
         }
 
