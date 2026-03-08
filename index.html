@@ -71,7 +71,6 @@
         <div class="flex items-center justify-between px-4 md:px-6 pt-2 mb-3">
             <span class="font-bold text-xl tracking-tight text-textMain">MiniPerfumes<span class="text-iosOrange">CBO</span></span>
             <div class="flex items-center gap-3">
-                <!-- BOTÓN MENÚ HUB (Sustituto de Linktree) -->
                 <button onclick="openMenu()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-textMain hover:bg-gray-200 transition active:scale-95 shadow-sm">
                     <i class="fas fa-bars text-lg"></i>
                 </button>
@@ -98,14 +97,19 @@
             </div>
             
             <div class="flex-1 overflow-y-auto px-4 py-6 space-y-3">
-                <!-- Perfil de Usuario (Fidelización) -->
-                <div class="bg-iosCard p-4 rounded-2xl shadow-sm mb-6 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-iosBlue/10 text-iosBlue rounded-full flex items-center justify-center text-xl font-bold">
-                        <i class="fas fa-user-astronaut"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-textLight font-medium">Miembro Activo</p>
-                        <p class="font-bold text-textMain" id="menu-user-id">CBO-XXXX</p>
+                
+                <!-- FIDELIZACIÓN GAMIFICADA -->
+                <div class="w-full bg-gradient-to-r from-iosBlue to-iosGreen p-4 rounded-2xl shadow-lg mb-4 text-white relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-white/10 text-6xl"><i class="fas fa-gem"></i></div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-crown text-2xl text-yellow-300 drop-shadow-md"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider opacity-90 mb-0.5">Nivel Actual <span id="menu-user-id" class="ml-1 opacity-70">CBO-XXXX</span></p>
+                            <p id="user-level" class="font-black text-lg leading-none">Emprendedor</p>
+                            <p id="user-next-level" class="text-[11px] font-medium opacity-90 mt-1"><i class="fas fa-arrow-up"></i> Faltan 2 compras para subir</p>
+                        </div>
                     </div>
                 </div>
 
@@ -334,7 +338,7 @@
                     </label>
                 </div>
                 
-                <div class="space-y-2 mb-2">
+                <div class="space-y-2 mb-4">
                     <div class="flex justify-between text-sm text-textLight font-medium">
                         <span>Subtotal (<span id="cart-modal-qty">0</span>)</span>
                         <span id="cart-modal-subtotal">$0.00</span>
@@ -347,13 +351,27 @@
                         <span>Descuento Aplicado</span>
                         <span id="cart-modal-discount">-$0.00</span>
                     </div>
-                    <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
                         <span class="font-bold text-textMain">Total a Pagar</span>
                         <span id="cart-modal-total" class="text-2xl font-black text-textMain tracking-tight">$0.00</span>
                     </div>
                 </div>
 
-                <div id="roi-calculator" class="hidden mb-4"></div>
+                <!-- ROI Calculator Mejorado -->
+                <div id="roi-section" class="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200 mb-5 hidden transition-all">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-emerald-500 text-white p-2.5 rounded-xl mt-0.5 flex-shrink-0 shadow-sm">
+                            <i class="fas fa-dollar-sign text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-emerald-800 uppercase tracking-wide mb-0.5">Tu Ganancia Estimada</p>
+                            <div class="flex items-baseline gap-2">
+                                <span id="roi-profit" class="text-2xl font-black text-emerald-600 tracking-tight">$80.00</span>
+                                <span class="text-[10px] text-emerald-700/70 font-medium">(Vendiendo a $10 c/u)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <p class="text-[10px] text-center text-textLight mb-2"><i class="fas fa-lock"></i> Generaremos un Hash de trazabilidad al enviar tu orden.</p>
                 <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 text-[15px] shadow-ios flex justify-center items-center gap-2">
@@ -450,30 +468,73 @@
         
         let userStats = JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '{"product_adds": {}, "searches": []}');
         
-        // Creación de Perfil de Socio Persistente
+        // Creación de Perfil de Socio Persistente (Añadido conteo de orders)
         let userProfile = JSON.parse(localStorage.getItem(PROFILE_KEY));
         if (!userProfile) {
             userProfile = {
-                id: 'CBO-' + Math.floor(1000 + Math.random() * 9000), // Ej: CBO-4821
+                id: 'CBO-' + Math.floor(1000 + Math.random() * 9000),
                 visits: 0,
+                orders: 0,
+                level: 'Emprendedor',
                 createdAt: new Date().toISOString()
             };
         }
         userProfile.visits++;
         localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
 
-        // Personalización de bienvenida
+        // ACTUALIZAR NIVELES DE USUARIO
+        function updateUserLevelUI() {
+            let level = 'Emprendedor';
+            let nextMessage = `Faltan ${3 - userProfile.orders} compras para subir`;
+            
+            if (userProfile.orders >= 3 && userProfile.orders < 7) {
+                level = 'Negocio Retail';
+                nextMessage = `Faltan ${7 - userProfile.orders} compras para subir`;
+            } else if (userProfile.orders >= 7) {
+                level = 'Mayorista Premium';
+                nextMessage = `¡Nivel Máximo Alcanzado!`;
+            }
+
+            userProfile.level = level;
+            document.getElementById('user-level').innerText = level;
+            document.getElementById('user-next-level').innerHTML = userProfile.orders >= 7 ? `<i class="fas fa-star text-yellow-300"></i> ${nextMessage}` : `<i class="fas fa-arrow-up"></i> ${nextMessage}`;
+            localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
+        }
+
+        // PERSONALIZACIÓN POR COMPORTAMIENTO (IA LIGERA)
+        function personalizeHero() {
+            if (Object.keys(userStats.product_adds).length > 0 && flatProducts.length > 0) {
+                // Calcular marca favorita basada en el historial
+                let brandCounts = {};
+                for (let prodId in userStats.product_adds) {
+                    let product = flatProducts.find(p => p.id === prodId);
+                    if(product) {
+                        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + userStats.product_adds[prodId];
+                    }
+                }
+                
+                // Encontrar la marca con más adiciones
+                let favoriteBrand = Object.keys(brandCounts).reduce((a, b) => brandCounts[a] > brandCounts[b] ? a : b, "");
+
+                if (favoriteBrand && userProfile.visits > 1) {
+                    document.getElementById('hero-greeting').innerText = `SOCIO ${userProfile.id} · TU MARCA TOP`;
+                    document.getElementById('hero-title').innerHTML = `Llegó lo nuevo<br>de <span class="text-iosOrange">${favoriteBrand}</span>.`;
+                } else if (userProfile.visits > 1) {
+                    document.getElementById('hero-greeting').innerText = `HOLA DE NUEVO, SOCIO ${userProfile.id}`;
+                    document.getElementById('hero-title').innerHTML = `Qué bueno verte,<br>aquí está tu surtido.`;
+                }
+            } else if (userProfile.visits > 1) {
+                document.getElementById('hero-greeting').innerText = `HOLA DE NUEVO, SOCIO ${userProfile.id}`;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('menu-user-id').innerText = userProfile.id;
-            if (userProfile.visits > 1) {
-                document.getElementById('hero-greeting').innerText = `HOLA DE NUEVO, SOCIO ${userProfile.id}`;
-                document.getElementById('hero-title').innerHTML = `Qué bueno verte,<br>aquí está tu surtido.`;
-            }
+            updateUserLevelUI();
         });
 
         function logEvent(eventName, details) {
             console.log(`[ANALYTICS] ${eventName}`, details);
-            // Clarity también puede capturar eventos personalizados si lo deseas:
             if(window.clarity) { clarity("set", eventName, JSON.stringify(details)); }
         }
 
@@ -519,6 +580,7 @@
             generateSmartTop5();
             renderBrandFilters();
             renderCatalog();
+            personalizeHero(); // Personaliza el Hero una vez que cargan los productos
         }
 
         function haptic(type = 'light') { if (!navigator.vibrate) return; if (type === 'light') navigator.vibrate(10); if (type === 'success') navigator.vibrate([20, 30, 20]); if (type === 'heavy') navigator.vibrate(40); }
@@ -536,7 +598,10 @@
                 let searchString = `${brand} ${item.name} ${item.cap}`.toLowerCase();
                 let isPremium = searchString.includes('valentino') && searchString.includes('born in roma') && searchString.includes('15ml');
                 
-                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand, isPremium: isPremium };
+                // STOCK SIMULADO/REAL: Asignamos inventario bajo a algunos para urgencia
+                let stock = item.stock !== undefined ? item.stock : Math.floor(Math.random() * 20) + 1; 
+
+                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand, isPremium: isPremium, stock: stock };
                 processed[brand].push(prodObj); flatProducts.push(prodObj); 
             });
             let finalArray = [];
@@ -575,7 +640,6 @@
             section.classList.remove('hidden');
         }
 
-        // --- SISTEMA DEL MENÚ HUB ---
         function openMenu() {
             haptic('light');
             logEvent('menu_hub_opened', {});
@@ -678,10 +742,14 @@
                 htmlFragments.push(`<div class="category-block mb-10" data-brand="${category.brand}"> <div class="flex justify-between items-end mb-4 px-2"> <h3 class="text-xl font-bold tracking-tight text-textMain">${category.brand}</h3> <button onclick="addBrandToCart('${category.brand}')" class="text-[11px] font-semibold text-iosBlue bg-blue-50 px-3 py-1.5 rounded-full active:scale-95 shadow-sm"> <i class="fas fa-magic"></i> Surtir Marca </button> </div> <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">`);
                 category.products.forEach((prod) => {
                     let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
-                    let isLowStock = Math.random() > 0.85; let isTrending = Math.random() > 0.90; 
+                    
+                    // URGENCIA DINÁMICA POR STOCK
                     let badgeHtml = '';
-                    if (isLowStock) badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF3B30] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">¡Quedan 3!</div>`;
-                    else if (isTrending) badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF9500] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm"><i class="fas fa-fire"></i> Top Ventas</div>`;
+                    if (prod.stock <= 3) {
+                        badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF3B30] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">¡Quedan ${prod.stock}!</div>`;
+                    } else if (prod.stock <= 8) {
+                        badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF9500] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm"><i class="fas fa-fire"></i> Alta Demanda</div>`;
+                    }
 
                     let premiumBadge = prod.isPremium ? `<span class="inline-block bg-[#8A2BE2] text-white text-[8px] px-1.5 py-0.5 rounded shadow-sm mb-1 w-max"><i class="fas fa-gem"></i> 15ml (+$1.8)</span>` : '';
 
@@ -841,10 +909,12 @@
             if(document.getElementById('cart-modal-total')) document.getElementById('cart-modal-total').innerText = `$${totalFinal.toFixed(2)}`;
             document.getElementById('sticky-total').innerText = `$${totalFinal.toFixed(2)}`;
 
-            const roiContainer = document.getElementById('roi-calculator');
+            // ROI CALCULATOR MEJORADO DINÁMICO
+            const roiContainer = document.getElementById('roi-section');
             if(totalQty >= 20 && roiContainer) {
-                const gananciaNeta = (totalQty * 10.00) - totalFinal;
-                roiContainer.innerHTML = `<div class="bg-[#E5F9E7] border border-[#34C759]/30 p-3 rounded-xl flex items-start gap-3 shadow-sm"> <div class="bg-[#34C759] text-white p-2 rounded-lg mt-0.5"><i class="fas fa-chart-line"></i></div> <div> <p class="text-[11px] text-gray-600 font-medium">Si revendes a $10 c/u, tu ganancia neta será:</p> <p class="text-lg font-black text-[#34C759] tracking-tight">+$${gananciaNeta.toFixed(2)}</p> </div> </div>`;
+                const ventaPrecio = 10.00; // Precio de reventa sugerido
+                const gananciaNeta = (totalQty * ventaPrecio) - totalFinal;
+                document.getElementById('roi-profit').innerText = `$${gananciaNeta.toFixed(2)}`;
                 roiContainer.classList.remove('hidden');
             } else if(roiContainer) { roiContainer.classList.add('hidden'); }
 
@@ -912,12 +982,42 @@
 
             logEvent('whatsapp_checkout', { user_id: userProfile.id, total: total, method: paymentMethod, items: totalQty });
 
-            // Mensaje omnicanal y fidelizado (Incluye ID y origen)
-            const text = `Hola equipo CBO! 🚀%0A%0AEstoy listo para mi importación.%0A%0A👤 *ID SOCIO:* ${userProfile.id}%0A🌐 *ORIGEN:* Web App CBO%0A*NIVEL:* ${tier}%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}${premiumText}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH SEGURIDAD:* ${hashId.substring(0,12)}...%0A%0AQuiero proceder con el pago.`;
+            // AUMENTAR CONTADOR DE ORDEN Y ACTUALIZAR NIVEL
+            userProfile.orders++;
+            updateUserLevelUI();
+
+            // MINI-CRM A GOOGLE SHEETS (Silencioso para no demorar al cliente)
+            try {
+                fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Evita errores de CORS en frontend
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'new_order',
+                        userId: userProfile.id,
+                        level: userProfile.level,
+                        items: totalQty,
+                        total: total,
+                        payment: paymentMethod,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+            } catch (e) { console.log('CRM error silencioso', e); }
+
+            // PLANTILLAS DE WHATSAPP SMART SEGÚN EL NIVEL DEL USUARIO
+            let introText = "";
+            if (userProfile.level === 'Emprendedor') {
+                introText = `Hola equipo CBO! 🚀%0ASoy Socio ${userProfile.level} *${userProfile.id}*. ¡Estoy listo para mi primera caja grande!`;
+            } else if (userProfile.level === 'Negocio Retail') {
+                introText = `Hola equipo! Socio *${userProfile.id}* - Nivel ${userProfile.level}.%0ANecesito mi pedido recurrente habitual.`;
+            } else {
+                introText = `¡Importación mayorista! Socio *${userProfile.id}* - Premium.%0AOrden grande lista para confirmar y facturar.`;
+            }
+
+            const text = `${introText}%0A%0A🌐 *ORIGEN:* Web App CBO%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}${premiumText}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH:* ${hashId.substring(0,12)}...`;
             
             window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
 
-            // Después de 2 segundos de enviar al whatsapp vacía el carrito
             setTimeout(clearCartSilent, 2000);
         }
 
