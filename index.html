@@ -374,8 +374,11 @@
                 </div>
 
                 <p class="text-[10px] text-center text-textLight mb-2"><i class="fas fa-lock"></i> Generaremos un Hash de trazabilidad al enviar tu orden.</p>
-                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 text-[15px] shadow-ios flex justify-center items-center gap-2">
-                    <i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp
+                <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white font-black py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 shadow-[0_8px_30px_rgba(37,211,102,0.4)] flex flex-col justify-center items-center">
+                    <div class="flex items-center gap-2 text-lg">
+                        <i class="fab fa-whatsapp text-2xl animate-pulse"></i> <span>CONFIRMAR PEDIDO AQUÍ</span>
+                    </div>
+                    <span class="text-[11px] font-medium opacity-90 mt-1 tracking-wide">Paso final para cerrar tu importación</span>
                 </button>
             </div>
         </div>
@@ -924,13 +927,13 @@
             if(btnModal) {
                 if (totalQty >= 20) { 
                     btnModal.disabled = false; 
-                    btnModal.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> Enviar Pedido por WhatsApp`; 
+                    btnModal.innerHTML = `<div class="flex items-center gap-2 text-lg"><i class="fab fa-whatsapp text-2xl animate-pulse"></i> <span>CONFIRMAR PEDIDO AQUÍ</span></div><span class="text-[11px] font-medium opacity-90 mt-1 tracking-wide">Paso final para cerrar tu importación</span>`; 
                     if(headerBtn) headerBtn.classList.remove('hidden'); 
                 } 
                 else { 
                     btnModal.disabled = true; 
-                    if(totalQty > 0) btnModal.innerHTML = `Faltan ${20 - totalQty} uds para mayorista`; 
-                    else btnModal.innerHTML = `Añade productos`; 
+                    if(totalQty > 0) btnModal.innerHTML = `<span class="text-base py-2">Faltan ${20 - totalQty} uds para mayorista</span>`; 
+                    else btnModal.innerHTML = `<span class="text-base py-2">Añade productos al surtido</span>`; 
                     if(headerBtn) headerBtn.classList.add('hidden'); 
                 }
             }
