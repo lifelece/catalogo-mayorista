@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
@@ -6,7 +7,7 @@
     <title>Socios CBO - Zona Mayorista</title>
     
     <meta property="og:title" content="MiniPerfumes CBO - Importación Mayorista" />
-    <meta property="og:description" content="El surtido perfecto a un toque. Cajas inteligentes desde $3.50 c/u. Envíos a toda Venezuela." />
+    <meta property="og:description" content="El surtido perfecto a un toque. Cajas inteligentes desde $3.20 c/u. Envíos a toda Venezuela." />
     <meta property="og:image" content="https://placehold.co/1200x630/F2F2F7/1C1C1E?text=MiniPerfumes+Mayorista" />
     <meta property="og:url" content="https://tu-dominio.com" />
     <meta property="og:type" content="website" />
@@ -58,11 +59,6 @@
         .pop-anim { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
         .progress-bar-fill { transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1); }
-        
-        /* Animación para el banner de prueba social */
-        .marquee-container { overflow: hidden; white-space: nowrap; }
-        .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     </style>
 </head>
 <body class="font-sans antialiased relative"> 
@@ -87,7 +83,7 @@
         </div>
     </nav>
 
-    <!-- MENÚ HUB LATERAL (Reemplazo Linktree) -->
+    <!-- MENÚ HUB LATERAL -->
     <div id="main-menu" class="fixed inset-0 z-[200] hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="menu-backdrop" onclick="closeMenu()"></div>
         <div id="menu-sheet" class="absolute top-0 right-0 w-[85%] max-w-[320px] h-full bg-[#F2F2F7] transform translate-x-full transition-transform duration-500 ease-apple shadow-2xl flex flex-col pt-[env(safe-area-inset-top)]">
@@ -97,8 +93,6 @@
             </div>
             
             <div class="flex-1 overflow-y-auto px-4 py-6 space-y-3">
-                
-                <!-- FIDELIZACIÓN GAMIFICADA -->
                 <div class="w-full bg-gradient-to-r from-iosBlue to-iosGreen p-4 rounded-2xl shadow-lg mb-4 text-white relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-white/10 text-6xl"><i class="fas fa-gem"></i></div>
                     <div class="flex items-center gap-4 relative z-10">
@@ -113,43 +107,20 @@
                     </div>
                 </div>
 
-                <p class="text-xs font-bold text-textLight uppercase tracking-wider pl-2 mb-2">Comunidad & Soporte</p>
-                
+                <p class="text-xs font-bold text-textLight uppercase tracking-wider pl-2 mb-2">Comunidad y Recursos</p>
+                <a href="#" onclick="showIOSNotification('Descargando Guía: Cómo vender 20 uds en 7 días...')" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm border border-green-100 active:scale-95 transition-transform">
+                    <div class="w-10 h-10 rounded-full bg-green-50 text-iosGreen flex items-center justify-center text-lg"><i class="fas fa-book-open"></i></div>
+                    <div class="flex-1"><p class="font-bold text-sm text-textMain">Guía para Novatos</p><p class="text-[11px] text-iosGreen font-medium">Vende tu 1ra caja en 7 días</p></div><i class="fas fa-download text-gray-300 text-sm"></i>
+                </a>
                 <a href="https://www.whatsapp.com/channel/0029VbCzpmm9MF98qsSwYa20" target="_blank" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm active:scale-95 transition-transform">
                     <div class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center text-lg"><i class="fab fa-whatsapp"></i></div>
-                    <div class="flex-1">
-                        <p class="font-bold text-sm text-textMain">Canal Oficial VIP</p>
-                        <p class="text-[11px] text-textLight">Únete para ofertas y llegadas</p>
-                    </div>
-                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                    <div class="flex-1"><p class="font-bold text-sm text-textMain">Canal Oficial VIP</p><p class="text-[11px] text-textLight">Únete para ofertas y llegadas</p></div><i class="fas fa-chevron-right text-gray-300 text-sm"></i>
                 </a>
-
-                <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20asesoría." target="_blank" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm active:scale-95 transition-transform">
-                    <div class="w-10 h-10 rounded-full bg-iosBlue text-white flex items-center justify-center text-lg"><i class="fas fa-headset"></i></div>
-                    <div class="flex-1">
-                        <p class="font-bold text-sm text-textMain">Atención al Cliente</p>
-                        <p class="text-[11px] text-textLight">Habla con un asesor por WhatsApp</p>
-                    </div>
-                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
-                </a>
-
-                <a href="https://www.instagram.com/miniperfumescbo?igsh=MThlZWJlM2NvOW85cQ%3D%3D" target="_blank" class="flex items-center gap-4 bg-iosCard p-4 rounded-2xl shadow-sm active:scale-95 transition-transform">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#FFDC80] via-[#F56040] to-[#C13584] text-white flex items-center justify-center text-lg"><i class="fab fa-instagram"></i></div>
-                    <div class="flex-1">
-                        <p class="font-bold text-sm text-textMain">Instagram</p>
-                        <p class="text-[11px] text-textLight">Síguenos @miniperfumescbo</p>
-                    </div>
-                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
-                </a>
-
-                <p class="text-xs font-bold text-textLight uppercase tracking-wider pl-2 mt-6 mb-2">Pedidos Inteligentes</p>
                 
+                <p class="text-xs font-bold text-textLight uppercase tracking-wider pl-2 mt-6 mb-2">Pedidos Inteligentes</p>
                 <button onclick="closeMenu(); document.getElementById('tour-step-combos').scrollIntoView({behavior: 'smooth'})" class="w-full flex items-center gap-4 bg-textMain text-white p-4 rounded-2xl shadow-sm active:scale-95 transition-transform text-left">
                     <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg"><i class="fas fa-boxes"></i></div>
-                    <div class="flex-1">
-                        <p class="font-bold text-sm">Ventas al Mayor</p>
-                        <p class="text-[11px] text-white/70">Compra cajas listas desde $3.50</p>
-                    </div>
+                    <div class="flex-1"><p class="font-bold text-sm">Ventas al Mayor</p><p class="text-[11px] text-white/70">Compra cajas listas desde $3.20</p></div>
                 </button>
             </div>
         </div>
@@ -159,78 +130,110 @@
         <div class="w-full bg-textMain rounded-[2rem] p-6 md:p-10 relative overflow-hidden shadow-ios-float text-white">
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-iosOrange opacity-20 rounded-full blur-3xl"></div>
             <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-iosBlue opacity-20 rounded-full blur-3xl"></div>
-            
             <p id="hero-greeting" class="text-[11px] md:text-xs font-bold text-gray-400 tracking-widest mb-1 uppercase">Importación Rápida</p>
             <h2 id="hero-title" class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">El surtido perfecto,<br>a un toque.</h2>
-            
             <div class="flex gap-3">
-                <button onclick="openFAQ()" class="bg-white/10 backdrop-blur-md text-white border border-white/20 text-xs font-semibold px-4 py-2 rounded-full hover:bg-white/20 transition active:scale-95 flex items-center gap-2">
-                    <i class="fas fa-robot"></i> Dudas
-                </button>
-                <button onclick="startTour()" class="bg-iosBlue text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-blue-600 transition active:scale-95 flex items-center gap-2">
-                    <i class="fas fa-magic"></i> Tour
-                </button>
-            </div>
-        </div>
-        
-        <!-- PRUEBA SOCIAL / SOCIAL PROOF -->
-        <div class="mt-4 bg-[#E5E5EA] rounded-full py-2 px-3 flex items-center gap-2 overflow-hidden shadow-inner border border-gray-200">
-            <div class="flex -space-x-2 shrink-0">
-                <img class="w-6 h-6 rounded-full border border-white object-cover" src="https://i.pravatar.cc/100?img=1" alt="User">
-                <img class="w-6 h-6 rounded-full border border-white object-cover" src="https://i.pravatar.cc/100?img=2" alt="User">
-                <img class="w-6 h-6 rounded-full border border-white object-cover" src="https://i.pravatar.cc/100?img=3" alt="User">
-            </div>
-            <div class="marquee-container flex-1 text-[11px] font-medium text-textMain">
-                <div class="marquee-content">
-                    🔥 <b>+120 emprendedores</b> hicieron su pedido este mes. &nbsp;&nbsp; • &nbsp;&nbsp; ⭐ <b>4.9/5</b> valoración en envíos MRW/Zoom. &nbsp;&nbsp; • &nbsp;&nbsp; 🔥 <b>+120 emprendedores</b> hicieron su pedido este mes.
-                </div>
+                <button onclick="openFAQ()" class="bg-white/10 backdrop-blur-md text-white border border-white/20 text-xs font-semibold px-4 py-2 rounded-full hover:bg-white/20 transition active:scale-95 flex items-center gap-2"><i class="fas fa-robot"></i> Dudas</button>
             </div>
         </div>
     </header>
 
+    <!-- CAJAS INTELIGENTES -->
     <div class="w-full relative z-20 mb-8" data-aos="fade-up" data-aos-delay="100">
-        <div class="px-4 md:px-6 mb-3 flex items-center justify-between max-w-4xl mx-auto">
-            <h3 class="text-lg font-bold tracking-tight text-textMain">Cajas Inteligentes</h3>
-            <span class="text-xs font-medium text-textLight">1-Click</span>
+        <div class="px-4 md:px-6 mb-4 flex flex-col max-w-4xl mx-auto gap-3">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold tracking-tight text-textMain">Cajas Inteligentes <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full ml-1">DDP Incluido</span></h3>
+            </div>
+            
+            <!-- SELECTOR DE ENVÍO PARA COMBOS -->
+            <div class="bg-[#E5E5EA] p-1 rounded-xl grid grid-cols-2 gap-1 relative w-full md:w-[60%] shadow-inner border border-gray-200">
+                <label class="text-center py-2 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex items-center justify-center gap-2" onclick="setShippingMethod('maritime')">
+                    <input type="radio" name="global-shipping" value="maritime" class="hidden" id="global-shipping-maritime" checked>
+                    <span>🚢 Marítimo</span>
+                </label>
+                <label class="text-center py-2 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex items-center justify-center gap-2" onclick="setShippingMethod('air')">
+                    <input type="radio" name="global-shipping" value="air" class="hidden" id="global-shipping-air">
+                    <span>✈️ Aéreo</span>
+                </label>
+            </div>
         </div>
+        
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div id="tour-step-combos" class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 pb-2 p-1">
-                <div onclick="addComboToCart(20, 'Emprendedor')" class="snap-start shrink-0 w-[140px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
-                    <div class="h-14 w-14 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-2xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-box"></i></div>
+            <div id="tour-step-combos" class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 pb-4 p-1">
+                <!-- Caja 20 -->
+                <div onclick="addComboToCart(20, 'Emprendedor')" class="snap-start shrink-0 w-[160px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group relative overflow-hidden">
+                    <div class="h-12 w-12 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-2 text-xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-box"></i></div>
                     <h3 class="font-bold text-sm text-textMain tracking-tight">Caja x20</h3>
-                    <p class="text-xs text-textLight mt-1 font-medium">$6.00 c/u</p>
+                    <div class="mt-2 mb-1">
+                        <span class="text-[8.5px] bg-[#34C759]/10 text-iosGreen font-bold px-2 py-1 rounded-full border border-[#34C759]/20 shadow-sm"><i class="fas fa-gift"></i> Guía de Ventas</span>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-gray-100 w-full" id="combo-20-shipping">
+                        <!-- Llenado dinámico -->
+                    </div>
+                    <div class="mt-3 w-full">
+                        <div class="text-[10px] bg-green-50 text-iosGreen font-bold px-2 py-1.5 rounded-lg border border-green-100 shadow-sm leading-tight">
+                            Vende a $10<br>Ganas $90
+                        </div>
+                    </div>
                 </div>
-                <div onclick="addComboToCart(50, 'Negocio')" class="snap-start shrink-0 w-[140px] bg-iosOrange rounded-3xl shadow-ios-float p-5 flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 relative group">
+                <!-- Caja 50 -->
+                <div onclick="addComboToCart(50, 'Negocio')" class="snap-start shrink-0 w-[160px] bg-iosOrange rounded-3xl shadow-ios-float p-5 flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-95 relative group">
                     <div class="absolute -top-2 bg-textMain text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">Popular</div>
-                    <div class="h-14 w-14 flex items-center justify-center bg-white/20 rounded-full mb-3 text-2xl text-white"><i class="fas fa-box-open"></i></div>
+                    <div class="h-12 w-12 flex items-center justify-center bg-white/20 rounded-full mb-3 text-xl text-white"><i class="fas fa-box-open"></i></div>
                     <h3 class="font-bold text-sm text-white tracking-tight">Caja x50</h3>
-                    <p class="text-xs text-white/80 mt-1 font-medium">$4.50 c/u</p>
+                    <div class="mt-3 pt-3 border-t border-white/20 w-full" id="combo-50-shipping">
+                        <!-- Llenado dinámico -->
+                    </div>
+                    <div class="mt-3 w-full">
+                        <div class="text-[10px] bg-white/20 text-white font-bold px-2 py-1.5 rounded-lg shadow-sm leading-tight backdrop-blur-sm border border-white/30">
+                            Vende a $10<br>Ganas $275
+                        </div>
+                    </div>
                 </div>
-                <div onclick="addComboToCart(100, 'Mayorista')" class="snap-start shrink-0 w-[140px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
-                    <div class="h-14 w-14 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-2xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-boxes"></i></div>
+                <!-- Caja 100 -->
+                <div onclick="addComboToCart(100, 'Mayorista')" class="snap-start shrink-0 w-[160px] bg-iosCard rounded-3xl shadow-ios p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 group">
+                    <div class="h-12 w-12 flex items-center justify-center bg-[#F2F2F7] rounded-full mb-3 text-xl text-textMain group-hover:bg-textMain group-hover:text-white transition-colors"><i class="fas fa-boxes"></i></div>
                     <h3 class="font-bold text-sm text-textMain tracking-tight">Caja x100</h3>
-                    <p class="text-xs text-textLight mt-1 font-medium">$3.50 c/u</p>
+                    <div class="mt-3 pt-3 border-t border-gray-100 w-full" id="combo-100-shipping">
+                        <!-- Llenado dinámico -->
+                    </div>
+                    <div class="mt-3 w-full">
+                        <div class="text-[10px] bg-green-50 text-iosGreen font-bold px-2 py-1.5 rounded-lg border border-green-100 shadow-sm leading-tight">
+                            Vende a $10<br>Ganas $620
+                        </div>
+                    </div>
+                </div>
+                <!-- Caja 200 (Nuevo Tier) -->
+                <div onclick="addComboToCart(200, 'Distribuidor')" class="snap-start shrink-0 w-[160px] bg-textMain rounded-3xl shadow-ios-float p-5 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-lg transition-all active:scale-95 relative group">
+                    <div class="absolute -top-2 bg-iosBlue text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-sm"><i class="fas fa-star"></i> Distribuidor</div>
+                    <div class="h-12 w-12 flex items-center justify-center bg-white/10 rounded-full mb-3 text-xl text-white"><i class="fas fa-gem"></i></div>
+                    <h3 class="font-bold text-sm text-white tracking-tight">Caja x200</h3>
+                    <div class="mt-3 pt-3 border-t border-white/10 w-full" id="combo-200-shipping">
+                        <!-- Llenado dinámico -->
+                    </div>
+                    <div class="mt-3 w-full">
+                        <div class="text-[10px] bg-white/10 text-white font-bold px-2 py-1.5 rounded-lg border border-white/20 shadow-sm leading-tight">
+                            Vende a $10<br>Ganas $1,360
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TENDENCIAS INTELIGENTES (Data-Driven) -->
+    <!-- TENDENCIAS INTELIGENTES -->
     <section class="mb-8 hidden" id="top5-section" data-aos="fade-up">
         <div class="px-4 md:px-6 mb-3 flex items-center justify-between max-w-4xl mx-auto">
-            <h3 class="text-lg font-bold tracking-tight text-textMain">Para ti (Basado en tu historial)</h3>
-            <span class="text-[10px] bg-iosCard px-2 py-1 rounded-full text-textLight border border-gray-200"><i class="fas fa-chart-line text-iosGreen"></i> Algoritmo Local</span>
+            <h3 class="text-lg font-bold tracking-tight text-textMain">Para ti</h3>
+            <span class="text-[10px] bg-iosCard px-2 py-1 rounded-full text-textLight border border-gray-200"><i class="fas fa-chart-line text-iosGreen"></i> Historial Local</span>
         </div>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory">
-                <!-- Inyectado por JS -->
-            </div>
+            <div id="top5-container" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x-mandatory"></div>
         </div>
     </section>
 
     <div id="loading-indicator" class="text-center py-16 text-sm text-textLight font-medium flex flex-col items-center justify-center">
-        <i class="fas fa-circle-notch fa-spin text-3xl mb-4 text-iosBlue"></i>
-        Sincronizando catálogo...
+        <i class="fas fa-circle-notch fa-spin text-3xl mb-4 text-iosBlue"></i>Sincronizando catálogo...
     </div>
 
     <section id="catalog-zone" class="hidden pb-10">
@@ -238,31 +241,13 @@
             <div class="mb-6 sticky top-[80px] z-40 bg-[#F2F2F7] supports-[backdrop-filter]:bg-[#F2F2F7]/85 supports-[backdrop-filter]:backdrop-blur-xl py-3 -mx-4 px-4 border-b border-gray-200 shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)]">
                 <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar" id="brand-filters-container"></div>
             </div>
-
-            <!-- Estado Vacío (Empty State) para Búsquedas Fallidas -->
             <div id="empty-search-state" class="hidden text-center py-12 px-4">
-                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400 text-2xl">
-                    <i class="fas fa-search-minus"></i>
-                </div>
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400 text-2xl"><i class="fas fa-search-minus"></i></div>
                 <h3 class="text-lg font-bold text-textMain mb-2">No encontramos ese aroma</h3>
-                <p class="text-sm text-textLight mb-6">¿Buscabas algo específico? Nuestro catálogo cambia a diario. Escríbenos y te lo conseguimos.</p>
-                <button onclick="sendWhatsAppInquiry()" class="bg-[#25D366] text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-sm active:scale-95 transition-transform">
-                    <i class="fab fa-whatsapp"></i> Preguntar Asesor
-                </button>
+                <p class="text-sm text-textLight mb-6">¿Buscabas algo específico? Escríbenos y te lo conseguimos.</p>
+                <button onclick="sendWhatsAppInquiry()" class="bg-[#25D366] text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-sm active:scale-95 transition-transform"><i class="fab fa-whatsapp"></i> Preguntar Asesor</button>
             </div>
-
             <div id="catalog-container" class="space-y-8"></div>
-        </div>
-
-        <div class="mt-12 mb-8 px-6 py-8 bg-iosCard rounded-3xl shadow-sm text-center mx-4 md:mx-auto max-w-4xl border border-gray-100">
-            <div class="flex justify-center gap-4 mb-4 text-iosBlue text-2xl">
-                <i class="fas fa-shield-alt"></i> <i class="fas fa-truck-fast"></i> <i class="fas fa-link"></i>
-            </div>
-            <h4 class="font-bold text-textMain mb-2">Pedidos 100% Trazables</h4>
-            <p class="text-xs text-textLight mb-4">Cada orden genera un Hash Único Criptográfico para tu seguridad y auditoría.</p>
-            <div class="inline-block bg-[#F2F2F7] px-4 py-2 rounded-xl text-[11px] font-semibold text-textMain">
-                📍 Caracas, Venezuela | RIF: J-XXXXXXXX-X
-            </div>
         </div>
     </section>
 
@@ -274,111 +259,143 @@
                 <span id="sticky-qty" class="absolute -top-1 -right-1 bg-iosRed text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-[#1C1C1E] transition-transform duration-300">0</span>
             </div>
             <div class="flex flex-col">
-                <span class="text-[10px] text-gray-300 font-medium tracking-wide">Total</span>
+                <span class="text-[10px] text-gray-300 font-medium tracking-wide">Total Estimado</span>
                 <span id="sticky-total" class="text-base font-bold text-white tracking-tight">$0.00</span>
             </div>
         </div>
         <button onclick="openCartModal()" class="bg-white text-textMain px-6 py-3 rounded-full text-sm font-bold hover:bg-gray-100 active:scale-95 transition-all">Ver Pedido</button>
     </div>
 
-    <!-- MODAL DE CARRITO -->
+    <!-- MODAL DE CARRITO REDISEÑADO (SCROLL FIX E INTERFAZ DDP) -->
     <div id="cart-modal" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-black/30 backdrop-blur-[4px] opacity-0 transition-opacity duration-500 ease-apple" id="cart-backdrop" onclick="closeCartModal()"></div>
         
-        <div id="cart-sheet" class="absolute bottom-0 left-0 w-full md:w-[450px] md:left-1/2 md:-translate-x-1/2 h-[85vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
-            <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px] cursor-grab active:cursor-grabbing">
+        <div id="cart-sheet" class="absolute bottom-0 left-0 w-full md:w-[450px] md:left-1/2 md:-translate-x-1/2 h-[92vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
+            
+            <!-- Handle & Header (Fijos) -->
+            <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px] shrink-0 cursor-grab active:cursor-grabbing">
                 <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
-
-            <div class="px-6 py-3 bg-iosCard flex justify-between items-center border-b border-gray-100">
+            <div class="px-6 py-3 bg-iosCard flex justify-between items-center border-b border-gray-100 shrink-0">
                 <h2 class="text-xl md:text-2xl font-bold tracking-tight text-textMain">Tu Pedido</h2>
                 <div class="flex items-center gap-2">
-                    <button id="cart-header-btn" onclick="sendWhatsAppOrder()" class="hidden bg-[#25D366] text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-sm active:scale-95 transition-transform flex items-center gap-1">
-                        <i class="fab fa-whatsapp text-sm"></i> Enviar
-                    </button>
                     <button onclick="clearCart()" class="text-iosRed bg-red-50 px-3 py-1.5 rounded-full text-xs font-bold active:scale-95 transition-transform">Vaciar</button>
                 </div>
             </div>
 
-            <div class="bg-iosCard px-6 py-4 shadow-sm mb-2">
-                <div class="flex justify-between items-end mb-2">
-                    <span class="text-xs font-semibold text-textLight" id="progress-title">Nivel Actual</span>
-                    <span class="text-sm font-bold text-textMain" id="progress-price">$6.00 c/u</span>
-                </div>
-                <div class="w-full bg-[#E5E5EA] rounded-full h-2 mb-2 overflow-hidden">
-                    <div class="bg-iosBlue h-full rounded-full progress-bar-fill" id="progress-bar" style="width: 0%"></div>
-                </div>
-                <p class="text-[11px] text-textLight font-medium" id="progress-msg">Agrega 20 uds para tu primer descuento.</p>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto px-4 py-2" id="cart-items-container"></div>
-
-            <div id="cart-suggestions-container" class="px-4 pb-2 hidden">
-                <h3 class="text-[11px] font-bold text-textLight uppercase tracking-wider mb-2 pl-2">Completa tu surtido</h3>
-                <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 snap-x-mandatory" id="cart-suggestions-list"></div>
-            </div>
-
-            <div class="p-6 bg-iosCard rounded-t-[2rem] shadow-[0_-10px_30px_rgba(0,0,0,0.06)] pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+            <!-- CONTENIDO SCROLLABLE -->
+            <div class="flex-1 overflow-y-auto overscroll-touch pb-[130px]">
                 
-                <div class="bg-[#E5E5EA] p-1 rounded-xl grid grid-cols-3 gap-1 mb-5 relative">
-                    <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('bs')">
-                        <input type="radio" name="payment" value="bs" class="hidden" id="radio-bs" checked>
-                        <span>Bs.</span>
-                        <span class="font-normal opacity-70">PagoMóvil</span>
-                    </label>
-                    <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('zelle')">
-                        <input type="radio" name="payment" value="zelle" class="hidden" id="radio-zelle">
-                        <span>Zelle <span class="text-[8px] text-iosGreen bg-green-50 px-1 rounded">-5%</span></span>
-                        <span class="font-normal opacity-70">Efectivo</span>
-                    </label>
-                    <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('crypto')">
-                        <input type="radio" name="payment" value="crypto" class="hidden" id="radio-crypto">
-                        <span>USDT <span class="text-[8px] text-iosGreen bg-green-50 px-1 rounded">-5%</span></span>
-                        <span class="font-normal opacity-70">Binance</span>
-                    </label>
+                <div class="bg-iosCard px-6 py-4 shadow-sm mb-2">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-xs font-semibold text-textLight" id="progress-title">Nivel Actual</span>
+                        <span class="text-sm font-bold text-textMain" id="progress-price">$5.50 c/u</span>
+                    </div>
+                    <div class="w-full bg-[#E5E5EA] rounded-full h-2 mb-2 overflow-hidden">
+                        <div class="bg-iosBlue h-full rounded-full progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <p class="text-[11px] text-textLight font-medium" id="progress-msg">Agrega 20 uds para tu primer descuento.</p>
                 </div>
                 
-                <div class="space-y-2 mb-4">
-                    <div class="flex justify-between text-sm text-textLight font-medium">
-                        <span>Subtotal (<span id="cart-modal-qty">0</span>)</span>
-                        <span id="cart-modal-subtotal">$0.00</span>
-                    </div>
-                    <div id="cart-premium-row" class="flex justify-between text-sm text-[#8A2BE2] font-medium hidden">
-                        <span>Recargo Premium (15ml)</span>
-                        <span id="cart-modal-premium">+$0.00</span>
-                    </div>
-                    <div id="cart-discount-row" class="flex justify-between text-sm text-iosGreen font-medium hidden">
-                        <span>Descuento Aplicado</span>
-                        <span id="cart-modal-discount">-$0.00</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
-                        <span class="font-bold text-textMain">Total a Pagar</span>
-                        <span id="cart-modal-total" class="text-2xl font-black text-textMain tracking-tight">$0.00</span>
-                    </div>
+                <div class="px-4 py-2" id="cart-items-container"></div>
+
+                <div id="cart-suggestions-container" class="px-4 pb-2 hidden">
+                    <h3 class="text-[11px] font-bold text-textLight uppercase tracking-wider mb-2 pl-2">Completa tu surtido</h3>
+                    <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 snap-x-mandatory" id="cart-suggestions-list"></div>
                 </div>
 
-                <!-- ROI Calculator Mejorado -->
-                <div id="roi-section" class="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200 mb-5 hidden transition-all">
-                    <div class="flex items-start gap-3">
-                        <div class="bg-emerald-500 text-white p-2.5 rounded-xl mt-0.5 flex-shrink-0 shadow-sm">
-                            <i class="fas fa-dollar-sign text-lg"></i>
+                <div class="p-4 space-y-5">
+                    <!-- SELECTOR DE ENVÍO -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2 pl-1">
+                            <p class="text-[11px] font-bold text-textMain uppercase tracking-wider">Logística Puerta a Puerta</p>
+                            <button onclick="openFAQ()" class="text-[10px] text-iosBlue bg-blue-50 px-2 py-0.5 rounded-full font-semibold"><i class="fas fa-info-circle"></i> Transparencia DDP</button>
                         </div>
-                        <div>
-                            <p class="text-xs font-bold text-emerald-800 uppercase tracking-wide mb-0.5">Tu Ganancia Estimada</p>
-                            <div class="flex items-baseline gap-2">
-                                <span id="roi-profit" class="text-2xl font-black text-emerald-600 tracking-tight">$80.00</span>
-                                <span class="text-[10px] text-emerald-700/70 font-medium">(Vendiendo a $10 c/u)</span>
-                            </div>
+                        <div class="bg-[#E5E5EA] p-1 rounded-xl grid grid-cols-2 gap-1 relative">
+                            <label class="text-center py-2.5 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setShippingMethod('maritime')">
+                                <input type="radio" name="shipping" value="maritime" class="hidden" id="shipping-maritime" checked>
+                                <span>🚢 Marítimo</span>
+                                <span class="font-normal opacity-70 text-[10px]">Tarifa Base (Incluida)</span>
+                            </label>
+                            <label class="text-center py-2.5 text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setShippingMethod('air')">
+                                <input type="radio" name="shipping" value="air" class="hidden" id="shipping-air">
+                                <span>✈️ Aéreo Express</span>
+                                <span class="font-normal opacity-70 text-[10px]">Envío Rápido (+$1.50/ud)</span>
+                            </label>
                         </div>
                     </div>
-                </div>
 
-                <p class="text-[10px] text-center text-textLight mb-2"><i class="fas fa-lock"></i> Generaremos un Hash de trazabilidad al enviar tu orden.</p>
+                    <!-- SELECTOR DE PAGO -->
+                    <div>
+                        <p class="text-[11px] font-bold text-textMain mb-2 pl-1 uppercase tracking-wider">Método de Pago</p>
+                        <div class="bg-[#E5E5EA] p-1 rounded-xl grid grid-cols-3 gap-1 relative">
+                            <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('bs')">
+                                <input type="radio" name="payment" value="bs" class="hidden" id="radio-bs" checked>
+                                <span>Bs.</span>
+                                <span class="font-normal opacity-70">PagoMóvil</span>
+                            </label>
+                            <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('zelle')">
+                                <input type="radio" name="payment" value="zelle" class="hidden" id="radio-zelle">
+                                <span>Zelle <span class="text-[8px] text-iosGreen bg-green-50 px-1 rounded">-5%</span></span>
+                                <span class="font-normal opacity-70">Efectivo</span>
+                            </label>
+                            <label class="text-center py-2.5 text-[10px] md:text-xs font-bold rounded-lg cursor-pointer transition-all z-10 [&:has(input:checked)]:text-textMain [&:has(input:checked)]:shadow-sm [&:has(input:checked)]:bg-white text-textLight flex flex-col items-center justify-center leading-tight" onclick="setPaymentMethod('crypto')">
+                                <input type="radio" name="payment" value="crypto" class="hidden" id="radio-crypto">
+                                <span>USDT <span class="text-[8px] text-iosGreen bg-green-50 px-1 rounded">-5%</span></span>
+                                <span class="font-normal opacity-70">Binance</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- BREAKDOWN PROFESIONAL DDP (MARGEN INVISIBLE) -->
+                    <div class="space-y-1.5 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="flex justify-between text-[13px] text-textMain font-bold">
+                            <span>Mercancía Base (<span id="cart-modal-qty">0</span> uds)</span>
+                            <span id="cart-modal-subtotal">$0.00</span>
+                        </div>
+                        <div id="cart-premium-row" class="flex justify-between text-xs text-[#8A2BE2] font-medium hidden">
+                            <span class="pl-2">↳ Recargo Aromas Premium</span>
+                            <span id="cart-modal-premium">+$0.00</span>
+                        </div>
+                        
+                        <div class="border-t border-gray-100 my-2"></div>
+                        
+                        <div class="flex justify-between text-xs text-iosRed font-medium opacity-90">
+                            <span>Aduana y Nacionalización</span>
+                            <span id="cart-modal-customs">+$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-textLight font-medium">
+                            <span>Seguro y Gestión (Admin)</span>
+                            <span id="cart-modal-insurance">+$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-iosBlue font-medium">
+                            <span>Flete Puro (<span id="shipping-type-label">Marítimo</span>)</span>
+                            <span id="cart-modal-freight">+$0.00</span>
+                        </div>
+
+                        <div id="cart-discount-row" class="flex justify-between text-xs text-iosGreen font-bold hidden pt-1">
+                            <span>Descuento Aplicado (5%)</span>
+                            <span id="cart-modal-discount">-$0.00</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-200 mt-3">
+                            <span class="font-black text-textMain text-sm uppercase tracking-wide">Total DDP</span>
+                            <span id="cart-modal-total" class="text-2xl font-black text-textMain tracking-tight">$0.00</span>
+                        </div>
+                        <p class="text-[9px] text-center text-gray-400 mt-2 font-medium">
+                            <i class="fas fa-shield-alt"></i> Total blindado. Sin cobros sorpresa al llegar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER FIJO (Botón de Confirmar) -->
+            <div class="absolute bottom-0 left-0 w-full p-4 bg-[#F2F2F7]/90 backdrop-blur-md border-t border-gray-200 pb-[calc(1rem+env(safe-area-inset-bottom))] z-20">
                 <button id="cart-modal-btn" onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white font-black py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50 disabled:bg-gray-300 shadow-[0_8px_30px_rgba(37,211,102,0.4)] flex flex-col justify-center items-center">
                     <div class="flex items-center gap-2 text-lg">
-                        <i class="fab fa-whatsapp text-2xl animate-pulse"></i> <span>CONFIRMAR PEDIDO AQUÍ</span>
+                        <i class="fab fa-whatsapp text-2xl animate-pulse"></i> <span>CONFIRMAR PEDIDO</span>
                     </div>
-                    <span class="text-[11px] font-medium opacity-90 mt-1 tracking-wide">Paso final para cerrar tu importación</span>
+                    <span class="text-[11px] font-medium opacity-90 mt-1 tracking-wide">Paso final para tu importación</span>
                 </button>
             </div>
         </div>
@@ -390,722 +407,324 @@
         <div id="faq-sheet" class="absolute bottom-0 left-0 w-full md:w-[400px] md:left-1/2 md:-translate-x-1/2 h-[80vh] bg-[#F2F2F7] rounded-t-[32px] transform translate-y-full transition-transform duration-500 ease-apple flex flex-col overflow-hidden shadow-2xl">
             <div class="w-full flex justify-center pt-3 pb-2 bg-iosCard rounded-t-[32px]" onclick="closeFAQ()"><div class="w-12 h-1.5 bg-gray-300 rounded-full"></div></div>
             <div class="px-6 py-3 bg-iosCard border-b border-gray-100 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-textMain">Asistente Virtual</h2>
+                <h2 class="text-xl font-bold text-textMain">Transparencia DDP</h2>
                 <button onclick="closeFAQ()" class="bg-gray-100 w-8 h-8 rounded-full text-textLight text-xs"><i class="fas fa-times"></i></button>
             </div>
             
-            <div class="bg-iosCard px-6 pb-4 border-b border-gray-100">
-                <div class="relative w-full bg-[#F2F2F7] rounded-xl flex items-center overflow-hidden">
-                    <i class="fas fa-search text-gray-400 pl-3 text-sm"></i>
-                    <input type="text" id="faqSearchInput" onkeyup="filterFAQ()" class="w-full pl-2 pr-4 py-2 bg-transparent text-[14px] border-none focus:ring-0 outline-none placeholder-gray-400" placeholder="Ej. pago, envíos, mínimo...">
-                </div>
-            </div>
-
             <div class="p-5 overflow-y-auto space-y-3 bg-[#F2F2F7] flex-1 hide-scrollbar" id="faq-list">
-                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="comprar elegir surtido combos catalogo roi ganancia">
-                    <p class="font-semibold text-sm text-textMain mb-1">¿Cómo recupero mi inversión?</p>
-                    <p class="text-xs text-textLight leading-relaxed">Con la caja x20 (Socio Emprendedor), tu costo es $6. El precio sugerido de venta al detal es $10-$12. Ganancia neta estimada: <strong>+$80 USD</strong> por caja.</p>
-                </div>
-                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="pagos zelle efectivo bs pagomovil usdt crypto cripto binance">
-                    <p class="font-semibold text-sm text-textMain mb-1">¿Cuáles son los métodos de pago?</p>
-                    <p class="text-xs text-textLight leading-relaxed">Aceptamos Pago Móvil, Efectivo, y Zelle/USDT/Binance <strong class="text-iosGreen">(Con 5% de descuento directo)</strong>.</p>
-                </div>
-                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="minimo mayor mayorista unidades cantidad">
-                    <p class="font-semibold text-sm text-textMain mb-1">¿Cuál es el pedido mínimo?</p>
-                    <p class="text-xs text-textLight leading-relaxed">Para acceder a precios mayoristas, el pedido mínimo absoluto es de <strong>20 unidades</strong>.</p>
-                </div>
-                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm" data-tags="envios delivery caracas interior zoom mrw tealca">
-                    <p class="font-semibold text-sm text-textMain mb-1">¿Hacen envíos al interior?</p>
-                    <p class="text-xs text-textLight leading-relaxed">Sí, realizamos envíos a nivel nacional por MRW, Zoom y Tealca. Delivery disponible en Caracas.</p>
-                </div>
-                
-                <div class="mt-6 text-center">
-                    <a href="https://wa.me/584141087079?text=Hola%20equipo%20CBO!%20Necesito%20hablar%20con%20un%20asesor." target="_blank" class="inline-flex items-center gap-2 bg-textMain text-white font-semibold px-6 py-3 rounded-full text-sm shadow-ios active:scale-95 transition-transform">
-                        Hablar con Humano
-                    </a>
+                <div class="faq-item bg-iosCard p-4 rounded-2xl shadow-sm">
+                    <p class="font-semibold text-sm text-textMain mb-2"><i class="fas fa-file-invoice text-iosBlue mr-1"></i> ¿Qué incluye la Logística DDP?</p>
+                    <p class="text-xs text-textLight leading-relaxed mb-3">Trabajamos bajo el incoterm <strong>DDP (Delivered Duty Paid)</strong>, lo que significa que nos encargamos de todo el papeleo y los gastos operativos. El precio que ves incluye:</p>
+                    <ul class="text-xs text-textLight space-y-2 pl-2">
+                        <li><strong>1. Flete Puro:</strong> El costo del transporte desde China hasta Venezuela.</li>
+                        <li><strong>2. Impuestos y Aduana:</strong> Los cosméticos pagan aranceles elevados y permisos especiales. Nuestro sistema consolida este pago para que tu mercancía pase sin problemas.</li>
+                        <li><strong>3. Seguro y Administrativos:</strong> Seguro de carga para que tu inversión esté blindada, más los costos de emisión de guía B/L.</li>
+                    </ul>
+                    <div class="mt-3 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                        <p class="text-[10px] text-iosBlue font-bold"><i class="fas fa-check-circle"></i> Cero comisiones ocultas. El total que ves en tu carrito es exactamente lo que pagas.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- PREVIEW IMAGEN -->
-    <div id="image-preview-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[130] hidden flex flex-col items-center justify-center p-4 transition-opacity opacity-0 duration-400 ease-apple" onclick="hidePreview()"><img id="preview-img-element" src="" class="max-w-full max-h-[70vh] object-contain rounded-3xl transform scale-90 transition-transform duration-500 ease-apple"></div>
-
-    <!-- NUEVO TOUR INTERACTIVO (Step-by-Step) -->
-    <div id="tour-overlay" class="fixed inset-0 bg-black/70 z-[150] hidden transition-opacity duration-300 opacity-0 pointer-events-auto backdrop-blur-sm" onclick="endTour()"></div>
-    
-    <div id="tour-tooltip" class="fixed z-[160] w-[90%] max-w-[320px] bg-white rounded-3xl p-6 shadow-2xl hidden transition-all duration-300 transform scale-90 opacity-0 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col items-center text-center">
-        <div id="tour-icon" class="w-16 h-16 bg-blue-50 text-iosBlue rounded-full flex items-center justify-center text-3xl mb-4">
-            <i class="fas fa-magic"></i>
-        </div>
-        <h4 id="tour-title" class="font-black text-textMain mb-2 text-xl tracking-tight">Paso 1</h4>
-        <p id="tour-text" class="text-sm text-textLight mb-6 leading-relaxed">Texto explicativo del paso.</p>
-        
-        <div class="w-full flex justify-between items-center mt-auto">
-            <button onclick="endTour()" class="text-sm font-semibold text-gray-400 active:scale-95 px-4 py-2">Saltar</button>
-            <button onclick="nextTourStep()" id="tour-next-btn" class="bg-iosBlue text-white px-6 py-3 rounded-full text-sm font-bold shadow-md active:scale-95 transition-transform flex items-center gap-2">
-                Siguiente <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-        
-        <div class="flex gap-1.5 mt-6" id="tour-dots">
-            <div class="w-4 h-2 rounded-full bg-iosBlue transition-all duration-300"></div>
-            <div class="w-2 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
-            <div class="w-2 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
-            <div class="w-2 h-2 rounded-full bg-gray-200 transition-all duration-300"></div>
         </div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 600, once: true, offset: 30, easing: 'ease-out-cubic' });
-
         const API_URL = "https://script.google.com/macros/s/AKfycbzEvk_VbWIFs4sChKj9IAQcwbS-q1BdyfUM27zDiIEZ_d8Yw40bfyo4CkA8T7bfArl8lQ/exec";
         
-        let catalogData = []; let flatProducts = []; let cart = {}; let paymentMethod = 'bs';
-        const PRICES = { base: 6.00, mid: 4.50, top: 3.50 };
+        let catalogData = []; let flatProducts = []; let cart = {}; 
+        let paymentMethod = 'bs';
+        let shippingMethod = 'maritime'; 
+        
+        // --- ESTRATEGIA: ESCALERA DE PRECIOS V3 ---
+        const PRICES = { 
+            base: 5.50,    // Tier 1: >= 20
+            mid: 4.50,     // Tier 2: >= 50
+            top: 3.80,     // Tier 3: >= 100
+            dist: 3.20,    // Tier 4: >= 200 
+            premium_surcharge: 1.80 
+        };
 
-        // --- SISTEMA DE FIDELIZACIÓN Y DATA LAYER ---
-        const ANALYTICS_KEY = 'miniperfumes_user_stats';
         const PROFILE_KEY = 'miniperfumes_user_profile';
-        
+        const ANALYTICS_KEY = 'miniperfumes_user_stats';
         let userStats = JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '{"product_adds": {}, "searches": []}');
-        
-        // Creación de Perfil de Socio Persistente (Añadido conteo de orders)
         let userProfile = JSON.parse(localStorage.getItem(PROFILE_KEY));
-        if (!userProfile) {
-            userProfile = {
-                id: 'CBO-' + Math.floor(1000 + Math.random() * 9000),
-                visits: 0,
-                orders: 0,
-                level: 'Emprendedor',
-                createdAt: new Date().toISOString()
-            };
-        }
+        if (!userProfile) { userProfile = { id: 'CBO-' + Math.floor(1000 + Math.random() * 9000), visits: 0, orders: 0, level: 'Emprendedor' }; }
         userProfile.visits++;
         localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
 
-        // ACTUALIZAR NIVELES DE USUARIO
-        function updateUserLevelUI() {
-            let level = 'Emprendedor';
-            let nextMessage = `Faltan ${3 - userProfile.orders} compras para subir`;
+        // --- CÁLCULO CENTRALIZADO (MARGEN INVISIBLE) ---
+        function calcShippingCosts(qty, method) {
+            if (qty === 0) return { merchandise: 0, customs: 0, freight: 0, insuranceAdmin: 0, logisticsTotal: 0, total: 0, chargeable_weight: 0 };
+
+            let tierPrice = (qty >= 200) ? PRICES.dist : ((qty >= 100) ? PRICES.top : ((qty >= 50) ? PRICES.mid : PRICES.base));
             
-            if (userProfile.orders >= 3 && userProfile.orders < 7) {
-                level = 'Negocio Retail';
-                nextMessage = `Faltan ${7 - userProfile.orders} compras para subir`;
-            } else if (userProfile.orders >= 7) {
-                level = 'Mayorista Premium';
-                nextMessage = `¡Nivel Máximo Alcanzado!`;
+            // TRUCO DE RENTABILIDAD: Desglose dinámico para ocultar márgenes
+            // Repartimos el precio unitario del tier en porcentajes creíbles (DDP).
+            // Esto esconde tu verdadero precio de compra y hace lucir el flete barato.
+            let merchandise = qty * (tierPrice * 0.45);    // 45% Producto
+            let customs = qty * (tierPrice * 0.35);        // 35% Aduana y Nacionalización
+            let freight = qty * (tierPrice * 0.12);        // 12% Flete Puro
+            let insuranceAdmin = qty * (tierPrice * 0.08); // 8% Seguro y Gestión (Admin)
+
+            if (method === 'air') {
+                freight += qty * 1.50; // Sobrecargo por envío aéreo
             }
 
-            userProfile.level = level;
-            document.getElementById('user-level').innerText = level;
-            document.getElementById('user-next-level').innerHTML = userProfile.orders >= 7 ? `<i class="fas fa-star text-yellow-300"></i> ${nextMessage}` : `<i class="fas fa-arrow-up"></i> ${nextMessage}`;
-            localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
+            let logisticsTotal = customs + insuranceAdmin + freight;
+            let total = merchandise + logisticsTotal;
+
+            // Info de peso referencial para WhatsApp
+            let weight_physical = qty * 0.053;
+            let weight_volumetric = (qty * 150) / 5000;
+            let chargeable_weight = Math.max(weight_physical, weight_volumetric);
+
+            return {
+                merchandise,
+                customs,
+                insuranceAdmin,
+                freight,
+                logisticsTotal,
+                total,
+                chargeable_weight
+            };
         }
 
-        // PERSONALIZACIÓN POR COMPORTAMIENTO (IA LIGERA)
-        function personalizeHero() {
-            if (Object.keys(userStats.product_adds).length > 0 && flatProducts.length > 0) {
-                // Calcular marca favorita basada en el historial
-                let brandCounts = {};
-                for (let prodId in userStats.product_adds) {
-                    let product = flatProducts.find(p => p.id === prodId);
-                    if(product) {
-                        brandCounts[product.brand] = (brandCounts[product.brand] || 0) + userStats.product_adds[prodId];
-                    }
-                }
+        function setShippingMethod(method) {
+            shippingMethod = method;
+            
+            let modalRadio = document.getElementById(`shipping-${method}`);
+            if(modalRadio) modalRadio.checked = true;
+            let mainRadio = document.getElementById(`global-shipping-${method}`);
+            if(mainRadio) mainRadio.checked = true;
+            
+            haptic('light');
+            
+            const updateComboCard = (qty, cardId) => {
+                let costs = calcShippingCosts(qty, method);
+                let logisticaTotal = costs.logisticsTotal;
+                let costoUnidad = (costs.total / qty).toFixed(2);
                 
-                // Encontrar la marca con más adiciones
-                let favoriteBrand = Object.keys(brandCounts).reduce((a, b) => brandCounts[a] > brandCounts[b] ? a : b, "");
-
-                if (favoriteBrand && userProfile.visits > 1) {
-                    document.getElementById('hero-greeting').innerText = `SOCIO ${userProfile.id} · TU MARCA TOP`;
-                    document.getElementById('hero-title').innerHTML = `Llegó lo nuevo<br>de <span class="text-iosOrange">${favoriteBrand}</span>.`;
-                } else if (userProfile.visits > 1) {
-                    document.getElementById('hero-greeting').innerText = `HOLA DE NUEVO, SOCIO ${userProfile.id}`;
-                    document.getElementById('hero-title').innerHTML = `Qué bueno verte,<br>aquí está tu surtido.`;
+                let textColorCls = (cardId === 'combo-200-shipping' || cardId === 'combo-50-shipping') ? "text-white/90" : "text-iosBlue";
+                let muteColorCls = (cardId === 'combo-200-shipping' || cardId === 'combo-50-shipping') ? "text-white/60" : "text-gray-500";
+                
+                let el = document.getElementById(cardId);
+                if(el) {
+                    el.innerHTML = `<span class="text-[10.5px] ${textColorCls} font-bold">+ $${logisticaTotal.toFixed(2)} Logística DDP</span><br><span class="text-[9.5px] ${muteColorCls} font-medium tracking-tight leading-none block mt-1">≈ $${costoUnidad} final c/u</span>`;
                 }
-            } else if (userProfile.visits > 1) {
-                document.getElementById('hero-greeting').innerText = `HOLA DE NUEVO, SOCIO ${userProfile.id}`;
-            }
+            };
+
+            updateComboCard(20, 'combo-20-shipping');
+            updateComboCard(50, 'combo-50-shipping');
+            updateComboCard(100, 'combo-100-shipping');
+            updateComboCard(200, 'combo-200-shipping'); 
+
+            calculateTotals();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('menu-user-id').innerText = userProfile.id;
-            updateUserLevelUI();
-        });
-
-        function logEvent(eventName, details) {
-            console.log(`[ANALYTICS] ${eventName}`, details);
-            if(window.clarity) { clarity("set", eventName, JSON.stringify(details)); }
-        }
-
-        const CACHE_KEY = 'miniperfumes_catalog_cache_cbo';
-        const CACHE_TTL = 1000 * 60 * 60; 
-
-        async function fetchWithRetry(url, retries = 3) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(url, { redirect: "follow" });
-                    if (!response.ok) throw new Error("Error HTTP");
-                    return await response.text();
-                } catch (err) {
-                    if (i === retries - 1) throw err;
-                    await new Promise(res => setTimeout(res, 1000 * (i + 1)));
-                }
-            }
-        }
+        function showIOSNotification(text, type = 'success') { Toastify({ text: text, duration: 3000, gravity: "top", position: "center", style: { background: 'rgba(28, 28, 30, 0.85)', backdropFilter: "blur(12px)", borderRadius: "100px", padding: "12px 24px", fontSize: "13px", fontWeight: "600", color: "#fff", boxShadow: "0 10px 40px rgba(0,0,0,0.2)" } }).showToast(); }
+        function haptic(type = 'light') { if (!navigator.vibrate) return; if (type === 'light') navigator.vibrate(10); if (type === 'success') navigator.vibrate([20, 30, 20]); }
+        function openFAQ() { document.getElementById('faq-modal').classList.remove('hidden'); document.getElementById('faq-backdrop').classList.remove('opacity-0'); document.getElementById('faq-sheet').classList.remove('translate-y-full'); }
+        function closeFAQ() { document.getElementById('faq-backdrop').classList.add('opacity-0'); document.getElementById('faq-sheet').classList.add('translate-y-full'); setTimeout(() => document.getElementById('faq-modal').classList.add('hidden'), 500); }
 
         async function loadCatalog() {
             try {
-                const cached = localStorage.getItem(CACHE_KEY);
-                if (cached) {
-                    const { timestamp, data } = JSON.parse(cached);
-                    if (Date.now() - timestamp < CACHE_TTL) { processAndRender(data); return; }
-                }
-                const rawText = await fetchWithRetry(API_URL);
-                const data = JSON.parse(rawText);
-                if (data.error) throw new Error("Fallo en Drive: " + data.error);
-                localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: data }));
-                processAndRender(data);
-            } catch (error) {
-                const oldCache = localStorage.getItem(CACHE_KEY);
-                if (oldCache) { processAndRender(JSON.parse(oldCache).data); } 
-                else { document.getElementById('loading-indicator').classList.add('hidden'); }
-            }
+                const rawText = await fetch(API_URL).then(res => res.text());
+                processAndRender(JSON.parse(rawText));
+            } catch (error) { document.getElementById('loading-indicator').classList.add('hidden'); }
         }
 
         function processAndRender(data) {
-            catalogData = processJsonData(data);
-            document.getElementById('loading-indicator').classList.add('hidden');
-            document.getElementById('catalog-zone').classList.remove('hidden');
-            generateSmartTop5();
-            renderBrandFilters();
-            renderCatalog();
-            personalizeHero(); // Personaliza el Hero una vez que cargan los productos
-        }
-
-        function haptic(type = 'light') { if (!navigator.vibrate) return; if (type === 'light') navigator.vibrate(10); if (type === 'success') navigator.vibrate([20, 30, 20]); if (type === 'heavy') navigator.vibrate(40); }
-        function showIOSNotification(text, type = 'success') { const bg = type === 'error' ? 'rgba(255, 59, 48, 0.9)' : 'rgba(28, 28, 30, 0.85)'; Toastify({ text: text, duration: 2500, gravity: "top", position: "center", style: { background: bg, backdropFilter: "blur(12px)", borderRadius: "100px", padding: "12px 24px", fontSize: "13px", fontWeight: "600", color: "#fff" } }).showToast(); }
-
-        function processJsonData(data) {
             let processed = {}; flatProducts = []; 
             data.forEach(item => {
-                if (!item.img || typeof item.img !== 'string' || item.img.trim() === '' || !item.img.startsWith('http')) return;
-
+                if (!item.img || !item.img.startsWith('http')) return;
                 let brand = item.brand || "Otras Marcas";
                 if(!processed[brand]) processed[brand] = [];
                 
-                let finalImg = item.img; 
-                let searchString = `${brand} ${item.name} ${item.cap}`.toLowerCase();
-                let isPremium = searchString.includes('valentino') && searchString.includes('born in roma') && searchString.includes('15ml');
+                // Soporte nativo para columna premium
+                let isPremium = false;
+                if (item.is_premium === true || item.is_premium === 'TRUE' || item.is_premium === 'true') {
+                    isPremium = true;
+                } else if (item.name && item.name.toLowerCase().includes('valentino') && item.name.toLowerCase().includes('15ml')) {
+                    isPremium = true;
+                }
                 
-                // STOCK SIMULADO/REAL: Asignamos inventario bajo a algunos para urgencia
-                let stock = item.stock !== undefined ? item.stock : Math.floor(Math.random() * 20) + 1; 
-
-                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: finalImg, brand: brand, isPremium: isPremium, stock: stock };
+                const prodObj = { id: item.sku, name: item.name, cap: item.cap, img: item.img, brand: brand, isPremium: isPremium, stock: 10 };
                 processed[brand].push(prodObj); flatProducts.push(prodObj); 
             });
             let finalArray = [];
             for (let brand in processed) if (processed[brand].length > 0) finalArray.push({ brand: brand, products: processed[brand] }); 
-            return finalArray;
-        }
-
-        function generateSmartTop5() {
-            const container = document.getElementById('top5-container');
-            const section = document.getElementById('top5-section');
-            if (!container || flatProducts.length < 5) return; 
-
-            let sortedProducts = [...flatProducts].sort((a, b) => {
-                let scoreA = userStats.product_adds[a.id] || Math.random();
-                let scoreB = userStats.product_adds[b.id] || Math.random();
-                return scoreB - scoreA;
-            });
-            
-            let top5 = sortedProducts.slice(0, 5);
-            let html = '';
-            top5.forEach((prod) => {
-                let premiumBadge = prod.isPremium ? `<span class="inline-block bg-[#8A2BE2] text-white text-[8px] px-1.5 py-0.5 rounded shadow-sm mb-1 w-max"><i class="fas fa-gem"></i> +$1.8</span>` : '';
-                html += `
-                <div class="min-w-[130px] bg-iosCard p-3 rounded-3xl shadow-ios snap-center flex flex-col relative group">
-                    <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')">
-                        <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]">
-                    </div>
-                    ${premiumBadge}
-                    <p class="font-bold text-[13px] text-textMain leading-snug line-clamp-2 min-h-[38px] w-full mb-1">${prod.name}</p>
-                    <div class="mt-auto w-full">
-                        <button onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95">Agregar</button>
-                    </div>
-                </div>`;
-            });
-            container.innerHTML = html;
-            section.classList.remove('hidden');
-        }
-
-        function openMenu() {
-            haptic('light');
-            logEvent('menu_hub_opened', {});
-            const menu = document.getElementById('main-menu');
-            const backdrop = document.getElementById('menu-backdrop');
-            const sheet = document.getElementById('menu-sheet');
-            
-            menu.classList.remove('hidden');
-            void menu.offsetWidth;
-            backdrop.classList.remove('opacity-0');
-            sheet.classList.remove('translate-x-full');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMenu() {
-            const backdrop = document.getElementById('menu-backdrop');
-            const sheet = document.getElementById('menu-sheet');
-            
-            backdrop.classList.add('opacity-0');
-            sheet.classList.add('translate-x-full');
-            
-            setTimeout(() => {
-                document.getElementById('main-menu').classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        }
-
-        function toggleClearBtn() {
-            const input = document.getElementById('searchInput');
-            const clearBtn = document.getElementById('clearSearchBtn');
-            if(input.value.length > 0) clearBtn.classList.remove('hidden');
-            else clearBtn.classList.add('hidden');
-        }
-
-        function clearSearch() {
-            const input = document.getElementById('searchInput');
-            input.value = ''; input.focus();
-            document.getElementById('clearSearchBtn').classList.add('hidden');
-            filterCatalog();
-        }
-
-        function filterCatalog() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let totalCardsFound = 0;
-            
-            document.querySelectorAll('.category-block').forEach(cat => {
-                let cards = cat.querySelectorAll('.product-card');
-                let hasVisible = false;
-                cards.forEach(card => {
-                    if (card.getAttribute('data-search').indexOf(input) > -1) { card.style.display = "flex"; hasVisible = true; totalCardsFound++; } 
-                    else card.style.display = "none";
-                });
-                cat.style.display = hasVisible ? "block" : "none";
-            });
-
-            const emptyState = document.getElementById('empty-search-state');
-            if (totalCardsFound === 0 && input.length > 1) {
-                emptyState.classList.remove('hidden');
-                logEvent('failed_search', { query: input });
-            } else {
-                emptyState.classList.add('hidden');
-            }
-        }
-        
-        function sendWhatsAppInquiry() {
-            let input = document.getElementById('searchInput').value;
-            window.open(`https://wa.me/584141087079?text=Hola%20equipo.%20Soy%20el%20socio%20${userProfile.id}.%20Estuve%20buscando%20el%20aroma%20"${input}"%20y%20no%20lo%20conseguí.%20¿Lo%20tienen%20disponible?`, '_blank');
-        }
-
-        function filterFAQ() {
-            let input = document.getElementById('faqSearchInput').value.toLowerCase();
-            document.querySelectorAll('.faq-item').forEach(item => {
-                let tags = item.getAttribute('data-tags').toLowerCase();
-                let text = item.innerText.toLowerCase();
-                if (tags.includes(input) || text.includes(input)) item.style.display = "block";
-                else item.style.display = "none";
-            });
-        }
-
-        function renderBrandFilters() {
-            const container = document.getElementById('brand-filters-container');
-            let html = `<button onclick="filterByBrand('All')" class="brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors">Todos</button>`;
-            catalogData.forEach(cat => { html += `<button onclick="filterByBrand('${cat.brand}')" class="brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-gray-500 border border-gray-200 hover:text-textMain transition-colors">${cat.brand}</button>`; });
-            container.innerHTML = html;
-        }
-
-        function filterByBrand(brandName) {
-            haptic('light');
-            document.querySelectorAll('.brand-filter-btn').forEach(btn => {
-                if (btn.innerText === brandName || (brandName === 'All' && btn.innerText === 'Todos')) btn.className = "brand-filter-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-textMain text-white transition-colors";
-                else btn.className = "brand-filter-btn whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-gray-500 border border-gray-200 hover:text-textMain transition-colors";
-            });
-            document.querySelectorAll('.category-block').forEach(catBlock => { catBlock.style.display = (brandName === 'All' || catBlock.getAttribute('data-brand') === brandName) ? "block" : "none"; });
+            catalogData = finalArray;
+            document.getElementById('loading-indicator').classList.add('hidden');
+            document.getElementById('catalog-zone').classList.remove('hidden');
+            renderCatalog();
         }
 
         function renderCatalog() {
             const container = document.getElementById('catalog-container');
             let htmlFragments = [];
             catalogData.forEach((category) => {
-                htmlFragments.push(`<div class="category-block mb-10" data-brand="${category.brand}"> <div class="flex justify-between items-end mb-4 px-2"> <h3 class="text-xl font-bold tracking-tight text-textMain">${category.brand}</h3> <button onclick="addBrandToCart('${category.brand}')" class="text-[11px] font-semibold text-iosBlue bg-blue-50 px-3 py-1.5 rounded-full active:scale-95 shadow-sm"> <i class="fas fa-magic"></i> Surtir Marca </button> </div> <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">`);
+                htmlFragments.push(`<div class="category-block mb-10" data-brand="${category.brand}"> <div class="flex justify-between items-end mb-4 px-2"> <h3 class="text-xl font-bold tracking-tight text-textMain">${category.brand}</h3></div> <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">`);
                 category.products.forEach((prod) => {
-                    let searchTerms = `${category.brand} ${prod.name} ${prod.id}`.toLowerCase();
-                    
-                    // URGENCIA DINÁMICA POR STOCK
-                    let badgeHtml = '';
-                    if (prod.stock <= 3) {
-                        badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF3B30] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">¡Quedan ${prod.stock}!</div>`;
-                    } else if (prod.stock <= 8) {
-                        badgeHtml = `<div class="absolute top-2 left-2 z-10 bg-[#FF9500] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm"><i class="fas fa-fire"></i> Alta Demanda</div>`;
-                    }
-
-                    let premiumBadge = prod.isPremium ? `<span class="inline-block bg-[#8A2BE2] text-white text-[8px] px-1.5 py-0.5 rounded shadow-sm mb-1 w-max"><i class="fas fa-gem"></i> 15ml (+$1.8)</span>` : '';
-
-                    htmlFragments.push(`<div class="product-card flex flex-col items-center bg-iosCard p-3 rounded-3xl shadow-ios transition-all relative group" data-search="${searchTerms}"> ${badgeHtml} <div class="w-full aspect-square relative mb-2 cursor-pointer" onclick="showPreview('${prod.img}')"> <img src="${prod.img}" loading="lazy" class="w-full h-full object-cover rounded-2xl bg-[#F2F2F7]"> </div> <div class="flex-1 w-full flex flex-col px-1"> ${premiumBadge} <p class="font-bold text-[13px] md:text-sm text-textMain leading-snug mb-1 line-clamp-2 min-h-[38px]">${prod.name}</p> <p class="text-[11px] font-semibold text-gray-500 mb-3">${prod.cap}</p> <div class="mt-auto w-full"> <button id="add-btn-${prod.id}" onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue hover:bg-iosBlue hover:text-white font-bold py-2 rounded-xl transition-colors text-xs active:scale-95"> Agregar </button> <div id="ctrls-${prod.id}" class="hidden flex items-center justify-between bg-[#F2F2F7] rounded-xl p-1 w-full"> <button onclick="updateCart('${prod.id}', -1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-minus text-[12px]"></i></button> <span id="qty-${prod.id}" class="text-base font-bold w-6 text-center text-textMain">0</span> <button onclick="updateCart('${prod.id}', 1)" class="w-11 h-10 flex items-center justify-center text-textMain bg-white rounded-lg shadow-sm active:scale-95"><i class="fas fa-plus text-[12px]"></i></button> </div> </div> </div> </div>`);
+                    htmlFragments.push(`<div class="product-card flex flex-col items-center bg-iosCard p-3 rounded-3xl shadow-ios"> <img src="${prod.img}" class="w-full aspect-square object-cover rounded-2xl mb-2"> <div class="flex-1 w-full flex flex-col px-1"> <p class="font-bold text-[13px] text-textMain leading-snug mb-1 line-clamp-2">${prod.name}</p> <div class="mt-auto w-full"> <button id="add-btn-${prod.id}" onclick="updateCart('${prod.id}', 1)" class="w-full bg-[#F2F2F7] text-iosBlue font-bold py-2 rounded-xl text-xs">Agregar</button> <div id="ctrls-${prod.id}" class="hidden flex items-center justify-between bg-[#F2F2F7] rounded-xl p-1 w-full"> <button onclick="updateCart('${prod.id}', -1)" class="w-10 h-10 bg-white rounded-lg shadow-sm"><i class="fas fa-minus"></i></button> <span id="qty-${prod.id}" class="font-bold text-textMain">0</span> <button onclick="updateCart('${prod.id}', 1)" class="w-10 h-10 bg-white rounded-lg shadow-sm"><i class="fas fa-plus"></i></button> </div> </div> </div> </div>`);
                 });
                 htmlFragments.push(`</div></div>`);
             });
-            container.innerHTML = htmlFragments.join(''); loadCartFromStorage();
+            container.innerHTML = htmlFragments.join('');
         }
 
-        function getProductById(id) { return flatProducts.find(p => p.id === id) || null; }
-        function triggerPopAnim(elementId) { const el = document.getElementById(elementId); if(el) { el.classList.remove('pop-anim'); void el.offsetWidth; el.classList.add('pop-anim'); } }
-
+        function getProductById(id) { return flatProducts.find(p => p.id === id); }
         function syncProductUI(productId) {
             const qty = cart[productId] || 0;
             const btn = document.getElementById(`add-btn-${productId}`); const ctrls = document.getElementById(`ctrls-${productId}`); const qtyLabel = document.getElementById(`qty-${productId}`);
-            if(qtyLabel) { qtyLabel.innerText = qty; triggerPopAnim(`qty-${productId}`); }
+            if(qtyLabel) qtyLabel.innerText = qty;
             if(btn && ctrls) { if(qty > 0) { btn.classList.add('hidden'); ctrls.classList.remove('hidden'); ctrls.classList.add('flex'); } else { btn.classList.remove('hidden'); ctrls.classList.add('hidden'); ctrls.classList.remove('flex'); } }
         }
 
         function updateCart(productId, change) {
-            if (!cart[productId]) cart[productId] = 0;
-            cart[productId] += change;
-            if (cart[productId] < 0) cart[productId] = 0;
-            
-            if(change > 0) {
-                userStats.product_adds[productId] = (userStats.product_adds[productId] || 0) + 1;
-                localStorage.setItem(ANALYTICS_KEY, JSON.stringify(userStats));
-                
-                const p = getProductById(productId);
-                if (p && p.isPremium) {
-                    showIOSNotification('Aroma Premium añadido (+$1.80)', 'success');
-                }
-            }
-            
-            syncProductUI(productId); saveCartToStorage();
-            if (change > 0) haptic('light'); else haptic('heavy');
-            calculateTotals();
+            if (!cart[productId]) cart[productId] = 0; cart[productId] += change; if (cart[productId] < 0) cart[productId] = 0;
+            syncProductUI(productId); calculateTotals();
             if(!document.getElementById('cart-modal').classList.contains('hidden')) renderCartModalItems(); 
         }
 
-        function openCartModal() { haptic('light'); logEvent('cart_opened', {}); const modal = document.getElementById('cart-modal'); const backdrop = document.getElementById('cart-backdrop'); const sheet = document.getElementById('cart-sheet'); modal.classList.remove('hidden'); void modal.offsetWidth; backdrop.classList.remove('opacity-0'); sheet.classList.remove('translate-y-full'); document.body.style.overflow = 'hidden'; renderCartModalItems(); }
-        function closeCartModal() { const backdrop = document.getElementById('cart-backdrop'); const sheet = document.getElementById('cart-sheet'); backdrop.classList.add('opacity-0'); sheet.classList.add('translate-y-full'); setTimeout(() => { document.getElementById('cart-modal').classList.add('hidden'); document.body.style.overflow = ''; sheet.style.transform = ''; }, 500); }
-        function openFAQ() { haptic('light'); const modal = document.getElementById('faq-modal'); const backdrop = document.getElementById('faq-backdrop'); const sheet = document.getElementById('faq-sheet'); modal.classList.remove('hidden'); void modal.offsetWidth; backdrop.classList.remove('opacity-0'); sheet.classList.remove('translate-y-full'); document.body.style.overflow = 'hidden'; }
-        function closeFAQ() { const backdrop = document.getElementById('faq-backdrop'); const sheet = document.getElementById('faq-sheet'); backdrop.classList.add('opacity-0'); sheet.classList.add('translate-y-full'); setTimeout(() => { document.getElementById('faq-modal').classList.add('hidden'); document.body.style.overflow = ''; }, 500); }
-        function showPreview(img) { haptic('light'); const modal = document.getElementById('image-preview-modal'); const imgEl = document.getElementById('preview-img-element'); imgEl.src = img; modal.classList.remove('hidden'); void modal.offsetWidth; modal.classList.remove('opacity-0'); imgEl.classList.remove('scale-90'); imgEl.classList.add('scale-100'); }
-        function hidePreview() { const modal = document.getElementById('image-preview-modal'); const imgEl = document.getElementById('preview-img-element'); modal.classList.add('opacity-0'); imgEl.classList.remove('scale-100'); imgEl.classList.add('scale-90'); setTimeout(() => modal.classList.add('hidden'), 400); }
-        
-        function addBrandToCart(brand) { haptic('success'); let addedCount = 0; flatProducts.forEach(p => { if(p.brand === brand) { if(!cart[p.id]) cart[p.id] = 0; cart[p.id] += 1; syncProductUI(p.id); addedCount++; } }); saveCartToStorage(); calculateTotals(); showIOSNotification(`+${addedCount} perfumes de ${brand} añadidos`, 'success'); }
-        function addComboToCart(qty, tier) { if (flatProducts.length === 0) return; clearCartSilent(); let shuffled = [...flatProducts].sort(() => 0.5 - Math.random()); let numUnique = Math.min(flatProducts.length, Math.ceil(qty / 2)); if (numUnique === 0) return; let selected = shuffled.slice(0, numUnique); let distribution = {}; selected.forEach(p => distribution[p.id] = 1); let remaining = qty - numUnique; while(remaining > 0) { distribution[selected[Math.floor(Math.random() * selected.length)].id]++; remaining--; } for (let id in distribution) { cart[id] = distribution[id]; syncProductUI(id); } saveCartToStorage(); calculateTotals(); openCartModal(); haptic('success'); confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); showIOSNotification(`Surtido x${qty} listo. ¡Edítalo!`, 'success'); logEvent('combo_selected', { qty: qty, tier: tier });}
-        
-        function clearCartSilent() { for (let id in cart) { cart[id] = 0; syncProductUI(id); } cart = {}; localStorage.removeItem('miniperfumes_cart_cbo'); }
-        function clearCart() { clearCartSilent(); calculateTotals(); renderCartModalItems(); closeCartModal(); haptic('success'); showIOSNotification('Carrito vaciado', 'error'); }
-        function saveCartToStorage() { localStorage.setItem('miniperfumes_cart_cbo', JSON.stringify(cart)); }
-        
-        function loadCartFromStorage() { 
-            const saved = localStorage.getItem('miniperfumes_cart_cbo'); 
-            if (saved) { 
-                let tempCart = JSON.parse(saved); 
-                cart = {}; 
-                for (let id in tempCart) { 
-                    if(getProductById(id)) {
-                        cart[id] = tempCart[id];
-                        syncProductUI(id); 
-                    }
-                }
-                saveCartToStorage(); 
-                calculateTotals(); 
-            } 
+        function addComboToCart(qty, tier) { 
+            if (flatProducts.length === 0) return; 
+            cart = {}; for(let id of flatProducts.map(p=>p.id)) syncProductUI(id);
+            let shuffled = [...flatProducts].sort(() => 0.5 - Math.random()); let numUnique = Math.min(flatProducts.length, Math.ceil(qty / 2)); if (numUnique === 0) return; let selected = shuffled.slice(0, numUnique); let distribution = {}; selected.forEach(p => distribution[p.id] = 1); let remaining = qty - numUnique; while(remaining > 0) { distribution[selected[Math.floor(Math.random() * selected.length)].id]++; remaining--; } 
+            for (let id in distribution) { cart[id] = distribution[id]; syncProductUI(id); } 
+            calculateTotals(); openCartModal(); haptic('success'); confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); showIOSNotification(`Surtido x${qty} listo. ¡Edítalo!`, 'success'); 
         }
 
-        function updateProgressBar(totalQty) {
-            const bar = document.getElementById('progress-bar'); const msg = document.getElementById('progress-msg'); const title = document.getElementById('progress-title'); const price = document.getElementById('progress-price');
-            if (totalQty < 20) { bar.style.width = `${(totalQty / 20) * 100}%`; bar.className = "h-full rounded-full progress-bar-fill bg-textLight"; msg.innerHTML = `Faltan <strong>${20 - totalQty} uds</strong> para desbloquear precio mayorista ($6.00).`; title.innerText = "Iniciando"; price.innerText = "---"; } 
-            else if (totalQty >= 20 && totalQty < 50) { bar.style.width = `${((totalQty - 20) / 30) * 100}%`; bar.className = "h-full rounded-full progress-bar-fill bg-iosBlue"; msg.innerHTML = `🔥 Nivel Emprendedor. Suma <strong class="text-iosBlue">${50 - totalQty} uds</strong> y bajan a $4.50.`; title.innerText = "Emprendedor"; price.innerText = "$6.00 c/u"; } 
-            else if (totalQty >= 50 && totalQty < 100) { bar.style.width = `${((totalQty - 50) / 50) * 100}%`; bar.className = "h-full rounded-full progress-bar-fill bg-iosOrange"; msg.innerHTML = `🚀 Nivel Negocio. Precio bajó a $4.50 c/u. <br><span class="text-[#FF9500]"><i class="fas fa-gift"></i> + Bolsas de regalo.</span>`; title.innerText = "Negocio"; price.innerText = "$4.50 c/u"; } 
-            else { bar.style.width = '100%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosGreen"; msg.innerHTML = `🏆 Nivel Máximo alcanzado. Mejor precio garantizado.`; title.innerText = "Mayorista"; price.innerText = "$3.50 c/u"; }
-        }
-
-        function renderCartSuggestions() {
-            const container = document.getElementById('cart-suggestions-container'); const list = document.getElementById('cart-suggestions-list');
-            let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-            if(totalQty === 0 || flatProducts.length < 3) { container.classList.add('hidden'); return; }
-            let available = flatProducts.filter(p => !cart[p.id] || cart[p.id] === 0);
-            
-            let suggestions = available.sort((a,b) => (userStats.product_adds[b.id]||0) - (userStats.product_adds[a.id]||0)).slice(0, 3);
-
-            if(suggestions.length > 0) {
-                let html = '';
-                suggestions.forEach(prod => { html += `<div class="min-w-[100px] bg-iosCard border border-gray-100 p-2 rounded-2xl shadow-sm snap-center flex flex-col items-center text-center"> <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl mb-1 bg-[#F2F2F7]"> <p class="text-[9px] font-semibold text-textMain leading-tight line-clamp-2 w-full mb-1 h-[24px]">${prod.name}</p> <button onclick="updateCart('${prod.id}', 1); renderCartSuggestions();" class="w-full bg-[#F2F2F7] text-iosBlue text-[10px] font-bold py-1.5 rounded-lg active:scale-95 transition-transform"> Añadir </button> </div>`; });
-                list.innerHTML = html; container.classList.remove('hidden');
-            } else { container.classList.add('hidden'); }
-        }
+        function openCartModal() { document.getElementById('cart-modal').classList.remove('hidden'); document.getElementById('cart-backdrop').classList.remove('opacity-0'); document.getElementById('cart-sheet').classList.remove('translate-y-full'); renderCartModalItems(); }
+        function closeCartModal() { document.getElementById('cart-backdrop').classList.add('opacity-0'); document.getElementById('cart-sheet').classList.add('translate-y-full'); setTimeout(() => document.getElementById('cart-modal').classList.add('hidden'), 500); }
+        function clearCart() { cart = {}; for(let id of flatProducts.map(p=>p.id)) syncProductUI(id); calculateTotals(); closeCartModal(); }
+        function setPaymentMethod(method) { paymentMethod = method; document.getElementById(`radio-${method}`).checked = true; calculateTotals(); }
 
         function renderCartModalItems() {
-            const container = document.getElementById('cart-items-container'); let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-            if (totalQty === 0) { container.innerHTML = `<div class="text-center text-textLight mt-12"><i class="fas fa-shopping-bag text-5xl mb-3 opacity-50"></i><p class="text-sm font-medium">Tu pedido está vacío</p></div>`; document.getElementById('cart-suggestions-container').classList.add('hidden'); return; }
+            const container = document.getElementById('cart-items-container'); 
             let html = '';
             for (let id in cart) {
                 if (cart[id] > 0) {
                     const prod = getProductById(id);
-                    if(prod) { 
-                        let pBadge = prod.isPremium ? `<span class="bg-[#8A2BE2] text-white text-[8px] px-1 rounded ml-1"><i class="fas fa-gem"></i> +$1.8</span>` : '';
-                        html += `<div class="flex items-center gap-3 bg-iosCard p-2 rounded-2xl mb-2"> <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl bg-[#F2F2F7]"> <div class="flex-1"> <p class="text-[13px] font-semibold text-textMain leading-tight mb-0.5">${prod.name} ${pBadge}</p> <p class="text-[10px] text-textLight">Cod: #${prod.id}</p> </div> <div class="flex flex-col items-end gap-1"> <div class="flex items-center gap-2 bg-[#F2F2F7] rounded-lg p-1"> <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-minus text-[10px]"></i></button> <span class="text-xs font-bold w-5 text-center text-textMain">${cart[id]}</span> <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 flex items-center justify-center text-textMain bg-white rounded shadow-sm active:scale-95"><i class="fas fa-plus text-[10px]"></i></button> </div> </div> </div>`; 
-                    }
+                    if(prod) html += `<div class="flex items-center gap-3 bg-iosCard p-2 rounded-2xl mb-2"> <img src="${prod.img}" class="w-12 h-12 object-cover rounded-xl"> <div class="flex-1"><p class="text-[13px] font-semibold text-textMain">${prod.name}</p></div> <div class="flex items-center gap-2 bg-[#F2F2F7] rounded-lg p-1"> <button onclick="updateCart('${prod.id}', -1)" class="w-8 h-8 bg-white rounded shadow-sm"><i class="fas fa-minus text-[10px]"></i></button> <span class="text-xs font-bold w-5 text-center">${cart[id]}</span> <button onclick="updateCart('${prod.id}', 1)" class="w-8 h-8 bg-white rounded shadow-sm"><i class="fas fa-plus text-[10px]"></i></button> </div> </div>`; 
                 }
             }
-            container.innerHTML = html; renderCartSuggestions();
+            container.innerHTML = html;
         }
 
-        function setPaymentMethod(method) { paymentMethod = method; document.getElementById(`radio-${method}`).checked = true; haptic('light'); calculateTotals(); }
-
-        let confettiFired = false;
         function calculateTotals() {
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-            let currentPrice = (totalQty >= 100) ? PRICES.top : ((totalQty >= 50) ? PRICES.mid : PRICES.base);
 
+            // Calcula recargos premium
             let premiumSurcharge = 0;
-            for (let id in cart) {
-                if (cart[id] > 0) {
-                    const prod = getProductById(id);
-                    if (prod && prod.isPremium) premiumSurcharge += cart[id] * 1.80;
-                }
+            for (let id in cart) { 
+                if (cart[id] > 0) { 
+                    const prod = getProductById(id); 
+                    if (prod && prod.isPremium) premiumSurcharge += cart[id] * PRICES.premium_surcharge; 
+                } 
             }
 
-            if (totalQty >= 100 && !confettiFired) { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1C1C1E', '#007AFF', '#34C759'] }); confettiFired = true; } 
-            else if (totalQty < 100) confettiFired = false;
+            // Llama a la fuente única de verdad para desglose logístico (DDP)
+            let costs = calcShippingCosts(totalQty, shippingMethod);
 
-            updateProgressBar(totalQty);
-            const oldQty = document.getElementById('sticky-qty').innerText; if(oldQty != totalQty && totalQty > 0) triggerPopAnim('sticky-qty');
+            // UI del Progreso
+            const bar = document.getElementById('progress-bar');
+            const msg = document.getElementById('progress-msg');
+            const pTitle = document.getElementById('progress-title');
+            const pPrice = document.getElementById('progress-price');
+
+            if (totalQty < 20) {
+                bar.style.width = `${(totalQty / 20) * 20}%`; bar.className = "h-full rounded-full progress-bar-fill bg-textLight";
+                msg.innerHTML = `Faltan <strong>${20 - totalQty} uds</strong> para pedido mínimo.`; pTitle.innerText = "Iniciando"; pPrice.innerText = "---";
+            } else if (totalQty >= 20 && totalQty < 50) {
+                bar.style.width = '35%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosBlue";
+                msg.innerHTML = `🔥 Suma <strong>${50 - totalQty} uds</strong> para Dcto 5% y $4.50 c/u.`; pTitle.innerText = "Emprendedor"; pPrice.innerText = "$5.50 c/u";
+            } else if (totalQty >= 50 && totalQty < 100) {
+                bar.style.width = '65%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosOrange";
+                msg.innerHTML = `🚀 Suma <strong>${100 - totalQty} uds</strong> para $3.80 c/u.`; pTitle.innerText = "Negocio"; pPrice.innerText = "$4.50 c/u";
+            } else if (totalQty >= 100 && totalQty < 200) {
+                bar.style.width = '85%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosCard border border-gray-200";
+                msg.innerHTML = `💼 Suma <strong>${200 - totalQty} uds</strong> para precio Máximo.`; pTitle.innerText = "Mayorista"; pPrice.innerText = "$3.80 c/u";
+            } else {
+                bar.style.width = '100%'; bar.className = "h-full rounded-full progress-bar-fill bg-iosGreen";
+                msg.innerHTML = `🏆 Nivel Distribuidor alcanzado. Mejor rentabilidad.`; pTitle.innerText = "Distribuidor"; pPrice.innerText = "$3.20 c/u";
+            }
+
+            // Descuento de pago solo para >= 50 (Aplica al subtotal antes de recargos especiales)
+            let discount = ((paymentMethod === 'zelle' || paymentMethod === 'crypto') && totalQty >= 50) ? (costs.total * 0.05) : 0;
+            
+            const totalFinal = costs.total + premiumSurcharge - discount;
+
+            // Actualizar DOM
             document.getElementById('sticky-qty').innerText = totalQty;
             const stickyCart = document.getElementById('sticky-cart');
             if (totalQty > 0) stickyCart.classList.remove('translate-y-32'); else stickyCart.classList.add('translate-y-32');
 
-            let subtotalBase = totalQty * currentPrice;
-            let subtotal = subtotalBase + premiumSurcharge;
+            if(document.getElementById('cart-modal-qty')) document.getElementById('cart-modal-qty').innerText = totalQty;
+            if(document.getElementById('cart-modal-subtotal')) document.getElementById('cart-modal-subtotal').innerText = `$${costs.merchandise.toFixed(2)}`;
+            if(document.getElementById('cart-modal-customs')) document.getElementById('cart-modal-customs').innerText = `+$${costs.customs.toFixed(2)}`;
+            if(document.getElementById('cart-modal-insurance')) document.getElementById('cart-modal-insurance').innerText = `+$${costs.insuranceAdmin.toFixed(2)}`;
+            if(document.getElementById('cart-modal-freight')) document.getElementById('cart-modal-freight').innerText = `+$${costs.freight.toFixed(2)}`;
+            
+            document.getElementById('shipping-type-label').innerText = shippingMethod === 'air' ? 'Aéreo' : 'Marítimo';
             
             const premiumRow = document.getElementById('cart-premium-row');
-            if (premiumSurcharge > 0) {
-                premiumRow.classList.remove('hidden');
-                document.getElementById('cart-modal-premium').innerText = `+$${premiumSurcharge.toFixed(2)}`;
-            } else {
-                premiumRow.classList.add('hidden');
-            }
+            if (premiumSurcharge > 0) { premiumRow.classList.remove('hidden'); document.getElementById('cart-modal-premium').innerText = `+$${premiumSurcharge.toFixed(2)}`; } else { premiumRow.classList.add('hidden'); }
 
-            let discount = 0; const discountRow = document.getElementById('cart-discount-row');
-            
-            if ((paymentMethod === 'zelle' || paymentMethod === 'crypto') && totalQty >= 20) {
-                discount = subtotal * 0.05; 
-                if(discountRow) { discountRow.classList.remove('hidden'); document.getElementById('cart-modal-discount').innerText = `-$${discount.toFixed(2)}`; }
-            } else { if(discountRow) discountRow.classList.add('hidden'); }
+            const discountRow = document.getElementById('cart-discount-row');
+            if (discount > 0) { discountRow.classList.remove('hidden'); document.getElementById('cart-modal-discount').innerText = `-$${discount.toFixed(2)}`; } else { discountRow.classList.add('hidden'); }
 
-            const totalFinal = subtotal - discount;
-
-            if(document.getElementById('cart-modal-qty')) document.getElementById('cart-modal-qty').innerText = totalQty;
-            if(document.getElementById('cart-modal-subtotal')) document.getElementById('cart-modal-subtotal').innerText = `$${subtotalBase.toFixed(2)}`;
             if(document.getElementById('cart-modal-total')) document.getElementById('cart-modal-total').innerText = `$${totalFinal.toFixed(2)}`;
             document.getElementById('sticky-total').innerText = `$${totalFinal.toFixed(2)}`;
 
-            // ROI CALCULATOR MEJORADO DINÁMICO
-            const roiContainer = document.getElementById('roi-section');
-            if(totalQty >= 20 && roiContainer) {
-                const ventaPrecio = 10.00; // Precio de reventa sugerido
-                const gananciaNeta = (totalQty * ventaPrecio) - totalFinal;
-                document.getElementById('roi-profit').innerText = `$${gananciaNeta.toFixed(2)}`;
-                roiContainer.classList.remove('hidden');
-            } else if(roiContainer) { roiContainer.classList.add('hidden'); }
-
             const btnModal = document.getElementById('cart-modal-btn');
-            const headerBtn = document.getElementById('cart-header-btn'); 
-            
             if(btnModal) {
                 if (totalQty >= 20) { 
-                    btnModal.disabled = false; 
-                    btnModal.innerHTML = `<div class="flex items-center gap-2 text-lg"><i class="fab fa-whatsapp text-2xl animate-pulse"></i> <span>CONFIRMAR PEDIDO AQUÍ</span></div><span class="text-[11px] font-medium opacity-90 mt-1 tracking-wide">Paso final para cerrar tu importación</span>`; 
-                    if(headerBtn) headerBtn.classList.remove('hidden'); 
-                } 
-                else { 
-                    btnModal.disabled = true; 
-                    if(totalQty > 0) btnModal.innerHTML = `<span class="text-base py-2">Faltan ${20 - totalQty} uds para mayorista</span>`; 
-                    else btnModal.innerHTML = `<span class="text-base py-2">Añade productos al surtido</span>`; 
-                    if(headerBtn) headerBtn.classList.add('hidden'); 
+                    btnModal.disabled = false; btnModal.innerHTML = `<div class="flex items-center gap-2 text-lg"><i class="fab fa-whatsapp text-2xl animate-pulse"></i> <span>CONFIRMAR PEDIDO AQUÍ</span></div><span class="text-[11px] font-medium opacity-90 mt-1 tracking-wide">Paso final para cerrar tu importación</span>`; 
+                } else { 
+                    btnModal.disabled = true; btnModal.innerHTML = `<span class="text-base py-2">Faltan ${20 - totalQty} uds para empezar</span>`; 
                 }
             }
         }
 
-        function generateCryptoHash() {
-            return "0x" + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        function getCustomerTier(qty) {
-            if(qty >= 100) return "Mayorista Premium";
-            if(qty >= 50) return "Negocio / Retail";
-            return "Emprendedor";
-        }
-
         function sendWhatsAppOrder() {
-            haptic('success');
             let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
             if (totalQty < 20) return;
 
-            let currentPrice = totalQty >= 100 ? PRICES.top : (totalQty >= 50 ? PRICES.mid : PRICES.base);
-            let subtotalBase = totalQty * currentPrice;
             let premiumSurcharge = 0;
-
             let orderDetails = "";
+            
             for (let id in cart) {
                 if (cart[id] > 0) {
                     const prod = getProductById(id);
                     if (prod) {
-                        if (prod.isPremium) premiumSurcharge += cart[id] * 1.80;
-                        let pTag = prod.isPremium ? " 💎 (+1.80$)" : "";
-                        orderDetails += `- ${cart[id]}x [${prod.id}] ${prod.name} (${prod.cap})${pTag}%0A`;
+                        if (prod.isPremium) premiumSurcharge += cart[id] * PRICES.premium_surcharge;
+                        orderDetails += `- ${cart[id]}x [${prod.id}] ${prod.name}\n`;
                     }
                 }
             }
             
-            let subtotal = subtotalBase + premiumSurcharge;
-            let discount = (paymentMethod === 'zelle' || paymentMethod === 'crypto') ? (subtotal * 0.05) : 0;
-            let total = subtotal - discount;
+            let costs = calcShippingCosts(totalQty, shippingMethod);
+            let discount = ((paymentMethod === 'zelle' || paymentMethod === 'crypto') && totalQty >= 50) ? (costs.total * 0.05) : 0;
+            let total = costs.total + premiumSurcharge - discount;
             
-            let payText = "Pago Móvil / Efectivo";
-            if (paymentMethod === 'zelle') payText = "Zelle (Dcto Aplicado ✅)";
-            if (paymentMethod === 'crypto') payText = "USDT / Binance Pay (Dcto Aplicado ✅)";
+            let payText = paymentMethod === 'bs' ? "Pago Móvil" : (paymentMethod === 'zelle' ? "Zelle (Dcto 5%)" : "USDT (Dcto 5%)");
+            let shipText = shippingMethod === 'air' ? "✈️ Aéreo Express" : "🚢 Marítimo Base";
+            let discountText = discount > 0 ? `\n- Dcto Aplicado: -$${discount.toFixed(2)}` : "";
+            let premiumText = premiumSurcharge > 0 ? `\n- Recargos Premium: +$${premiumSurcharge.toFixed(2)}` : "";
 
-            let tier = getCustomerTier(totalQty);
-            let hashId = generateCryptoHash();
-            let bonusText = (totalQty >= 50) ? "%0A🎁 *BONO DESBLOQUEADO:* Bolsas de entrega" : "";
-            let premiumText = premiumSurcharge > 0 ? `%0A- Recargo Aromas Premium: +$${premiumSurcharge.toFixed(2)}` : "";
-
-            logEvent('whatsapp_checkout', { user_id: userProfile.id, total: total, method: paymentMethod, items: totalQty });
-
-            // AUMENTAR CONTADOR DE ORDEN Y ACTUALIZAR NIVEL
-            userProfile.orders++;
-            updateUserLevelUI();
-
-            // MINI-CRM A GOOGLE SHEETS (Silencioso para no demorar al cliente)
-            try {
-                fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Evita errores de CORS en frontend
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'new_order',
-                        userId: userProfile.id,
-                        level: userProfile.level,
-                        items: totalQty,
-                        total: total,
-                        payment: paymentMethod,
-                        timestamp: new Date().toISOString()
-                    })
-                });
-            } catch (e) { console.log('CRM error silencioso', e); }
-
-            // PLANTILLAS DE WHATSAPP SMART SEGÚN EL NIVEL DEL USUARIO
-            let introText = "";
-            if (userProfile.level === 'Emprendedor') {
-                introText = `Hola equipo CBO! 🚀%0ASoy Socio ${userProfile.level} *${userProfile.id}*. ¡Estoy listo para mi primera caja grande!`;
-            } else if (userProfile.level === 'Negocio Retail') {
-                introText = `Hola equipo! Socio *${userProfile.id}* - Nivel ${userProfile.level}.%0ANecesito mi pedido recurrente habitual.`;
-            } else {
-                introText = `¡Importación mayorista! Socio *${userProfile.id}* - Premium.%0AOrden grande lista para confirmar y facturar.`;
-            }
-
-            const text = `${introText}%0A%0A🌐 *ORIGEN:* Web App CBO%0A%0A📦 *MI LISTA:*%0A${orderDetails}%0A📊 *RESUMEN:*%0A- Total Piezas: ${totalQty}${premiumText}%0A- Método: ${payText}%0A- Total a Pagar: *$${total.toFixed(2)}*${bonusText}%0A%0A🔐 *HASH:* ${hashId.substring(0,12)}...`;
+            const text = `Hola equipo CBO! 🚀\nSoy Socio *${userProfile.id}*. ¡Estoy listo para mi importación!\n\n📦 *MI LISTA:*\n${orderDetails}\n🚚 *LOGÍSTICA:*\n- Despacho: ${shipText}\n- Peso Ref: ${costs.chargeable_weight.toFixed(2)} Kg\n\n📊 *DESGLOSE DDP:*\n- Mercancía Base: $${costs.merchandise.toFixed(2)}${premiumText}\n- Aduana y Aranceles: $${costs.customs.toFixed(2)}\n- Seguro y Gestión: $${costs.insuranceAdmin.toFixed(2)}\n- Flete Puro: $${costs.freight.toFixed(2)}${discountText}\n\n💳 *TOTAL A PAGAR: $${total.toFixed(2)}*\n- Vía: ${payText}\n\n🔐 Hash: ${Math.random().toString(36).substring(2,10)}`;
             
-            window.open(`https://wa.me/584141087079?text=${text}`, '_blank');
-
-            setTimeout(clearCartSilent, 2000);
+            window.open(`https://wa.me/584141087079?text=${encodeURIComponent(text)}`, '_blank');
+            setTimeout(clearCart, 2000);
         }
 
-        // --- SISTEMA DE TOUR ---
-        const tourData = [
-            { targetId: 'tour-step-combos', icon: 'fa-box-open', title: 'Cajas Inteligentes', text: 'La forma más rápida de emprender. Añade combos prearmados de 20, 50 o 100 unidades con un solo toque.', btn: 'Siguiente' },
-            { targetId: 'tour-step-search', icon: 'fa-search', title: 'Buscador Ágil', text: '¿Buscas una marca o aroma específico? Escríbelo aquí para encontrarlo al instante.', btn: 'Siguiente' },
-            { targetId: 'brand-filters-container', icon: 'fa-filter', title: 'Surtido Manual', text: 'Navega por las marcas, usa el botón mágico para sumar colecciones, o agrega de uno en uno con el botón (+).', btn: 'Siguiente' },
-            { targetId: 'sticky-cart', icon: 'fa-shopping-bag', title: 'Tu Pedido en Vivo', text: 'Revisa tu total y descuentos aquí. ¡Recuerda llegar a 20 unidades para desbloquear el precio mayorista!', btn: '¡Entendido!' }
-        ];
-
-        let currentTourStep = 0;
-        let activeTourTarget = null;
-
-        function startTour() {
-            closeCartModal(); currentTourStep = 0;
-            const overlay = document.getElementById('tour-overlay');
-            const tooltip = document.getElementById('tour-tooltip');
-            overlay.classList.remove('hidden'); tooltip.classList.remove('hidden');
-            void overlay.offsetWidth; overlay.classList.remove('opacity-0');
-            document.getElementById('catalog-zone').classList.remove('hidden');
-            renderTourStep();
-        }
-
-        function renderTourStep() {
-            if (activeTourTarget) {
-                activeTourTarget.classList.remove('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl', 'bg-white');
-                activeTourTarget.style.pointerEvents = '';
-                if(activeTourTarget.dataset.origPos) activeTourTarget.style.position = activeTourTarget.dataset.origPos;
-                else activeTourTarget.style.position = '';
-            }
-
-            const step = tourData[currentTourStep];
-            activeTourTarget = document.getElementById(step.targetId);
-            
-            if (activeTourTarget) {
-                activeTourTarget.dataset.origPos = window.getComputedStyle(activeTourTarget).position;
-                if(activeTourTarget.dataset.origPos === 'static') activeTourTarget.style.position = 'relative';
-                activeTourTarget.classList.add('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl');
-                if(step.targetId !== 'brand-filters-container') activeTourTarget.classList.add('bg-white');
-                activeTourTarget.style.pointerEvents = 'none';
-                const yOffset = -200; 
-                const y = activeTourTarget.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({top: y, behavior: 'smooth'});
-            }
-
-            document.getElementById('tour-icon').innerHTML = `<i class="fas ${step.icon}"></i>`;
-            document.getElementById('tour-title').innerText = step.title;
-            document.getElementById('tour-text').innerText = step.text;
-            document.getElementById('tour-next-btn').innerHTML = currentTourStep === tourData.length - 1 ? `${step.btn} <i class="fas fa-check"></i>` : `${step.btn} <i class="fas fa-arrow-right"></i>`;
-            
-            const dots = document.getElementById('tour-dots').children;
-            for(let i=0; i<dots.length; i++) {
-                dots[i].className = i === currentTourStep ? "w-4 h-2 rounded-full bg-iosBlue transition-all duration-300" : "w-2 h-2 rounded-full bg-gray-200 transition-all duration-300";
-            }
-
-            const tooltip = document.getElementById('tour-tooltip');
-            tooltip.classList.remove('opacity-0', 'scale-90');
-        }
-
-        function nextTourStep() {
-            haptic('light');
-            const tooltip = document.getElementById('tour-tooltip');
-            tooltip.classList.add('opacity-0', 'scale-90');
-            if (currentTourStep < tourData.length - 1) { setTimeout(() => { currentTourStep++; renderTourStep(); }, 300); } 
-            else { setTimeout(endTour, 300); }
-        }
-
-        function endTour() {
-            haptic('success');
-            const overlay = document.getElementById('tour-overlay');
-            const tooltip = document.getElementById('tour-tooltip');
-            overlay.classList.add('opacity-0'); tooltip.classList.add('opacity-0', 'scale-90');
-            if (activeTourTarget) {
-                activeTourTarget.classList.remove('z-[155]', 'ring-4', 'ring-iosBlue', 'ring-offset-4', 'ring-offset-[#F2F2F7]', 'rounded-xl', 'bg-white');
-                activeTourTarget.style.pointerEvents = '';
-                if(activeTourTarget.dataset.origPos) activeTourTarget.style.position = activeTourTarget.dataset.origPos;
-                else activeTourTarget.style.position = '';
-                activeTourTarget = null;
-            }
-            setTimeout(() => { overlay.classList.add('hidden'); tooltip.classList.add('hidden'); }, 300);
-            showIOSNotification("¡Ya eres un experto! Arma tu pedido.", "success");
-        }
-
-        window.onload = loadCatalog;
+        window.onload = () => {
+            loadCatalog();
+            setShippingMethod('maritime');
+        };
     </script>
 </body>
 </html>
+
